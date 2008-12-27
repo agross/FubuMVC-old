@@ -31,7 +31,7 @@ namespace AltOxite.Tests.Persistence
             var user = new User();
             _repo.Save(user);
 
-            _uow.AssertWasCalled(u=>u.SaveNew(user));
+            _uow.AssertWasCalled(u => u.SaveOrUpdate(user));
         }
 
         [Test]

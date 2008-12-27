@@ -87,7 +87,6 @@
     <Compile Include="Domain\Persistence\PostPersistenceMap.cs" />
     <Compile Include="Domain\Persistence\DomainEntityMap.cs" />
     <Compile Include="Persistence\INHibernateUnitOfWork.cs" />
-    <Compile Include="Persistence\InMemoryRepository.cs" />
     <Compile Include="Persistence\IRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
     <Compile Include="Domain\Persistence\UserPersistenceMap.cs" />

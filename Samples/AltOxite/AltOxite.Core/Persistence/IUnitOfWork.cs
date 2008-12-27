@@ -6,8 +6,7 @@ namespace AltOxite.Core.Persistence
     {
         void Initialize();
 
-        void SaveNew(params object[] entities);
-        void UpdateExisting(params object[] entities);
+        void SaveOrUpdate(params object[] entities);
         void Delete(params object[] entities);
 
         void Commit();

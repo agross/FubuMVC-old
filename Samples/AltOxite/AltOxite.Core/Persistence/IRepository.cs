@@ -28,12 +28,12 @@ namespace AltOxite.Core.Persistence
 
         public void Save<ENTITY>(ENTITY entity) where ENTITY : DomainEntity
         {
-            _unitOfWork.SaveNew(entity);
+            _unitOfWork.SaveOrUpdate(entity);
         }
 
         public ENTITY Load<ENTITY>(Guid id) where ENTITY : DomainEntity
         {
-            return _unitOfWork.CurrentSession.Get<ENTITY>(id);
+            return _unitOfWork.CurrentSession.Load<ENTITY>(id);
         }
 
         public IQueryable<ENTITY> Query<ENTITY>() where ENTITY : DomainEntity

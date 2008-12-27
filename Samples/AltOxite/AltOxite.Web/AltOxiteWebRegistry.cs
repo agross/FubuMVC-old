@@ -8,7 +8,6 @@ using FluentNHibernate.Framework;
 using FubuMVC.Core.Security;
 using StructureMap.Attributes;
 using StructureMap.Configuration.DSL;
-using InMemoryRepository = AltOxite.Core.Persistence.InMemoryRepository;
 using IRepository = AltOxite.Core.Persistence.IRepository;
 
 namespace AltOxite.Web

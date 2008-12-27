@@ -17,21 +17,12 @@ namespace AltOxite.Tests.Persistence
         private readonly object _entity2 = new object();
 
         [Test]
-        public void SaveNew_should_save_the_specified_entities_to_the_session()
+        public void SaveOrUpdate_should_save_the_specified_entities_to_the_session()
         {
-            _uow.SaveNew(_entity1, _entity2);
+            _uow.SaveOrUpdate(_entity1, _entity2);
 
-            _session.AssertWasCalled(s => s.Save(_entity1));
-            _session.AssertWasCalled(s => s.Save(_entity2));
-        }
-
-        [Test]
-        public void UpdateExisting_should_update_the_specified_entities_with_the_session()
-        {
-            _uow.UpdateExisting(_entity1, _entity2);
-
-            _session.AssertWasCalled(s => s.Update(_entity1));
-            _session.AssertWasCalled(s => s.Update(_entity2));
+            _session.AssertWasCalled(s => s.SaveOrUpdate(_entity1));
+            _session.AssertWasCalled(s => s.SaveOrUpdate(_entity2));
         }
 
         [Test]

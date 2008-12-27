@@ -26,18 +26,11 @@ namespace AltOxite.Core.Persistence
 
         public ISession CurrentSession { get; private set; }
 
-        public void SaveNew(params object[] entities)
+        public void SaveOrUpdate(params object[] entities)
         {
             should_not_currently_be_disposed();
 
-            entities.Each(e => CurrentSession.Save(e));
-        }
-
-        public void UpdateExisting(params object[] entities)
-        {
-            should_not_currently_be_disposed();
-
-            entities.Each(e => CurrentSession.Update(e));
+            entities.Each(e => CurrentSession.SaveOrUpdate(e));
         }
 
         public void Delete(params object[] entities)
