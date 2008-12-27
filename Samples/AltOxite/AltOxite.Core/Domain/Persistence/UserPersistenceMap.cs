@@ -1,6 +1,6 @@
 namespace AltOxite.Core.Domain.Persistence
 {
-    public class UserPersistenceMap : DomainEntityMap<User>
+    public sealed class UserPersistenceMap : DomainEntityMap<User>
     {
         public UserPersistenceMap()
         {

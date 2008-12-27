@@ -1,6 +1,6 @@
 namespace AltOxite.Core.Domain.Persistence
 {
-    public class PostPersistenceMap : DomainEntityMap<Post>
+    public sealed class PostPersistenceMap : DomainEntityMap<Post>
     {
         public PostPersistenceMap()
         {
