@@ -9,20 +9,21 @@ namespace AltOxite.Core.Config
     public abstract class FileBasedSessionSourceConfiguration : ISessionSourceConfiguration
     {
         private readonly string _physicalDbFilePath;
-        private readonly bool _isNewDatabase;
-
+        
         protected FileBasedSessionSourceConfiguration(string db_file_name)
         {
             _physicalDbFilePath = UrlContext.ToPhysicalPath(db_file_name);
 
-            _isNewDatabase = (!File.Exists(_physicalDbFilePath));
+            IsNewDatabase = (!File.Exists(_physicalDbFilePath));
         }
 
         protected abstract IDictionary<string, string> GetProperties(string db_file_path);
 
+        public bool IsNewDatabase{ get; private set; }
+
         private void create_schema_if_it_does_not_already_exist(ISessionSource source)
         {
-            if (_isNewDatabase) source.BuildSchema();
+            if (IsNewDatabase) source.BuildSchema();
         }
 
         public ISessionSource CreateSessionSource(PersistenceModel model)

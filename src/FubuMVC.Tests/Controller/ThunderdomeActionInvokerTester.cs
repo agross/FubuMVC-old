@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
+using Rhino.Mocks;
 
 namespace FubuMVC.Tests.Controller
 {
@@ -17,7 +18,7 @@ namespace FubuMVC.Tests.Controller
         public void SetUp()
         {
             _controller = new TestController();
-            _behavior = new DefaultBehavior();
+            _behavior = MockRepository.GenerateMock<IControllerActionBehavior>();
             _invoker =
                 new ThunderdomeActionInvoker<TestController, TestInputModel, TestOutputModel>(_controller, _behavior);
         }
@@ -35,8 +36,9 @@ namespace FubuMVC.Tests.Controller
             var testName = "TEST";
             var requestData = new Dictionary<string, object> { { "Prop1", testName } };
 
-            var output = _invoker.Invoke((c, i) => c.SomeAction(i), requestData);
-            output.ShouldBeOfType<IInvocationResult>();
+            _invoker.Invoke((c, i) => c.SomeAction(i), requestData);
+
+            _behavior.AssertWasCalled(b => b.Invoke<TestInputModel, TestOutputModel>(null, null), o => o.IgnoreArguments());
         }
     }
 }

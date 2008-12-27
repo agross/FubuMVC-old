@@ -60,9 +60,7 @@ namespace FubuMVC.Core.Controller.Config
             configContext.CurrentConfig = _config;
 
             var invoker = locator.GetInstance<IControllerActionInvoker<CONTROLLER, INPUT, OUTPUT>>(_config.UniqueID);
-            var result = invoker.Invoke(_actionFunc, _requestData);
-            //TODO: If result == null, that's bad, do something intelligent (pass through ASP.NET pipeline? throw error?)
-            result.Execute(locator);
+            invoker.Invoke(_actionFunc, _requestData);
         }
 
         #region IHttpHandler stuff

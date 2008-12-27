@@ -5,6 +5,7 @@ namespace AltOxite.Core.Config
 {
     public interface ISessionSourceConfiguration
     {
+        bool IsNewDatabase { get; }
         ISessionSource CreateSessionSource(PersistenceModel model);
     }
 }

@@ -1,4 +1,6 @@
 using System.Web.Routing;
+using AltOxite.Core.Config;
+using AltOxite.Core.Persistence;
 using FubuMVC.Core.Controller.Config;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Container.StructureMap.Config;
@@ -20,10 +22,20 @@ namespace AltOxite.Web
             });
 
             ObjectFactory.AssertConfigurationIsValid();
+            
+            initialize_routes();
+            
+            setup_service_locator();
+        }
 
-            ObjectFactory.GetInstance<IRouteConfigurer>().LoadRoutes(RouteTable.Routes);
-
+        private static void setup_service_locator()
+        {
             ServiceLocator.SetLocatorProvider(() => new StructureMapServiceLocator());
+        }
+
+        private static void initialize_routes()
+        {
+            ObjectFactory.GetInstance<IRouteConfigurer>().LoadRoutes(RouteTable.Routes);
         }
 
         public static void Restart()

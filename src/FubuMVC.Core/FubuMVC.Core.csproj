@@ -59,6 +59,7 @@
     <Compile Include="BasicExtensions.cs" />
     <Compile Include="Behaviors\behavior_base_for_convenience.cs" />
     <Compile Include="Behaviors\DefaultBehavior.cs" />
+    <Compile Include="Behaviors\execute_the_result.cs" />
     <Compile Include="Behaviors\IControllerActionBehavior.cs" />
     <Compile Include="Behaviors\ISupportResultOverride.cs" />
     <Compile Include="Behaviors\load_the_current_principal.cs" />

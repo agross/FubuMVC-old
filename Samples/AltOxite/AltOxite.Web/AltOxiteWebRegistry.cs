@@ -19,7 +19,7 @@ namespace AltOxite.Web
         {
             ForRequestedType<ISessionSourceConfiguration>().AsSingletons()
                 .TheDefault.Is.OfConcreteType<SQLiteSessionSourceConfiguration>()
-                .WithCtorArg("sql_lite_db_file_name")
+                .WithCtorArg("db_file_name")
                     .EqualToAppSetting("AltOxite.sql_lite_db_file_name");
 
             ForRequestedType<ISessionSource>().AsSingletons()
@@ -27,14 +27,18 @@ namespace AltOxite.Web
                     ctx.GetInstance<ISessionSourceConfiguration>()
                     .CreateSessionSource(new AltOxitePersistenceModel()));
 
-            ForRequestedType<IUnitOfWork>().CacheBy(InstanceScope.Hybrid)
+            ForRequestedType<IUnitOfWork>().TheDefault.Is.ConstructedBy(ctx => ctx.GetInstance<INHibernateUnitOfWork>());
+
+            ForRequestedType<INHibernateUnitOfWork>().CacheBy(InstanceScope.Hybrid)
                 .TheDefault.Is.OfConcreteType<NHibernateUnitOfWork>();
 
-            //TODO: TEMPORARY! Until we get the full NHib stuff implemented
-            ForRequestedType<IRepository>().AsSingletons().TheDefault.Is.OfConcreteType<InMemoryRepository>();
+            ForRequestedType<IRepository>().TheDefault.Is.OfConcreteType<NHibernateRepository>();
 
-            ForRequestedType<ISecurityDataService>().TheDefault.Is.OfConcreteType<DummySecurityDataService>();
+            ForRequestedType<ISecurityDataService>().TheDefault.Is.OfConcreteType<SecurityDataService>();
             ForRequestedType<IPrincipalFactory>().TheDefault.Is.OfConcreteType<AltOxitePrincipalFactory>();
+
+            ForRequestedType<IApplicationFirstRunHandler>()
+                .TheDefault.Is.OfConcreteType<DefaultApplicationFirstRunHandler>();
 
             ForRequestedType<SiteConfiguration>()
                 .AsSingletons()

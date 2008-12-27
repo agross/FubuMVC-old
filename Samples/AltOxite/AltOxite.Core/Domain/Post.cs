@@ -1,30 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Web;
-using FubuMVC.Core;
-
 namespace AltOxite.Core.Domain
 {
     public class Post : DomainEntity
     {
-//        IPost Parent { get; }
-//        Guid ID { get; set; }
-//        Guid CreatorUserID { get; set; }
-//        IUser CreatorUser { get; }
-        public string Title { get; set; }
-        public string Class { get; set; }
-        public DateTime? Published { get; set; }
-        public string BodyShort { get; set; }
+        //        public virtual IPost Parent { get; }
+        //        public virtual Guid ID { get; set; }
+        //        public virtual Guid CreatorUserID { get; set; }
+        //        public virtual IUser CreatorUser { get; }
+        public virtual string Title { get; set; }
+        public virtual string Class { get; set; }
+        public virtual DateTime? Published { get; set; }
+        public virtual string BodyShort { get; set; }
 
-        //string Body { get; set; }
-        //string BodyShort { get; set; }
-        //byte State { get; set; }
-        //string Slug { get; set; }
-        //DateTime? Created { get; set; }
-        //DateTime? Modified { get; set; }
-        //DateTime? Published { get; set; }
-        //string SearchBody { get; set;  }
-//        IArea Area { get; }
-//        IEnumerable<ITag> Tags { get; }
+        //public virtual string Body { get; set; }
+        //public virtual string BodyShort { get; set; }
+        //public virtual byte State { get; set; }
+        //public virtual string Slug { get; set; }
+        //public virtual DateTime? Created { get; set; }
+        //public virtual DateTime? Modified { get; set; }
+        //public virtual DateTime? Published { get; set; }
+        //public virtual string SearchBody { get; set;  }
+        //        public virtual IArea Area { get; }
+        //        public virtual IEnumerable<ITag> Tags { get; }
     }
 }

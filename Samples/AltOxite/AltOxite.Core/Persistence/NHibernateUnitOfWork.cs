@@ -5,9 +5,8 @@ using NHibernate;
 
 namespace AltOxite.Core.Persistence
 {
-    public class NHibernateUnitOfWork : IUnitOfWork
+    public class NHibernateUnitOfWork : INHibernateUnitOfWork
     {
-        private ISession _session;
         private ITransaction _transaction;
         private bool _isDisposed;
         private readonly ISessionSource _source;
@@ -21,29 +20,31 @@ namespace AltOxite.Core.Persistence
         {
             should_not_currently_be_disposed();
             
-            _session = _source.CreateSession();
-            _transaction = _session.BeginTransaction();
+            CurrentSession = _source.CreateSession();
+            _transaction = CurrentSession.BeginTransaction();
         }
+
+        public ISession CurrentSession { get; private set; }
 
         public void SaveNew(params object[] entities)
         {
             should_not_currently_be_disposed();
 
-            entities.Each(e => _session.Save(e));
+            entities.Each(e => CurrentSession.Save(e));
         }
 
         public void UpdateExisting(params object[] entities)
         {
             should_not_currently_be_disposed();
 
-            entities.Each(e => _session.Update(e));
+            entities.Each(e => CurrentSession.Update(e));
         }
 
         public void Delete(params object[] entities)
         {
             should_not_currently_be_disposed();
 
-            entities.Each(e => _session.Delete(e));
+            entities.Each(e => CurrentSession.Delete(e));
         }
 
         public void Commit()
@@ -70,7 +71,7 @@ namespace AltOxite.Core.Persistence
             if (_isDisposed) return;
 
             _transaction.Dispose();
-            _session.Dispose();
+            CurrentSession.Dispose();
 
             _isDisposed = true;
         }

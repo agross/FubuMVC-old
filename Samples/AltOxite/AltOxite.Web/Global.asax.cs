@@ -18,10 +18,12 @@ namespace AltOxite.Web
                 // Default Behaviors for all actions
                 /////////////////////////////////////////////////
                 x.ByDefault.EveryControllerAction(d => d
-                    //.Will<access_the_database_through_a_unit_of_work>()
-                    .Will<load_the_current_principal>()
+                    .Will<set_the_current_site_details_on_the_output_viewmodel>()
                     .Will<set_the_current_logged_in_user_on_the_output_viewmodel>()
-                    .Will<set_the_current_site_details_on_the_output_viewmodel>());
+                    .Will<load_the_current_principal>()
+                    .Will<set_up_default_data_the_first_time_this_app_is_run>()
+                    .Will<execute_the_result>()
+                    .Will<access_the_database_through_a_unit_of_work>());
 
                 // Automatic controller registration
                 /////////////////////////////////////////////////
@@ -43,6 +45,8 @@ namespace AltOxite.Web
                 x.OverrideConfigFor(LogoutAction, config =>
                 {
                     config.PrimaryUrl = "logout/";
+                    config.RemoveAllBehaviors();
+                    config.AddBehavior<execute_the_result>();
                 });
             };
 

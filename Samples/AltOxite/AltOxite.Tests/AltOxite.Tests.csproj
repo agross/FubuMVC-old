@@ -47,6 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=444cf6a87fdab271, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\NHibernate\NHibernate.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\nunit\nunit.framework.dll</HintPath>
@@ -80,9 +84,11 @@
     <Compile Include="..\..\..\src\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Config\DefaultApplicationFirstRunHandlerTester.cs" />
     <Compile Include="Config\SiteConfigDTOTester.cs" />
     <Compile Include="Domain\DomainEntityTester.cs" />
     <Compile Include="Persistence\NHibernateUnitOfWorkTester.cs" />
+    <Compile Include="Persistence\NHibernateRepositoryTester.cs" />
     <Compile Include="Security\AltOxitePrincipalFactoryTester.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Web\Behaviors\SetUpCurrentSiteDetailsTester.cs" />

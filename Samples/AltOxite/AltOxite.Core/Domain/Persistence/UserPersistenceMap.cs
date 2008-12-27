@@ -1,11 +1,11 @@
-using FluentNHibernate.Mapping;
-
 namespace AltOxite.Core.Domain.Persistence
 {
     public class UserPersistenceMap : DomainEntityMap<User>
     {
         public UserPersistenceMap()
         {
+            NotLazyLoaded();
+
             Map(u => u.Username);
             Map(u => u.DisplayName);
             Map(u => u.HashedEmail);

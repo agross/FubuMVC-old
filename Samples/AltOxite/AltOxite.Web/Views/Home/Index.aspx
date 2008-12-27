@@ -3,26 +3,19 @@
 <%@ Import Namespace="System.Collections.Generic"%>
 <%@ Import Namespace="AltOxite.Core.Web.Html"%>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
-<h3>Home/Index.aspx</h3>
-<%
-    // TODO: replace this with this.Model.Posts
-    var posts = new List<Post>
-    {
-        new Post {Title = "Post one", Class = "first", Published = DateTime.Now.AddDays(-10), BodyShort = "First short body"},
-        new Post {Title = "Post two", Class = "", Published = DateTime.Now.AddDays(-5), BodyShort = "Second short body"},
-        new Post {Title = "Post three", Class = "", Published = DateTime.Now.AddDays(-1), BodyShort = "Third short body"},
-        new Post {Title = "Post four", Class = "last", Published = DateTime.Now, BodyShort = "Fourth short body"}
-    };
-%>
 <div class="sections">
     <div class="primary">
         <ul class="posts">
-            <%= this.DisplayBlogPost().ForEach(posts).Display<BlogPost>() %>
+            <%= this.DisplayBlogPost().ForEach(Model.Posts).Display<BlogPost>() %>
         </ul>
     </div>
 </div>
 
 <%---
+    **************************************
+    **** ORIGINAL OXITE VERSION BELOW ****
+    **************************************
+    
     IPageOfAList<IPost> posts = ((IPageOfAList<IPost>)ViewData["Posts"]);
     Dictionary<Guid, int> postCounts = (Dictionary<Guid, int>)ViewData["PostCounts"]; %>
             <div class="sections">
