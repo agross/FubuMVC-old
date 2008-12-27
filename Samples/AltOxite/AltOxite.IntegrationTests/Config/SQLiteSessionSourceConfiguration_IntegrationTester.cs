@@ -3,7 +3,6 @@ using AltOxite.Core.Config;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Domain.Persistence;
 using AltOxite.Tests;
-using FluentNHibernate;
 using FubuMVC.Core.Html;
 using NUnit.Framework;
 
