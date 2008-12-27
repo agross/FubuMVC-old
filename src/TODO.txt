@@ -1,0 +1,14 @@
+- Allow for decorators to seal the output (to prevent various output decorators trumping each other)
+- HTML Expressions
+- Standard JQuery plugin expressions??? (jqGrid, jqModal, etc?)
+- Decorators:
+    - Authorization
+    - Output caching (output model)
+    - Output caching (rendered HTML/JSON output)
+    - RSS
+    - ATOM
+    - XML
+- Once the infrastructure calms down a bit (maybe when the config DSL is done?), do some rough docs
+- BoundExpression with prefixes
+- MaxLength, required, etc flowing from the domain
+- Have the config DSL manipulate the routing as well (to achieve 'areas' support as well as centralize URL generation)

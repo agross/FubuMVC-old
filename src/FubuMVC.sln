@@ -1,0 +1,80 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.Core", "FubuMVC.Core\FubuMVC.Core.csproj", "{E18FD922-0E7A-49CD-B89F-473826077B9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.Tests", "FubuMVC.Tests\FubuMVC.Tests.csproj", "{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__TODO", "__TODO", "{27251D40-3975-4693-9A43-36316A6CE965}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__Build_Utilities", "__Build_Utilities", "{7AC4D197-535A-4686-8E21-18257B2ADB3A}"
+	ProjectSection(SolutionItems) = preProject
+		..\Build.bat = ..\Build.bat
+		..\build_support\BuildUtils.rb = ..\build_support\BuildUtils.rb
+		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
+		..\InstallGems.bat = ..\InstallGems.bat
+		..\RakeFile = ..\RakeFile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Applications", "Sample Applications", "{9DDA74B4-6C6A-4FD6-A5D8-0B323422A0FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.Container.StructureMap", "FubuMVC.Container.StructureMap\FubuMVC.Container.StructureMap.csproj", "{ABFEA520-820C-4B77-9015-6A09E24252FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AltOxite", "AltOxite", "{E8012060-3CB5-4D56-A39D-4CFE613F6A37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltOxite.Core", "..\Samples\AltOxite\AltOxite.Core\AltOxite.Core.csproj", "{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltOxite.Tests", "..\Samples\AltOxite\AltOxite.Tests\AltOxite.Tests.csproj", "{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltOxite.Web", "..\Samples\AltOxite\AltOxite.Web\AltOxite.Web.csproj", "{A7278599-C58B-4221-8E25-6AF60B87A871}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltOxite.IntegrationTests", "..\Samples\AltOxite\AltOxite.IntegrationTests\AltOxite.IntegrationTests.csproj", "{CAAAA67C-E03C-4732-811C-F8115A06DF88}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E18FD922-0E7A-49CD-B89F-473826077B9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18FD922-0E7A-49CD-B89F-473826077B9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18FD922-0E7A-49CD-B89F-473826077B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18FD922-0E7A-49CD-B89F-473826077B9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7278599-C58B-4221-8E25-6AF60B87A871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7278599-C58B-4221-8E25-6AF60B87A871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7278599-C58B-4221-8E25-6AF60B87A871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7278599-C58B-4221-8E25-6AF60B87A871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAAAA67C-E03C-4732-811C-F8115A06DF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAAA67C-E03C-4732-811C-F8115A06DF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAAA67C-E03C-4732-811C-F8115A06DF88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAAA67C-E03C-4732-811C-F8115A06DF88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8012060-3CB5-4D56-A39D-4CFE613F6A37} = {9DDA74B4-6C6A-4FD6-A5D8-0B323422A0FE}
+		{490D8AA7-12E4-4B61-A26C-C64D13DB44BE} = {E8012060-3CB5-4D56-A39D-4CFE613F6A37}
+		{6FB76CC8-3B5D-4C4D-A69D-B967C224B52C} = {E8012060-3CB5-4D56-A39D-4CFE613F6A37}
+		{A7278599-C58B-4221-8E25-6AF60B87A871} = {E8012060-3CB5-4D56-A39D-4CFE613F6A37}
+		{CAAAA67C-E03C-4732-811C-F8115A06DF88} = {E8012060-3CB5-4D56-A39D-4CFE613F6A37}
+	EndGlobalSection
+EndGlobal

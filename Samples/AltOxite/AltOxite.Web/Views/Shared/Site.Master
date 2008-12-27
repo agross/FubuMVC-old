@@ -1,0 +1,63 @@
+﻿<%@ Import Namespace="AltOxite.Core.Web.Html"%>
+<%@ Import Namespace="StructureMap"%>
+<%@ Master Language="C#" Inherits="SiteMasterView" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <%= this.PageTitle("test title") %>
+    <%= this.MetaTag().AsContentType() %>
+    <%= this.MetaTag().Name("language").Content("english") %>
+    <%= this.MetaTag().Name("robots").Content("follow")%>
+    <%= this.MetaTag().Name("description").Content("example description")%>
+    <%= this.MetaTag().Name("keywords").Content(new[] { "keyword1", "keyword2" })%>
+    <%= this.LinkTag().Href("Pingback.Url").AsPingBack()%>
+    <%= this.LinkTag().Rel("EditURI").Href("RsdLink").Type("application/rsd+xml").Title("RSD")%>
+    <%= this.LinkTag().Rel("wlwmanifest").Href("LiveWriterManifest.xml").Type("application/wlwmanifest+xml")%>
+    <%
+        // TODO: Replace this with an IEnumerable from the model
+        var links = new[]
+        {
+            new {url = "link1", type = "application/atom+xml", title = "Link Atom"},
+            new {url = "link2", type = "application/rss+xml", title = "Link RSS"}
+        };
+    %>
+    <%= this.LinkTag().FromList(links, (x,l) => l.AsAlternate().Href(x.url).Type(x.type).Title(x.title)).Indent("    ")%>
+    <%= this.LinkTag().Href("OpenSearch.Url").Title("OpenSearch.Title").AsOpenSearch()%>
+    <%= this.SkinCSS("yui.reset.2.6.0.css") %>
+    <%= this.SkinCSS("site.css") %>
+    <!-- //TODO: CSS  Additional skin stylesheets  -->
+    <%= this.SkinScript(new[] { "Script.Url.1", "Script.Url.2" }).Indent("    ")%>
+</head>
+<body class="dyn">
+    <!-- //TODO: append 'dyn' class to body element dynamically (for some reason, need to investigate this odd behavior in Oxite Site.Master -->
+    <div class="page">
+        <div id="header">
+            <div id="title">
+               <h1><a href="<%= this.UrlTo().Home %>"><%= Model.SiteConfig.Name %></a></h1>
+            </div>
+            <div id="logindisplay">
+                <%= this.DisplayLoginStatus().For(Model.CurrentUser).WhenLoggedInShow<LoggedInStatus>().WhenLoggedOutShow<LoggedOutStatus>() %>
+            </div>
+            <div id="menucontainer">
+                <!-- //TODO: Menu -->
+            </div>                
+        </div>
+        <div id="main"><asp:ContentPlaceHolder ID="MainContent" runat="server" />        </div>
+        <div id="footer">
+        <!-- //TODO: render partial footer -->
+        </div>
+    </div>
+    <!-- //TODO: Trackback.url -->
+    <!--
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+        <rdf:Description rdf:about="<x%=ViewData["Trackback.Post.Url"] %>" dc:identifier="<x%=ViewData["Trackback.Post.Url"] %>" dc:title="<x%=ViewData["Trackback.Post.Title"] %>" trackback:ping="<x%=ViewData["Trackback.Url"] %>" />
+    </rdf:RDF>
+    -->
+    
+    <!-- //TODO: ScriptVariablesPre -->
+    <asp:ContentPlaceHolder ID="StringResourcesContent" runat="server"></asp:ContentPlaceHolder>
+    <!-- //TODO: Scripts -->
+    <!-- //TODO: ScriptVariablesPost -->
+</body>
+</html>

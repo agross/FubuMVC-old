@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E18FD922-0E7A-49CD-B89F-473826077B9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FubuMVC.Core</RootNamespace>
+    <AssemblyName>FubuMVC.Core</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Common Service Locator\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Routing">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="BasicExtensions.cs" />
+    <Compile Include="Behaviors\behavior_base_for_convenience.cs" />
+    <Compile Include="Behaviors\DefaultBehavior.cs" />
+    <Compile Include="Behaviors\IControllerActionBehavior.cs" />
+    <Compile Include="Behaviors\ISupportResultOverride.cs" />
+    <Compile Include="Behaviors\load_the_current_principal.cs" />
+    <Compile Include="Behaviors\OutputAsJson.cs" />
+    <Compile Include="Controller\Config\DSL\MethodInfoActionConfigurer.cs" />
+    <Compile Include="Controller\Config\DSL\AutoControllerConfiguration.cs" />
+    <Compile Include="Controller\Config\DSL\ActionConfigExpression.cs" />
+    <Compile Include="Controller\Config\ActionRouteHandler.cs" />
+    <Compile Include="Controller\Config\DSL\AssemblyControllerScanningExpression.cs" />
+    <Compile Include="Controller\Config\DSL\BehaviorExpression.cs" />
+    <Compile Include="Controller\Config\ControllerActionConfig.cs" />
+    <Compile Include="Controller\Config\DSL\ControllerActionConfigExpression.cs" />
+    <Compile Include="Controller\Config\DSL\ControllerActionDSL.cs" />
+    <Compile Include="Controller\Config\DSL\ControllerTypeScanningExpression.cs" />
+    <Compile Include="Controller\Config\FubuConfiguration.cs" />
+    <Compile Include="Controller\Config\IRouteConfigurer.cs" />
+    <Compile Include="Controller\Config\IControllerConfigurationContext.cs" />
+    <Compile Include="Controller\Config\IUrlResolver.cs" />
+    <Compile Include="Controller\Config\FubuConventions.cs" />
+    <Compile Include="Controller\IInvocationResult.cs" />
+    <Compile Include="Controller\Results\RedirectResult.cs" />
+    <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResult.cs" />
+    <Compile Include="Controller\Results\RenderJsonResult.cs" />
+    <Compile Include="Controller\Results\RenderViewResult.cs" />
+    <Compile Include="Html\Expressions\ActionLinkExpression.cs" />
+    <Compile Include="Html\Expressions\BoundExpression.cs" />
+    <Compile Include="Html\Expressions\CheckboxExpression.cs" />
+    <Compile Include="Html\Expressions\FormExpression.cs" />
+    <Compile Include="Html\Expressions\HiddenExpression.cs" />
+    <Compile Include="Html\Expressions\HtmlExpressionBase.cs" />
+    <Compile Include="Html\Expressions\HtmlExpressionExtensions.cs" />
+    <Compile Include="Html\Expressions\ImageExpression.cs" />
+    <Compile Include="Html\Expressions\LinkExpression.cs" />
+    <Compile Include="Html\Expressions\MetaExpression.cs" />
+    <Compile Include="Html\Expressions\RenderPartialExpression.cs" />
+    <Compile Include="Html\Expressions\ScriptReferenceExpression.cs" />
+    <Compile Include="Html\HtmlExtensions.cs" />
+    <Compile Include="Html\Expressions\TextBoxExpression.cs" />
+    <Compile Include="Html\UrlContext.cs" />
+    <Compile Include="LocalizationManager.cs" />
+    <Compile Include="Routing\IOutputWriter.cs" />
+    <Compile Include="Security\IPrincipalFactory.cs" />
+    <Compile Include="View\IFubuView.cs" />
+    <Compile Include="View\IViewRenderer.cs" />
+    <Compile Include="View\WebForms\IWebFormsControlBuilder.cs" />
+    <Compile Include="View\WebForms\IWebFormsViewRenderer.cs" />
+    <Compile Include="Routing\AggregateDictionary.cs" />
+    <Compile Include="Controller\DictionaryConverter.cs" />
+    <Compile Include="Controller\TypeDescriptorRegistry.cs" />
+    <Compile Include="Controller\IControllerActionInvoker.cs" />
+    <Compile Include="Util\Accessor.cs" />
+    <Compile Include="Util\PropertyChain.cs" />
+    <Compile Include="Util\ReflectionHelper.cs" />
+    <Compile Include="Util\SingleProperty.cs" />
+    <Compile Include="Util\Cache.cs" />
+    <Compile Include="Util\JsonUtil.cs" />
+    <Compile Include="Util\XmlExtensions.cs" />
+    <Compile Include="View\WebForms\WebFormsViewRenderer.cs" />
+    <Compile Include="Security\IAuthenticationContext.cs" />
+    <Compile Include="Security\ISecurityContext.cs" />
+    <Compile Include="Web\Security\WebAuthenticationContext.cs" />
+    <Compile Include="Web\Security\WebSecurityContext.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

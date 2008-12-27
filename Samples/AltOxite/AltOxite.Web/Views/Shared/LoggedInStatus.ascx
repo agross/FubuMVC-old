@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedInStatus" %>
+<%= this.Localize("Welcome, ") %> <span class="username"><%= Model.CurrentUser.DisplayName %></span><span class="logout"><a href="<%= this.UrlTo().Logout %>"> <%= this.Localize("logout") %></a></span>
