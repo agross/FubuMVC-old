@@ -7,8 +7,8 @@
 <head>
     <%= this.PageTitle("test title") %>
     <%= this.MetaTag().AsContentType() %>
-    <%= this.MetaTag().Name("language").Content("english") %>
-    <%= this.MetaTag().Name("robots").Content("follow")%>
+    <%= this.MetaTag().Name("language").Content(Model.SiteConfig.LanguageDefault) %>
+    <%= this.MetaTag().Name("robots").Content(Model.SiteConfig.SEORobots)%>
     <%= this.MetaTag().Name("description").Content("example description")%>
     <%= this.MetaTag().Name("keywords").Content(new[] { "keyword1", "keyword2" })%>
     <%= this.LinkTag().Href("Pingback.Url").AsPingBack()%>
