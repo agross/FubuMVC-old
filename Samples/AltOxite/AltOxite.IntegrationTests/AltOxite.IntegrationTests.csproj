@@ -94,7 +94,6 @@
     <Compile Include="Domain_Persistence\PersistenceTesterContext.cs" />
     <Compile Include="Domain_Persistence\TestPersistenceModel.cs" />
     <Compile Include="Domain_Persistence\UserPersistenceTester.cs" />
-    <Compile Include="Persistence\NHibernateUnitOfWork_IntegrationTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AltOxite.Core\AltOxite.Core.csproj">

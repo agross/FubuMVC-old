@@ -26,12 +26,12 @@ namespace AltOxite.Tests.Persistence
         }
 
         [Test]
-        public void Save_should_save_on_the_unit_of_work()
+        public void Save_should_save_on_the_session()
         {
             var user = new User();
             _repo.Save(user);
 
-            _uow.AssertWasCalled(u => u.SaveOrUpdate(user));
+            _session.AssertWasCalled(s => s.SaveOrUpdate(user));
         }
 
         [Test]

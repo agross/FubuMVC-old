@@ -28,7 +28,7 @@ namespace AltOxite.Core.Persistence
 
         public void Save<ENTITY>(ENTITY entity) where ENTITY : DomainEntity
         {
-            _unitOfWork.SaveOrUpdate(entity);
+            _unitOfWork.CurrentSession.SaveOrUpdate(entity);
         }
 
         public ENTITY Load<ENTITY>(Guid id) where ENTITY : DomainEntity

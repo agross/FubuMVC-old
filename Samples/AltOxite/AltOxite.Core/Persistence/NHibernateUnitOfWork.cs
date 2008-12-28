@@ -1,6 +1,5 @@
 using System;
 using FluentNHibernate.Framework;
-using FubuMVC.Core;
 using NHibernate;
 
 namespace AltOxite.Core.Persistence
@@ -10,6 +9,7 @@ namespace AltOxite.Core.Persistence
         private ITransaction _transaction;
         private bool _isDisposed;
         private readonly ISessionSource _source;
+        private bool _isInitialized;
 
         public NHibernateUnitOfWork(ISessionSource source)
         {
@@ -22,27 +22,16 @@ namespace AltOxite.Core.Persistence
             
             CurrentSession = _source.CreateSession();
             _transaction = CurrentSession.BeginTransaction();
+
+            _isInitialized = true;
         }
 
         public ISession CurrentSession { get; private set; }
 
-        public void SaveOrUpdate(params object[] entities)
-        {
-            should_not_currently_be_disposed();
-
-            entities.Each(e => CurrentSession.SaveOrUpdate(e));
-        }
-
-        public void Delete(params object[] entities)
-        {
-            should_not_currently_be_disposed();
-
-            entities.Each(e => CurrentSession.Delete(e));
-        }
-
         public void Commit()
         {
             should_not_currently_be_disposed();
+            should_be_initialized_first();
 
             _transaction.Commit();
         }
@@ -50,6 +39,7 @@ namespace AltOxite.Core.Persistence
         public void Rollback()
         {
             should_not_currently_be_disposed();
+            should_be_initialized_first();
 
             _transaction.Rollback();
         }
@@ -59,10 +49,15 @@ namespace AltOxite.Core.Persistence
             if( _isDisposed ) throw new ObjectDisposedException(GetType().Name);
         }
 
+        private void should_be_initialized_first()
+        {
+            if( ! _isInitialized ) throw new InvalidOperationException("Must initialize (call Initialize()) on NHibernateUnitOfWork before commiting or rolling back");
+        }
+
         public void Dispose()
         {
-            if (_isDisposed) return;
-
+            if (_isDisposed || ! _isInitialized) return;
+            
             _transaction.Dispose();
             CurrentSession.Dispose();
 
