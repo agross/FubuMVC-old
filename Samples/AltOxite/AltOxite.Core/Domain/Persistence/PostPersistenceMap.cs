@@ -5,7 +5,6 @@ namespace AltOxite.Core.Domain.Persistence
         public PostPersistenceMap()
         {
             Map(u => u.Title);
-            Map(u => u.Class);
             Map(u => u.Published);
             Map(u => u.BodyShort);
         }

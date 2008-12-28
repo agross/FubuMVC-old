@@ -45,7 +45,8 @@
         </div>
         <div id="main"><asp:ContentPlaceHolder ID="MainContent" runat="server" />        </div>
         <div id="footer">
-        <!-- //TODO: render partial footer -->
+            <div class="powered"><span><%= this.Localize("Powered by") %> </span><a href="http://visitmix.com/lab/oxite">Oxite</a></div>
+            <div class="credits"><a href="http://www.famfamfam.com" title="Icons by Fam Fam Fam" id="famfamfam">famfamfam</a></div>
         </div>
     </div>
     <!-- //TODO: Trackback.url -->

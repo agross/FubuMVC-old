@@ -41,9 +41,16 @@ namespace AltOxite.Core.Web.Html
 
         public override string ToString()
         {
-            StringBuilder output = new StringBuilder();
+            var output = new StringBuilder();
             if (_posts != null)
-                _posts.Each(post => output.Append(RenderExpression.For(new BlogPostViewModel { Post = post })));
+            {
+                _posts.Each(post => output.Append(RenderExpression.For(
+                    new BlogPostViewModel 
+                    {
+                        Post = post, 
+                        LocalPublishedDate = post.Published.Value //TODO: Convert from UTC to user's local timezone here
+                    })));
+            }
 
             return output.ToString();
         }

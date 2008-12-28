@@ -8,7 +8,6 @@ namespace AltOxite.Core.Domain
         //        public virtual Guid CreatorUserID { get; set; }
         //        public virtual IUser CreatorUser { get; }
         public virtual string Title { get; set; }
-        public virtual string Class { get; set; }
         public virtual DateTime? Published { get; set; }
         public virtual string BodyShort { get; set; }
 

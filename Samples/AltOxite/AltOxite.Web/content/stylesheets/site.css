@@ -191,7 +191,7 @@ h2.title {
     float:left;
 }
 #footer .credits a#famfamfam {
-    background:url(images/famfamfam.gif) no-repeat 0 0;
+    background:url(../images/famfamfam.gif) no-repeat 0 0;
     height:16px;
     width:0;
     padding:0 0 0 13px;
@@ -211,7 +211,7 @@ h2.title {
     margin:6px 0 0;
 }
 #footer .powered a {
-    background:url(images/oxite_logo.gif) no-repeat 0 0;
+    background:url(../images/oxite_logo.gif) no-repeat 0 0;
     height:20px;
     width:0;
     margin:0 .5ex 0 .8ex;

@@ -7,5 +7,6 @@ namespace AltOxite.Core.Web.Controllers
     public class BlogPostViewModel : ViewModel
     {
         public Post Post { get; set; }
+        public DateTime LocalPublishedDate { get; set; }
     }
 }

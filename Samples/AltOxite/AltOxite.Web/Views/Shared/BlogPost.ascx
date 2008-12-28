@@ -1,9 +1,9 @@
 ﻿<%@ Import Namespace="FubuMVC.Core"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="BlogPost" %>
-<li<%= string.IsNullOrEmpty(this.Model.Post.Class) ? "" : " class=\"{0}\"".ToFormat(HttpUtility.HtmlEncode(this.Model.Post.Class)) %>>
-    <h2 class="title"><a href="#"><%= this.Model.Post.Title %></a></h2>
-    <div class="posted"><%= this.Model.Post.Published %></div>
-    <div class="content"><%= this.Model.Post.BodyShort%></div>                            
+<li>
+    <h2 class="title"><a href="#"><%= Model.Post.Title %></a></h2>
+    <div class="posted"><%= Model.LocalPublishedDate.ToLongDateString() %></div>
+    <div class="content"><%= Model.Post.BodyShort%></div>                            
     <div class="more">
 </li>
 
