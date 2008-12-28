@@ -208,14 +208,14 @@ h2.title {
     float:left;
 }
 #footer .powered span {
-    margin:6px 0 0;
+    margin: 3px 0 0;
 }
 #footer .powered a {
-    background:url(../images/oxite_logo.gif) no-repeat 0 0;
+    background:url(../images/FubuMVC_Logo_Small_Double.jpg) no-repeat 0 0;
     height:20px;
     width:0;
     margin:0 .5ex 0 .8ex;
-    padding:0 0 0 40px;
+    padding:0 0 0 155px;
     overflow:hidden;
     outline:none;
 }
