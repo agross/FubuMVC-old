@@ -1,14 +1,11 @@
 ﻿<%@ Import Namespace="FubuMVC.Core"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="BlogPost" %>
-<li>
+<li <%= Model.Class %>>
     <h2 class="title"><a href="#"><%= Model.Post.Title %></a></h2>
     <div class="posted"><%= Model.LocalPublishedDate %></div>
     <div class="content"><%= Model.Post.BodyShort%></div>                            
-    <div class="more"><%= Model.TagLinksAndCommentsLink %>
-    </div>
-</li>
-
-<%--
+    <div class="more"><%= Model.TagLinksAndCommentsLink %></div>
+</li><%--
 TODO: implement this
         IArea area = post.Area;
         string className = string.Empty;
@@ -45,5 +42,4 @@ TODO: implement this
             );
         }
         %> | <a href="<%=Url.Post(post) %>#comments"><%=commentCount %> comment<%=commentCount == 1 ? "" : "s"%></a> <a href="<%=Url.Post(post) %>" class="arrow">&raquo;</a></div>
-                        </li>
---%>
+                        </li>--%>

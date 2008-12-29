@@ -45,7 +45,7 @@ namespace AltOxite.Core.Web.Html
                 _posts.Each(
                     post =>
                     output.Append(
-                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post }))));
+                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post, CurrentPostOnPage = 1, TotalPostsOnPage = 1 }))));
             }
 
             return output.ToString();
