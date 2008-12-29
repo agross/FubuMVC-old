@@ -32,7 +32,7 @@ namespace AltOxite.Core.Web.Controllers
                 Post = inModel.Post,
                 LocalPublishedDate = inModel.Post.Published.Value.ToLongDateString(), //To local time
                 TagLinksAndCommentsLink = tagLinksAndCommentsLink,
-                Class = "class=\"{0}\"".ToFormat(css)
+                Class = (css != "") ? " class=\"{0}\"".ToFormat(css.Trim()) : ""
             };
         }
     }

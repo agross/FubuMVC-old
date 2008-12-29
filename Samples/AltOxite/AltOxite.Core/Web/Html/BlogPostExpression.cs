@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Web.Controllers;
@@ -42,10 +43,11 @@ namespace AltOxite.Core.Web.Html
             var output = new StringBuilder();
             if (_posts != null)
             {
+                var postCounter = 1;
                 _posts.Each(
                     post =>
                     output.Append(
-                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post, CurrentPostOnPage = 1, TotalPostsOnPage = 1 }))));
+                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post, CurrentPostOnPage = postCounter++, TotalPostsOnPage = _posts.Count() }))));
             }
 
             return output.ToString();
