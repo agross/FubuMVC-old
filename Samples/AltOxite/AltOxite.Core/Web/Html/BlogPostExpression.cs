@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Web.Controllers;
@@ -16,7 +15,6 @@ namespace AltOxite.Core.Web.Html
         private readonly IWebFormsViewRenderer _renderer;
 
         private IEnumerable<Post> _posts;
-        private string _indentation;
 
         public IRenderPartialForScope RenderExpression { get; private set; }
 
@@ -44,12 +42,10 @@ namespace AltOxite.Core.Web.Html
             var output = new StringBuilder();
             if (_posts != null)
             {
-                _posts.Each(post => output.Append(RenderExpression.For(
-                    new BlogPostViewModel 
-                    {
-                        Post = post, 
-                        LocalPublishedDate = post.Published.Value //TODO: Convert from UTC to user's local timezone here
-                    })));
+                _posts.Each(
+                    post =>
+                    output.Append(
+                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post }))));
             }
 
             return output.ToString();

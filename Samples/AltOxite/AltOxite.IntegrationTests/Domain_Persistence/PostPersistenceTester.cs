@@ -15,6 +15,7 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
                 .CheckProperty(u => u.Title, "title, anything here")
                 .CheckProperty(u => u.Published, DateTime.Parse("12-NOV-2008"))
                 .CheckProperty(u => u.BodyShort, "body short, anything here")
+                .CheckProperty(u => u.Body, "body, anything here")
                 .VerifyTheMappings();
         }
     }

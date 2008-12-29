@@ -2,9 +2,10 @@
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="BlogPost" %>
 <li>
     <h2 class="title"><a href="#"><%= Model.Post.Title %></a></h2>
-    <div class="posted"><%= Model.LocalPublishedDate.ToLongDateString() %></div>
+    <div class="posted"><%= Model.LocalPublishedDate %></div>
     <div class="content"><%= Model.Post.BodyShort%></div>                            
-    <div class="more">
+    <div class="more"><%= Model.TagLinksAndCommentsLink %>
+    </div>
 </li>
 
 <%--

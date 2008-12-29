@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
@@ -24,6 +25,7 @@ namespace AltOxite.Core.Web.Controllers
     {
     }
 
+    [Serializable]
     public class IndexViewModel : ViewModel
     {
         public IEnumerable<Post> Posts { get; set; }

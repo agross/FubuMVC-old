@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -83,10 +83,14 @@
     <Compile Include="Config\ISessionSourceConfiguration.cs" />
     <Compile Include="Config\SiteConfigDTO.cs" />
     <Compile Include="Domain\Alias.cs" />
+    <Compile Include="Domain\Comment.cs" />
     <Compile Include="Domain\DomainEntity.cs" />
     <Compile Include="Domain\Persistence\AltOxitePersistenceModel.cs" />
+    <Compile Include="Domain\Persistence\CommentPersistenceMap.cs" />
     <Compile Include="Domain\Persistence\PostPersistenceMap.cs" />
     <Compile Include="Domain\Persistence\DomainEntityMap.cs" />
+    <Compile Include="Domain\Persistence\TagPersistenceMap.cs" />
+    <Compile Include="Domain\Tag.cs" />
     <Compile Include="Persistence\INHibernateUnitOfWork.cs" />
     <Compile Include="Persistence\IRepository.cs" />
     <Compile Include="Persistence\IUnitOfWork.cs" />
@@ -103,7 +107,7 @@
     <Compile Include="Web\Behaviors\set_the_current_site_details_on_the_output_viewmodel.cs" />
     <Compile Include="Web\Behaviors\set_the_current_logged_in_user_on_the_output_viewmodel.cs" />
     <Compile Include="Web\Behaviors\set_up_default_data_the_first_time_this_app_is_run.cs" />
-    <Compile Include="Web\Controllers\BlogPostViewModel.cs" />
+    <Compile Include="Web\Controllers\BlogPostController.cs" />
     <Compile Include="Web\Controllers\HomeController.cs" />
     <Compile Include="Web\Controllers\LoginController.cs" />
     <Compile Include="Web\Html\BlogPostExpression.cs" />
