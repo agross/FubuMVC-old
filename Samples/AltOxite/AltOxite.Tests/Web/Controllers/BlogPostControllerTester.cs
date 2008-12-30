@@ -20,7 +20,7 @@ namespace AltOxite.Tests.Web.Controllers
         {
             new BlogPostController().Index(new BlogPostSetupViewModel { Post = new Post { Published = DateTime.Parse("2008-12-05 09:29:03.270"), }, CurrentPostOnPage = 1, TotalPostsOnPage = 1 })
                 .Class
-                .ShouldEqual("class=\"first last\"");
+                .ShouldContain("class=\"first last\"");
         }
 
         [Test]

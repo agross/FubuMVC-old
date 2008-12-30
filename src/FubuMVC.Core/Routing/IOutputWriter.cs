@@ -15,13 +15,12 @@ namespace FubuMVC.Core.Routing
             var response = HttpContext.Current.Response;
             response.ContentType = contentType;
             response.Write(renderedOutput);
-            response.End();
         }
 
         public void RedirectToUrl(string url)
         {
             var response = HttpContext.Current.Response;
-            response.Redirect(url, true);
+            response.Redirect(url, false);
         }
     }
 }
