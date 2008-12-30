@@ -4,7 +4,7 @@ namespace AltOxite.Core.Domain.Persistence
     {
         public CommentPersistenceMap()
         {
-//            Map(c => c.)
+            Map(c => c.Author);
         }      
     }
 }

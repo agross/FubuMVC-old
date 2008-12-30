@@ -1,7 +1,8 @@
-using System;
+using AltOxite.Core.Domain;
 using AltOxite.Core.Web.Controllers;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core;
 
 namespace AltOxite.Core.Web
 {
@@ -46,6 +47,20 @@ namespace AltOxite.Core.Web
             {
                 return _resolver.UrlFor<LoginController>(c => c.Logout(null));
             }
+        }
+
+        public string Tag(string tagName)
+        {
+            return ("~/Tag/" + tagName).ToFullUrl(); // TODO: _resolver.UrlFor<TagController>() + "/" + tagName;
+        }
+
+        public string Post(Post post)
+        {
+            return ("~/Blog/" + 
+                post.Published.Value.Year + "/" + 
+                post.Published.Value.Month + "/" + 
+                post.Published.Value.Day + "/" + 
+                post.Slug).ToFullUrl();
         }
 
     }

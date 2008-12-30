@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AltOxite.Core.Domain;
-using AltOxite.Core.Web.Controllers;
 using AltOxite.Core.Web.Html;
 using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.View.WebForms;
@@ -10,31 +9,31 @@ using Rhino.Mocks;
 namespace AltOxite.Tests.Web.Html
 {
     [TestFixture]
-    public class BlogPostExpressionTester
+    public class TagLinkListExpressionTester
     {
         private IWebFormsViewRenderer _renderer;
-        private BlogPostExpression _expression;
-        private IEnumerable<Post> _posts;
+        private TagLinkListExpression _expression;
+        private IEnumerable<Tag> _tags;
 
         [SetUp]
         public void SetUp()
         {
             _renderer = MockRepository.GenerateStub<IWebFormsViewRenderer>();
-            _expression = new BlogPostExpression(null, _renderer);
-            _posts = new List<Post>
+            _expression = new TagLinkListExpression(null, _renderer);
+            _tags = new List<Tag>
             {
-                new Post(),
-                new Post()
+                new Tag(),
+                new Tag()
             };
         }
-
         [Test]
-        public void should_be_of_type_blogpost()
+        public void should_be_of_type_tagcollection()
         {
-            _expression.ForEach(_posts)
-                .Display<BlogPost>()
+            _expression
+                .ForEach(_tags)
+                .Display<TagLink>()
                 .RenderExpression
-                .ShouldBeOfType<RenderPartialExpression.RenderPartialForScope<BlogPost>>();
+                .ShouldBeOfType<RenderPartialExpression.RenderPartialForScope<TagLink>>();
         }
     }
 }

@@ -97,6 +97,7 @@
     <Compile Include="Web\Behaviors\UnitOfWorkBehaviorTester.cs" />
     <Compile Include="Web\Controllers\BlogPostControllerTester.cs" />
     <Compile Include="Web\Html\BlogPostExpressionTester.cs" />
+    <Compile Include="Web\Html\TagLinkListExpressionTester.cs" />
     <Compile Include="Web\TestViewModel.cs" />
     <Compile Include="Web\Controllers\LoginControllerTester.cs" />
     <Compile Include="Web\Html\LoginStatusExpressionTester.cs" />

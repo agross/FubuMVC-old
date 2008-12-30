@@ -110,7 +110,11 @@
     <Compile Include="Web\Controllers\BlogPostController.cs" />
     <Compile Include="Web\Controllers\HomeController.cs" />
     <Compile Include="Web\Controllers\LoginController.cs" />
+    <Compile Include="Web\Controllers\TagController.cs" />
+    <Compile Include="Web\Controllers\TagLinkListViewModel.cs" />
     <Compile Include="Web\Html\BlogPostExpression.cs" />
+    <Compile Include="Web\Html\BlogPostHtmlExtension.cs" />
+    <Compile Include="Web\Html\TagLinkListExpression.cs" />
     <Compile Include="Web\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Html\LoginStatusExpression.cs" />
     <Compile Include="Config\SQLiteSessionSourceConfiguration.cs" />

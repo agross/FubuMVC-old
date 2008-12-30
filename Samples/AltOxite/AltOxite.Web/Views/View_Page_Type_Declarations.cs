@@ -10,9 +10,11 @@ public class HomeIndexView : AltOxitePage<IndexViewModel> { }
 public class LoginIndexView : AltOxitePage<LoginViewModel> { }
 public class DebugIndexView : AltOxitePage<ViewModel> { }
 public class BlogPostIndexView : AltOxitePage<BlogPostViewModel> { }
+public class TagIndexView : AltOxitePage<TagViewModel> { }
 
 // User Controls
 public class LoggedInStatus : AltOxiteUserControl<ViewModel>{}
 public class LoggedOutStatus : AltOxiteUserControl<ViewModel> { }
 
 public class BlogPost : AltOxiteUserControl<BlogPostViewModel> { }
+public class TagLink : AltOxiteUserControl<TagLinkViewModel> { }

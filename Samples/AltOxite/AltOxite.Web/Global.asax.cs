@@ -53,6 +53,11 @@ namespace AltOxite.Web
                 {
                     config.PrimaryUrl = "blog/{PostYear}/{PostMonth}/{PostDay}/{Slug}";
                 });
+
+                x.OverrideConfigFor(TagIndexAction, config=>
+                {
+                    config.PrimaryUrl = "tag/{Tag}";
+                });
             };
 
             Bootstrapper.Bootstrap();
@@ -60,5 +65,6 @@ namespace AltOxite.Web
 
         private readonly Expression<Func<LoginController, object>> LogoutAction = c => c.Logout(null);
         private readonly Expression<Func<BlogPostController, object>> BlogPostIndexAction = c => c.Index(null);
+        private readonly Expression<Func<TagController, object>> TagIndexAction = c => c.Index(null);
     }
 }

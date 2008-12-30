@@ -1,9 +1,13 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="BlogPost" %>
-<li<%= Model.Class %>>
-    <h2 class="title"><a href="#"><%= Model.Post.Title %></a></h2>
+﻿<%@ Import Namespace="FubuMVC.Core"%>
+<%@ Import Namespace="AltOxite.Core.Web.Html"%>
+<%@ Import Namespace="System.Linq"%>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="BlogPost" %>
+<% var commentCount = Model.Post.Comments == null ? 0 : Model.Post.Comments.Count(); %>   
+<li<%= this.GetCssForLiTag(Model.CurrentPostOnPage, Model.TotalPostsOnPage) %>>
+    <h2 class="title"><a href="<%= this.UrlTo().Post(Model.Post) %>"><%= Model.Post.Title %></a></h2>
     <div class="posted"><%= Model.LocalPublishedDate %></div>
-    <div class="content"><%= Model.Post.BodyShort%></div>                            
-    <div class="more"><%= Model.TagLinksAndCommentsLink %></div>
+    <div class="content"><%= Model.Post.BodyShort%></div> 
+    <div class="more"><%= this.DisplayTagList().ForEach(Model.Post.Tags).Display<TagLink>() %><%= this.GetCommentsLink(Model.Post) %>  <a href="<%= this.UrlTo().Post(Model.Post) %>" class="arrow">&raquo;</a></div>
 </li><%--
 TODO: implement this
         IArea area = post.Area;

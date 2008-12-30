@@ -52,7 +52,6 @@ namespace AltOxite.Tests.Config
         public void should_commit_the_transaction_when_done()
         {
             _config.Stub(c => c.IsNewDatabase).Return(true);
-            
             _handler.InitializeIfNecessary();
 
             _uow.AssertWasCalled(u => u.Commit());

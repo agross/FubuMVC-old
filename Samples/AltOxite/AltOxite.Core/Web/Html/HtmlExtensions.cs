@@ -38,5 +38,11 @@ namespace AltOxite.Core.Web.Html
             var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
             return new BlogPostExpression(viewPage, renderer);
         }
+
+        public static TagLinkListExpression DisplayTagList(this IAltOxitePage viewPage)
+        {
+            var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
+            return new TagLinkListExpression(viewPage, renderer);
+        }
     }
 }
