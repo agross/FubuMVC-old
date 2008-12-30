@@ -7,6 +7,7 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.Title);
             Map(u => u.BodyShort);
             Map(u => u.Body);
+            Map(u => u.Slug).WithUniqueConstraint();
             Map(u => u.Published);
         }
     }

@@ -48,11 +48,17 @@ namespace AltOxite.Web
                     config.RemoveAllBehaviors();
                     config.AddBehavior<execute_the_result>();
                 });
+
+                x.OverrideConfigFor(BlogPostIndexAction, config=>
+                {
+                    config.PrimaryUrl = "blog/{PostYear}/{PostMonth}/{PostDay}/{Slug}";
+                });
             };
 
             Bootstrapper.Bootstrap();
         }
 
         private readonly Expression<Func<LoginController, object>> LogoutAction = c => c.Logout(null);
+        private readonly Expression<Func<BlogPostController, object>> BlogPostIndexAction = c => c.Index(null);
     }
 }

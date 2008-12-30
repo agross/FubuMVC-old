@@ -46,8 +46,13 @@ namespace AltOxite.Core.Web.Html
                 var postCounter = 1;
                 _posts.Each(
                     post =>
+                    // TODO: Stubbed temporarily, see below
                     output.Append(
-                        RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post, CurrentPostOnPage = postCounter++, TotalPostsOnPage = _posts.Count() }))));
+                        RenderExpression.For(new BlogPostViewModel
+                            {Post = post, Class = "", LocalPublishedDate = "", TagLinksAndCommentsLink = ""}))); 
+
+                     //TODO: Don't call controllers from views! no! bad!
+                    //RenderExpression.For(new BlogPostController().Index(new BlogPostSetupViewModel { Post = post, CurrentPostOnPage = postCounter++, TotalPostsOnPage = _posts.Count() }))));
             }
 
             return output.ToString();

@@ -40,10 +40,26 @@ namespace AltOxite.Tests.Persistence
         }
 
         [Test]
+        public void Commit_should_dispose_the_transaction_and_start_a_new_transaction()
+        {
+            _uow.Commit();
+            _transaction.AssertWasCalled(t=>t.Dispose());
+            _session.AssertWasCalled(s=>s.BeginTransaction(), o=>o.Repeat.Twice());
+        }
+
+        [Test]
         public void Rollback_should_commit_the_transaction()
         {
             _uow.Rollback();
             _transaction.AssertWasCalled(t => t.Rollback());
+        }
+
+        [Test]
+        public void Rollback_should_dispose_the_transaction_and_start_a_new_transaction()
+        {
+            _uow.Rollback();
+            _transaction.AssertWasCalled(t => t.Dispose());
+            _session.AssertWasCalled(s => s.BeginTransaction(), o => o.Repeat.Twice());
         }
 
         [Test]

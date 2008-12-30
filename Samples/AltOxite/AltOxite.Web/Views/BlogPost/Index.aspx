@@ -1,9 +1,9 @@
-﻿<%@ Page Inherits="HomeIndexView" MasterPageFile="~/Views/Shared/Site.Master"%>
+﻿<%@ Page Inherits="BlogPostIndexView" MasterPageFile="~/Views/Shared/Site.Master"%>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 <div class="sections">
     <div class="primary">
         <ul class="posts">
-            <%= this.DisplayBlogPost().ForEach(Model.Posts).Display<BlogPost>() %>
+            <%= this.DisplayBlogPost().ForEach(new[]{Model.Post}).Display<BlogPost>() %>            
         </ul>
     </div>
 </div>

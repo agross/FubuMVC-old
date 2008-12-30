@@ -9,6 +9,7 @@ public class SiteMasterView : AltOxiteMasterPage{}
 public class HomeIndexView : AltOxitePage<IndexViewModel> { }
 public class LoginIndexView : AltOxitePage<LoginViewModel> { }
 public class DebugIndexView : AltOxitePage<ViewModel> { }
+public class BlogPostIndexView : AltOxitePage<BlogPostViewModel> { }
 
 // User Controls
 public class LoggedInStatus : AltOxiteUserControl<ViewModel>{}

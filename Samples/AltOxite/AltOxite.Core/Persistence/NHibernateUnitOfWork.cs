@@ -21,7 +21,7 @@ namespace AltOxite.Core.Persistence
             should_not_currently_be_disposed();
             
             CurrentSession = _source.CreateSession();
-            _transaction = CurrentSession.BeginTransaction();
+            begin_new_transaction();
 
             _isInitialized = true;
         }
@@ -34,6 +34,18 @@ namespace AltOxite.Core.Persistence
             should_be_initialized_first();
 
             _transaction.Commit();
+
+            begin_new_transaction();
+        }
+
+        private void begin_new_transaction()
+        {
+            if( _transaction != null )
+            {
+                _transaction.Dispose();
+            }
+
+            _transaction = CurrentSession.BeginTransaction();
         }
 
         public void Rollback()
@@ -42,6 +54,8 @@ namespace AltOxite.Core.Persistence
             should_be_initialized_first();
 
             _transaction.Rollback();
+
+            begin_new_transaction();
         }
 
         private void should_not_currently_be_disposed()
