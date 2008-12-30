@@ -17,7 +17,6 @@ namespace AltOxite.Core.Config
             _sourceConfig = sourceConfig;
             _repository = repository;
             _unitOfWork = unitOfWork;
-            IsInitialized = false;
         }
 
         public void InitializeIfNecessary()
