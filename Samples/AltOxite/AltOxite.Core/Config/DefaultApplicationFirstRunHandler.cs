@@ -10,13 +10,19 @@ namespace AltOxite.Core.Config
         private readonly IRepository _repository;
         private readonly ISessionSourceConfiguration _sourceConfig;
         private readonly IUnitOfWork _unitOfWork;
-        private static bool IsInitialized;
+        private static bool _isInitialized;
 
         public DefaultApplicationFirstRunHandler(ISessionSourceConfiguration sourceConfig, IUnitOfWork unitOfWork, IRepository repository)
         {
             _sourceConfig = sourceConfig;
             _repository = repository;
             _unitOfWork = unitOfWork;
+        }
+
+        public bool IsInitialized
+        {
+            get { return _isInitialized; }
+            set { _isInitialized = value; }
         }
 
         public void InitializeIfNecessary()

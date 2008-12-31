@@ -49,10 +49,10 @@ namespace AltOxite.Tests.Config
         }
 
         [Test]
-        [Ignore("Needed to add a static bool to ensure the database is only loaded ones but because of that this test is failing, I cannot set a static vaiable in a mock")]
         public void should_commit_the_transaction_when_done()
         {
             _config.Stub(c => c.IsNewDatabase).Return(true);
+            _handler.IsInitialized = false;
             _handler.InitializeIfNecessary();
 
             _uow.AssertWasCalled(u => u.Commit());
