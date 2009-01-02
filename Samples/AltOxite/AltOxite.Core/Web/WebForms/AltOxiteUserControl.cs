@@ -4,20 +4,20 @@ using FubuMVC.Core.View;
 namespace AltOxite.Core.Web.WebForms
 {
     public class AltOxiteUserControl<MODEL> : UserControl, IAltOxitePage, IFubuView<MODEL> 
-        where MODEL : ViewModel
+        where MODEL : class
     {
         public void SetModel(object model)
         {
             Model = (MODEL) model;
         }
 
-        public ViewModel GetModel()
+        public object GetModel()
         {
             return Model;
         }
 
         public MODEL Model{ get; set; }
 
-        ViewModel IAltOxitePage.Model { get{ return Model; } }
+        object IAltOxitePage.Model { get { return Model; } }
     }
 }

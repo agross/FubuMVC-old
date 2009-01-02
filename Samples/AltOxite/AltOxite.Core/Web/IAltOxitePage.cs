@@ -4,6 +4,6 @@ namespace AltOxite.Core.Web
 {
     public interface IAltOxitePage : IFubuViewWithModel
     {
-        ViewModel Model{ get; }
+        object Model{ get; }
     }
 }

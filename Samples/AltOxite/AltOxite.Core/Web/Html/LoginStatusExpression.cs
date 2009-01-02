@@ -1,6 +1,7 @@
 using System.Linq;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Web.WebForms;
+using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.View;
 using FubuMVC.Core.Html;
@@ -12,13 +13,16 @@ namespace AltOxite.Core.Web.Html
     {
         private readonly IAltOxitePage _viewPage;
         private readonly IWebFormsViewRenderer _renderer;
+        private readonly FubuConventions _conventions;
 
         private bool _loggedIn;
+        
 
-        public LoginStatusExpression(IAltOxitePage viewPage, IWebFormsViewRenderer renderer)
+        public LoginStatusExpression(IAltOxitePage viewPage, IWebFormsViewRenderer renderer, FubuConventions conventions)
         {
             _viewPage = viewPage;
             _renderer = renderer;
+            _conventions = conventions;
         }
 
         public IRenderPartialForScope RenderExpression { get; private set; }
@@ -33,7 +37,7 @@ namespace AltOxite.Core.Web.Html
             where USERCONTROL : AltOxiteUserControl<ViewModel>
         {
             RenderExpression = _loggedIn
-                                   ? new RenderPartialExpression(_viewPage, _renderer).Using<USERCONTROL>()
+                                   ? new RenderPartialExpression(_viewPage, _renderer, _conventions).Using<USERCONTROL>()
                                    : RenderExpression;
 
             return this;
@@ -43,7 +47,7 @@ namespace AltOxite.Core.Web.Html
             where USERCONTROL : AltOxiteUserControl<ViewModel>
         {
             RenderExpression = ! _loggedIn
-                       ? new RenderPartialExpression(_viewPage, _renderer).Using<USERCONTROL>()
+                       ? new RenderPartialExpression(_viewPage, _renderer, _conventions).Using<USERCONTROL>()
                        : RenderExpression;
             return this;
         }

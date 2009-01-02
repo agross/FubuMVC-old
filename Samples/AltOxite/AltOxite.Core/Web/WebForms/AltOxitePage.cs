@@ -18,6 +18,6 @@ namespace AltOxite.Core.Web.WebForms
 
         public MODEL Model{ get; set; }
 
-        ViewModel IAltOxitePage.Model { get{ return Model; } }
+        object IAltOxitePage.Model { get{ return Model; } }
     }
 }

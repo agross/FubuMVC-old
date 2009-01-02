@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using AltOxite.Core.Domain;
+using FubuMVC.Core.Controller.Config;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Html;
 using FubuMVC.Core.Html.Expressions;
@@ -10,38 +12,30 @@ namespace AltOxite.Core.Web.Html
     {
         public static LinkExpression SkinCSS(this IAltOxitePage viewPage, string url)
         {
-            var baseUrl = viewPage.Model.SiteConfig.CssPath;
+            var siteConfig = ServiceLocator.Current.GetInstance<SiteConfiguration>();
+            var baseUrl = siteConfig.CssPath;
             return viewPage.CSS(url).BasedAt(baseUrl);
         }
 
         public static ScriptReferenceExpression SkinScript(this IAltOxitePage viewPage, string url)
         {
-            var baseUrl = viewPage.Model.SiteConfig.ScriptsPath;
+            var siteConfig = ServiceLocator.Current.GetInstance<SiteConfiguration>();
+            var baseUrl = siteConfig.ScriptsPath;
             return viewPage.Script(url).BasedAt(baseUrl);
         }
 
         public static ScriptReferenceExpression SkinScript(this IAltOxitePage viewPage, IEnumerable<string> urls)
         {
-            var baseUrl = viewPage.Model.SiteConfig.ScriptsPath;
+            var siteConfig = ServiceLocator.Current.GetInstance<SiteConfiguration>();
+            var baseUrl = siteConfig.ScriptsPath;
             return viewPage.Script(urls).BasedAt(baseUrl);
         }
 
         public static LoginStatusExpression DisplayLoginStatus(this IAltOxitePage viewPage)
         {
             var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
-            return new LoginStatusExpression(viewPage, renderer);
-        }
-
-        public static BlogPostExpression DisplayBlogPost(this IAltOxitePage viewPage)
-        {
-            var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
-            return new BlogPostExpression(viewPage, renderer);
-        }
-
-        public static TagLinkListExpression DisplayTagList(this IAltOxitePage viewPage)
-        {
-            var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
-            return new TagLinkListExpression(viewPage, renderer);
+            var conventions = ServiceLocator.Current.GetInstance<FubuConventions>();
+            return new LoginStatusExpression(viewPage, renderer, conventions);
         }
     }
 }

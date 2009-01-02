@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
+using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Behaviors;
 using AltOxite.Core.Web.Controllers;
 using FubuMVC.Container.StructureMap.Config;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Html.Expressions;
 
 namespace AltOxite.Web
 {
@@ -15,6 +18,12 @@ namespace AltOxite.Web
         {
             ControllerConfig.Configure = x =>
             {
+                x.UsingConventions( conventions =>
+                {
+                    conventions.PartialForEachOfHeader = AltOxiteDefaultPartialHeader;
+                    conventions.PartialForEachOfBeforeEachItem = AltOxiteDefaultPartialBeforeEachItem;
+                });
+
                 // Default Behaviors for all actions
                 /////////////////////////////////////////////////
                 x.ByDefault.EveryControllerAction(d => d
@@ -61,6 +70,25 @@ namespace AltOxite.Web
             };
 
             Bootstrapper.Bootstrap();
+        }
+
+        private static HtmlExpressionBase AltOxiteDefaultPartialHeader(object itemList, int totalCount)
+        {
+            var expr = new GenericOpenTagExpression("ul");
+            
+            if (itemList is IEnumerable<Tag>) expr.Class("tags");
+
+            return expr;
+        }
+
+        private static HtmlExpressionBase AltOxiteDefaultPartialBeforeEachItem(object item, int index, int total)
+        {
+            var expr = new GenericOpenTagExpression("li");
+
+            if (index == 0) expr.Class("first");
+            if (index >= (total - 1)) expr.Class("last");
+
+            return expr;
         }
 
         private readonly Expression<Func<LoginController, object>> LogoutAction = c => c.Logout(null);

@@ -22,8 +22,14 @@ namespace AltOxite.Tests.Web.Behaviors
         [Test]
         public void ModifyOutput_override_should_modify_the_output()
         {
+            _config.LanguageDefault = "fr-FR";
+            _config.SEORobots = "robots";
+            _config.Name = "test";
+
             _behavior.ModifyOutput(_model);
-            _model.SiteConfig.ShouldBeTheSameAs(_config);
+            _model.LanguageDefault.ShouldBeTheSameAs(_config.LanguageDefault);
+            _model.SEORobots.ShouldBeTheSameAs(_config.SEORobots);
+            _model.SiteName.ShouldBeTheSameAs(_config.Name);
         }
     }
 }

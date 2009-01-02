@@ -1,5 +1,7 @@
+using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Controllers;
+using AltOxite.Core.Web.DisplayModels;
 using AltOxite.Core.Web.WebForms;
 
 // Master Pages
@@ -16,6 +18,8 @@ public class TagIndexView : AltOxitePage<TagViewModel> { }
 public class LoggedInStatus : AltOxiteUserControl<ViewModel>{}
 public class LoggedOutStatus : AltOxiteUserControl<ViewModel> { }
 
-public class BlogPost : AltOxiteUserControl<BlogPostViewModel> { }
-public class FullBlogPost : AltOxiteUserControl<BlogPostViewModel> { }
-public class TagLink : AltOxiteUserControl<TagLinkViewModel> { }
+public class BlogPost : AltOxiteUserControl<PostDisplay>
+{
+}
+
+public class TagLink : AltOxiteUserControl<Tag> { }

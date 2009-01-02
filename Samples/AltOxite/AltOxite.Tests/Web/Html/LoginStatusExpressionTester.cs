@@ -2,6 +2,7 @@ using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Html;
 using AltOxite.Core.Web.WebForms;
+using FubuMVC.Core.Controller.Config;
 using NUnit.Framework;
 using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.View.WebForms;
@@ -15,13 +16,15 @@ namespace AltOxite.Tests.Web.Html
         private IWebFormsViewRenderer _renderer;
         private User _user;
         private LoginStatusExpression _expression;
+        private FubuConventions _conventions;
 
         [SetUp]
         public void SetUp()
         {
             _renderer = MockRepository.GenerateStub<IWebFormsViewRenderer>();
+            _conventions = new FubuConventions();
             _user = new User();
-            _expression = new LoginStatusExpression(null, _renderer);
+            _expression = new LoginStatusExpression(null, _renderer, _conventions);
         }
 
         [Test]

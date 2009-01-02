@@ -87,7 +87,8 @@ namespace FubuMVC.Core.Html
             where VIEWMODEL : class
         {
             var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
-            return new RenderPartialExpression(viewPage, renderer);
+            var conventions = ServiceLocator.Current.GetInstance<FubuConventions>();
+            return new RenderPartialExpression(viewPage, renderer, conventions);
         }
 
         public static string SubmitButton(this IFubuView viewPage, string value, string name)

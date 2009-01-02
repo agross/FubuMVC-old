@@ -9,7 +9,7 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void CanonicalControllerName_should_return_the_controller_type_name_lowered_and_stripped_of_controller_suffix()
         {
-            new FubuConventions().CanonicalControllerName(typeof (TestController)).ShouldEqual("test");
+            new FubuConventions().CanonicalControllerName(typeof(TestController)).ShouldEqual("test");
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void DefaultPathForController_should_default_to_controller_canonical_name()
         {
-            new FubuConventions().DefaultUrlForController(typeof (TestController)).ShouldEqual("test");
+            new FubuConventions().DefaultUrlForController(typeof(TestController)).ShouldEqual("test");
         }
 
         [Test]
@@ -69,8 +69,52 @@ namespace FubuMVC.Tests.Controller.Config
             var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
                 (c, i) => c.SomeAction(i));
 
-            var conv = new FubuConventions {ViewFileBasePath = "foo"};
+            var conv = new FubuConventions { ViewFileBasePath = "foo" };
             conv.DefaultPathToViewForAction(config).ShouldEqual("foo/test/someaction.aspx");
         }
+
+        [Test]
+        public void DefaultPathToPartial_should_be_view_base_path_plus_shared_folder_then_action_name()
+        {
+            var conv = new FubuConventions { ViewFileBasePath = "foo" };
+
+            conv.DefaultPathToPartialView(typeof(TestPartialView)).ShouldEqual("foo/Shared/TestPartialView.ascx");
+        }
+
+        [Test]
+        public void PartialForEachOfHeader_should_default_to_a_ul_open_tag()
+        {
+            var conv = new FubuConventions();
+
+            conv.PartialForEachOfHeader(null, 0).ToString().ShouldEqual("<ul>");
+        }
+
+        [Test]
+        public void PartialForEachOfBeforeEachItem_should_render_li_open_tag()
+        {
+            var conv = new FubuConventions();
+
+            conv.PartialForEachOfBeforeEachItem(null, 0, 0).ToString().ShouldEqual("<li>");
+        }
+
+        [Test]
+        public void PartialForEachOfAfterEachItem_should_render_li_close_tag()
+        {
+            var conv = new FubuConventions();
+
+            conv.PartialForEachOfAfterEachItem(null, 0, 0).ShouldEqual("</li>");
+        }
+
+        [Test]
+        public void PartialForEachOfFooter_should_render_ul_close_tag()
+        {
+            var conv = new FubuConventions();
+
+            conv.PartialForEachOfFooter(null, 0).ShouldEqual("</ul>");
+        }
+
+        private class TestPartialView
+
+        { }
     }
 }

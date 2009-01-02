@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
+using AltOxite.Core.Web.DisplayModels;
 
 namespace AltOxite.Core.Web.Controllers
 {
@@ -17,7 +19,7 @@ namespace AltOxite.Core.Web.Controllers
         public IndexViewModel Index(IndexSetupViewModel inModel)
         {
             var posts = _repository.Query<Post>();
-            return new IndexViewModel{Posts = posts};
+            return new IndexViewModel {Posts = posts.ToList().Select(p => new PostDisplay(p))};
         }
     }
 
@@ -28,6 +30,6 @@ namespace AltOxite.Core.Web.Controllers
     [Serializable]
     public class IndexViewModel : ViewModel
     {
-        public IEnumerable<Post> Posts { get; set; }
+        public IEnumerable<PostDisplay> Posts { get; set; }
     }
 }

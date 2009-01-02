@@ -4,7 +4,8 @@ namespace AltOxite.Core.Domain.Persistence
     {
         public TagPersistenceMap()
         {
-            Map(u => u.Name);
+            Map(t => t.Name);
+            Map(t => t.CreatedDate);
         }
     }
 }

@@ -4,7 +4,9 @@ namespace AltOxite.Core.Web
 {
     public class ViewModel
     {
-        public SiteConfiguration SiteConfig{ get; set; }
+        public string SiteName { get; set; }
+        public string LanguageDefault { get; set; }
+        public string SEORobots { get; set; }
         public User CurrentUser { get; set; }
     }
 }

@@ -4,7 +4,9 @@ namespace AltOxite.Core.Web.WebForms
 {
     public class AltOxiteMasterPage : MasterPage, IAltOxitePage
     {
-        public ViewModel Model{ get { return ((IAltOxitePage) Page).Model; } }
+        object IAltOxitePage.Model{ get { return ((IAltOxitePage) Page).Model; } }
+
+        public ViewModel Model { get { return ((IAltOxitePage) Page).Model as ViewModel; } }
         
         public void SetModel(object model)
         {

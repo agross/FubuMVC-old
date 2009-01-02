@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
+using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Core;
 
 namespace AltOxite.Core.Web.Controllers
@@ -21,15 +22,10 @@ namespace AltOxite.Core.Web.Controllers
 
             var post = _repository.Query<Post>().Where(p => p.Slug == inModel.Slug).SingleOrDefault();
 
-            if (post == null) return new BlogPostViewModel();
-
             return new BlogPostViewModel
-            {
-                Post = post,
-                LocalPublishedDate = post.Published.Value.ToLongDateString(), //To local time
-                CurrentPostOnPage = inModel.CurrentPostOnPage,
-                TotalPostsOnPage = inModel.TotalPostsOnPage,
-            };
+                {
+                    Post = post == null ? null : new PostDisplay(post)
+                };
         }
     }
 
@@ -39,16 +35,11 @@ namespace AltOxite.Core.Web.Controllers
         public int PostMonth  { get; set; }
         public int PostDay  { get; set; }
         public string Slug { get; set; }
-        public int CurrentPostOnPage { get; set; }
-        public int TotalPostsOnPage { get; set; }
     }
 
     [Serializable]
     public class BlogPostViewModel : ViewModel
     {
-        public Post Post { get; set; }
-        public string LocalPublishedDate { get; set; }
-        public int CurrentPostOnPage { get; set; }
-        public int TotalPostsOnPage { get; set; }
+        public PostDisplay Post { get; set; }
     }
 }

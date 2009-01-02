@@ -1,4 +1,5 @@
 using System;
+using FubuMVC.Core.Html.Expressions;
 
 namespace FubuMVC.Core.Controller.Config
 {
@@ -11,10 +12,15 @@ namespace FubuMVC.Core.Controller.Config
 
         public string ViewFileBasePath { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
+        public Func<Type, string> DefaultPathToPartialView { get; set; }
         public Func<Type, string> CanonicalControllerName { get; set; }
         public Func<ControllerActionConfig, string> PrimaryUrlConvention { get; set; }
         public Func<Type, string> DefaultUrlForController { get; set; }
         public Func<ControllerActionConfig, bool> IsAppDefaultUrl { get; set; }
+        public Func<object, int, HtmlExpressionBase> PartialForEachOfHeader { get; set; }
+        public Func<object, int, int, HtmlExpressionBase> PartialForEachOfBeforeEachItem { get; set; }
+        public Func<object, int, int, string> PartialForEachOfAfterEachItem { get; set; }
+        public Func<object, int, string> PartialForEachOfFooter { get; set; }
 
         protected void SetBaseDefaults()
         {
@@ -27,8 +33,7 @@ namespace FubuMVC.Core.Controller.Config
             DefaultUrlForController = CanonicalControllerName;
 
             IsAppDefaultUrl = config => PrimaryUrlConvention(config) == "home/index";
-
-
+            
             ViewFileBasePath = "~/Views";
 
             DefaultPathToViewForAction = config =>
@@ -37,6 +42,13 @@ namespace FubuMVC.Core.Controller.Config
                 var actionName = config.ActionName;
                 return "{0}/{1}/{2}.aspx".ToFormat(ViewFileBasePath, controllerName, actionName);
             };
+
+            DefaultPathToPartialView = viewType => "{0}/Shared/{1}.ascx".ToFormat(ViewFileBasePath, viewType.Name);
+
+            PartialForEachOfHeader = (model, totalCount) => new GenericOpenTagExpression("ul");
+            PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression("li");
+            PartialForEachOfAfterEachItem = (model, index, total) => "</li>";
+            PartialForEachOfFooter = (model, totalCount) => "</ul>";
 
         }
 
@@ -50,6 +62,5 @@ namespace FubuMVC.Core.Controller.Config
             return CanonicalControllerName(typeof (CONTROLLER));
         }
 
-        
     }
 }

@@ -7,8 +7,8 @@
 <head>
     <%= this.PageTitle("test title") %>
     <%= this.MetaTag().AsContentType() %>
-    <%= this.MetaTag().Name("language").Content(Model.SiteConfig.LanguageDefault) %>
-    <%= this.MetaTag().Name("robots").Content(Model.SiteConfig.SEORobots)%>
+    <%= this.MetaTag().Name("language").Content(Model.LanguageDefault) %>
+    <%= this.MetaTag().Name("robots").Content(Model.SEORobots)%>
     <%= this.MetaTag().Name("description").Content("example description")%>
     <%= this.MetaTag().Name("keywords").Content(new[] { "keyword1", "keyword2" })%>
     <%= this.LinkTag().Href("Pingback.Url").AsPingBack()%>
@@ -34,10 +34,10 @@
     <div class="page">
         <div id="header">
             <div id="title">
-               <h1><a href="<%= this.UrlTo().Home %>"><%= Model.SiteConfig.Name %></a></h1>
+               <h1><a href="<%= this.UrlTo().Home %>"><%= Model.SiteName %></a></h1>
             </div>
             <div id="logindisplay">
-                <%= this.DisplayLoginStatus().For(Model.CurrentUser).WhenLoggedInShow<LoggedInStatus>().WhenLoggedOutShow<LoggedOutStatus>() %>
+                <%= this.DisplayLoginStatus().For(Model.CurrentUser).WhenLoggedInShow<LoggedInStatus>().WhenLoggedOutShow<LoggedOutStatus>()%>
             </div>
             <div id="menucontainer">
                 <!-- //TODO: Menu -->

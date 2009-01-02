@@ -13,7 +13,7 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.PasswordSalt);
             Map(u => u.Status);
             Map(u => u.IsAnonymous);
-            HasMany<Post>(u => u.Posts);
+            HasMany<Post>(u => u.Posts).AsBag().Cascade.SaveUpdate().IsInverse();
         }
     }
 }

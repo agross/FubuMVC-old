@@ -52,7 +52,7 @@ namespace AltOxite.Core.Config
 
         private void setup_sample_post(User user)
         {
-            var oxiteTag = new Tag {Name = "Oxite"};
+            var oxiteTag = new Tag {Name = "Oxite", CreatedDate = DateTime.Parse("12 NOV 2008")};
 
             var defaultPost = new Post
             {
@@ -75,10 +75,13 @@ namespace AltOxite.Core.Config
                 BodyShort = "Welcome to Oxite! &nbsp;This is a sample application targeting developers built on <a href=\"http://asp.net/mvc\">ASP.NET MVC</a>. &nbsp;Make any changes you like. &nbsp;If you build a feature you think other developers would be interested in and would like to share your code go to the <a href=\"http://www.codeplex.com/oxite\">Oxite Code Plex project</a> to see how you can contribute.<br /><br />To get started, sign in with \"Admin\" and \"pa$$w0rd\" and click on the Admin tab.<br /><br />For more information about <a href=\"http://oxite.net\">Oxite</a> visit the default <a href=\"/About\">About</a> page.",
                 Body = "body text",
                 Published = DateTime.Parse("2008-12-05 09:29:03.270"),
-                Tags = new List<Tag> { oxiteTag, new Tag { Name = "AltOxite" } },
-                Comments = new List<Comment>{ new Comment() }, 
+                Tags = new List<Tag> { oxiteTag, new Tag { Name = "AltOxite", CreatedDate = DateTime.Parse("30 DEC 2008") } },
+                Comments = new List<Comment>(), 
                 User = user
             };
+
+            defaultPost1.Comments.Add(new Comment {Post = defaultPost1});
+
             _repository.Save(defaultPost1);
         }
     }

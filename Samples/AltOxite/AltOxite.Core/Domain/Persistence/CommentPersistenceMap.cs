@@ -5,6 +5,7 @@ namespace AltOxite.Core.Domain.Persistence
         public CommentPersistenceMap()
         {
             Map(c => c.Author);
+            References(c => c.Post).CanNotBeNull().Cascade.All();
         }      
     }
 }

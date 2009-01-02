@@ -6,8 +6,8 @@ namespace FubuMVC.Core.View.WebForms
     public class WebFormsViewRenderer : IWebFormsViewRenderer
     {
         private readonly IWebFormsControlBuilder _webFormsBuilder;
-        private FubuConventions _conventions;
-        private IControllerConfigContext _context;
+        private readonly FubuConventions _conventions;
+        private readonly IControllerConfigContext _context;
 
         public WebFormsViewRenderer(FubuConventions conventions, IControllerConfigContext context, IWebFormsControlBuilder webFormsBuilder)
         {

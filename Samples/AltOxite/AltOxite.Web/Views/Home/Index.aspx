@@ -3,7 +3,7 @@
 <div class="sections">
     <div class="primary">
         <ul class="posts">
-            <%= this.DisplayBlogPost().ForEach(Model.Posts).Display<BlogPost>(Model.SiteConfig) %>
+            <%= this.RenderPartial().Using<BlogPost>().ForEachOf(Model.Posts) %>
         </ul>
     </div>
 </div>

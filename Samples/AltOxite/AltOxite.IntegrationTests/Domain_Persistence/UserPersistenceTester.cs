@@ -5,9 +5,15 @@ using NUnit.Framework;
 namespace AltOxite.IntegrationTests.Domain_Persistence
 {
     [TestFixture]
-    [Ignore("This test is failing because it is missing the mappings from Post, needs looking at")]
     public class UserPersistenceTester : PersistenceTesterContext<UserPersistenceMap, User>
     {
+        public override void ReferencesAdditionalMaps(TestPersistenceModel<UserPersistenceMap, User> model)
+        {
+            model.IncludeMapping<CommentPersistenceMap, Comment>();
+            model.IncludeMapping<TagPersistenceMap, Tag>();
+            model.IncludeMapping<PostPersistenceMap, Post>();
+        }
+
         [Test]
         public void should_load_and_save_a_user()
         {
@@ -19,6 +25,7 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
                 .CheckProperty(u => u.PasswordSalt, "salt, anything here")
                 .CheckProperty(u => u.Status, 99)
                 .CheckProperty(u => u.IsAnonymous, true)
+                .CheckList(u=>u.Posts, new[]{new Post()})
                 .VerifyTheMappings();
         }
     }

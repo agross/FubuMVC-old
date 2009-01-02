@@ -1,10 +1,12 @@
 ﻿<%@ Page Inherits="BlogPostIndexView" MasterPageFile="~/Views/Shared/Site.Master"%>
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
-<div class="post">
-    <%= this.DisplayBlogPost().ForEach(new[]{Model.Post}).Display<FullBlogPost>(Model.SiteConfig) %>            
-</div>
-
-<%---
+<div class="avatar"><%= this.GetGravatarImage(Model.Post.User)%></div>
+<h2 class="title"><%= Model.Post.Title %></h2>
+<div class="metadata">
+    <div class="posted"><%= Model.Post.LocalPublishedDate %></div>
+    <%= this.Localize("Filed under ") %><%= this.RenderPartial().Using<TagLink>().ForEachOf(Model.Post.Tags) %>
+    <div class="content"><%= Model.Post.Body %></div>
+</div><%---
     **************************************
     **** ORIGINAL OXITE VERSION BELOW ****
     **************************************
@@ -42,7 +44,6 @@
                                                                                                   
 %>    </div>
     <div class="content"><%=post.Body %></div>
-    <% Html.RenderPartial("Comments", comments, ViewData); %>
 </div>
             ---%>
-</asp:Content>
+            </asp:Content>

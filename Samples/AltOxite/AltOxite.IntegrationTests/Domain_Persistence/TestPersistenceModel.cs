@@ -12,5 +12,12 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
         {
             addMapping(new MAPTYPE());
         }
+
+        public void IncludeMapping<OTHERMAPTYPE, OTHERENTITY>()
+            where OTHERMAPTYPE : DomainEntityMap<OTHERENTITY>, new()
+            where OTHERENTITY : DomainEntity
+        {
+            addMapping(new OTHERMAPTYPE());
+        }
     }
 }

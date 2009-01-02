@@ -16,7 +16,9 @@ namespace AltOxite.Core.Web.Behaviors
         {
             if (model == null) return;
 
-            model.SiteConfig = _siteConfig;
+            model.SiteName = _siteConfig.Name;
+            model.LanguageDefault = _siteConfig.LanguageDefault;
+            model.SEORobots = _siteConfig.SEORobots;
         }
 
         public override void ModifyOutput<OUTPUT>(OUTPUT output)

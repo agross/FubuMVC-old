@@ -11,6 +11,7 @@ using NUnit.Framework.Constraints;
 using FubuMVC.Core.Util;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
+using Rhino.Mocks.Interfaces;
 using Is=NUnit.Framework.SyntaxHelpers.Is;
 using Text=NUnit.Framework.SyntaxHelpers.Text;
 using FubuMVC.Core;
@@ -363,17 +364,50 @@ namespace FubuMVC.Tests
         public static CapturingConstraint CaptureArgumentsFor<MOCK>(this MOCK mock,
                                                                     Expression<Action<MOCK>> methodExpression) where MOCK : class
         {
-            MethodInfo method = Core.Util.ReflectionHelper.GetMethod(methodExpression);
+            return SetupConstraint(
+                ReflectionHelper.GetMethod(methodExpression),
+                mock.Expect(methodExpression.Compile()),
+                null);
+        }
 
+        public static CapturingConstraint CaptureArgumentsFor<MOCK>(this MOCK mock,
+                                                                    Expression<Action<MOCK>> methodExpression,
+                                                                    Action<IMethodOptions<RhinoMocksExtensions.VoidType>> optionsAction) where MOCK : class
+        {
+            return SetupConstraint(
+                ReflectionHelper.GetMethod(methodExpression),
+                mock.Expect(methodExpression.Compile()),
+                optionsAction);
+        }
+
+        public static CapturingConstraint CaptureArgumentsFor<MOCK, RESULT>(
+            this MOCK mock,
+            Expression<Func<MOCK, RESULT>> methodExpression,
+            Action<IMethodOptions<RESULT>> optionsAction) 
+            where MOCK : class
+        {
+            return SetupConstraint(
+                ReflectionHelper.GetMethod(methodExpression),
+                mock.Expect(new Function<MOCK, RESULT>(methodExpression.Compile())),
+                optionsAction);
+        }
+
+        private static CapturingConstraint SetupConstraint<T>(MethodInfo method, IMethodOptions<T> options, Action<IMethodOptions<T>> optionsAction)
+        {
             var constraint = new CapturingConstraint();
             var constraints = new List<AbstractConstraint>();
 
-            foreach (ParameterInfo arg in method.GetParameters())
+            foreach (var arg in method.GetParameters())
             {
                 constraints.Add(constraint);
             }
 
-            mock.Expect(methodExpression.Compile()).Constraints(constraints.ToArray()).Repeat.Any();
+            options = options.Constraints(constraints.ToArray()).Repeat.Any();
+
+            if( optionsAction != null )
+            {
+                optionsAction(options);
+            }
 
             return constraint;
         }

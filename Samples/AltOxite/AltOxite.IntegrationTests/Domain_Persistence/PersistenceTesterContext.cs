@@ -11,6 +11,7 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
         where ENTITY : DomainEntity, new()
     {
         private SingleConnectionSessionSourceForSQLiteInMemoryTesting _source;
+        private TestPersistenceModel<MAPTYPE, ENTITY> _persistenceModel;
 
         [SetUp]
         public void SetUp()
@@ -21,8 +22,16 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
                 .InMemory()
                 .ToProperties();
 
-            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, new TestPersistenceModel<MAPTYPE, ENTITY>());
+            _persistenceModel = new TestPersistenceModel<MAPTYPE, ENTITY>();
+
+            ReferencesAdditionalMaps(_persistenceModel);
+            
+            _source = new SingleConnectionSessionSourceForSQLiteInMemoryTesting(properties, _persistenceModel);
             _source.BuildSchema();
+        }
+
+        public virtual void ReferencesAdditionalMaps(TestPersistenceModel<MAPTYPE, ENTITY> model)
+        {
         }
 
         public PersistenceSpecification<ENTITY> Specification { get { return new PersistenceSpecification<ENTITY>(_source); } }

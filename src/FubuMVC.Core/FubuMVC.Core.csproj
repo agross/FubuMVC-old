@@ -88,6 +88,7 @@
     <Compile Include="Html\Expressions\BoundExpression.cs" />
     <Compile Include="Html\Expressions\CheckboxExpression.cs" />
     <Compile Include="Html\Expressions\FormExpression.cs" />
+    <Compile Include="Html\Expressions\GenericOpenTagExpression.cs" />
     <Compile Include="Html\Expressions\HiddenExpression.cs" />
     <Compile Include="Html\Expressions\HtmlExpressionBase.cs" />
     <Compile Include="Html\Expressions\HtmlExpressionExtensions.cs" />

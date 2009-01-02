@@ -9,8 +9,8 @@ namespace AltOxite.Core.Domain
         public virtual DateTime? Published { get; set; }
         public virtual string BodyShort { get; set; }
         public virtual string Body { get; set; }
-        public virtual IEnumerable<Tag> Tags { get; set; }
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        public virtual IList<Tag> Tags { get; set; }  // TODO: make these private, add "AddTag/RemoveTag" type methods
+        public virtual IList<Comment> Comments { get; set; } // TODO: make these private, add "AddComment/RemoveComment" type methods
         public virtual string Slug { get; set; }
         public virtual User User { get; set; }
         ///////// Properties left from originalOxite source

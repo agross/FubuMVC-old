@@ -21,7 +21,7 @@ namespace AltOxite.Core.Web.Controllers
         {
             if (inModel.Tag.IsEmpty()) return new TagViewModel();
 
-            var tag = Enumerable.Where(_repository.Query<Tag>(), p => p.Name == inModel.Tag).FirstOrDefault(); // TODO: Currently tags are not unique 
+            var tag = _repository.Query<Tag>().Where(p => p.Name == inModel.Tag).FirstOrDefault(); // TODO: Currently tags are not unique 
 
             if (tag == null) return new TagViewModel();
 
