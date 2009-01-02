@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace AltOxite.Core.Domain
 {
     public class User : DomainEntity
@@ -9,6 +11,7 @@ namespace AltOxite.Core.Domain
         public virtual string PasswordSalt { get; set; }
         public virtual int Status { get; set; }
         public virtual bool IsAnonymous { get; set; }
+        public virtual IEnumerable<Post> Posts { get; set; }
 
         // public virtual Language LanguageDefault{ get; set; }
         // public IEnumerable<Language> GetLanguages();

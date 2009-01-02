@@ -17,4 +17,5 @@ public class LoggedInStatus : AltOxiteUserControl<ViewModel>{}
 public class LoggedOutStatus : AltOxiteUserControl<ViewModel> { }
 
 public class BlogPost : AltOxiteUserControl<BlogPostViewModel> { }
+public class FullBlogPost : AltOxiteUserControl<BlogPostViewModel> { }
 public class TagLink : AltOxiteUserControl<TagLinkViewModel> { }

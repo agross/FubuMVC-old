@@ -29,40 +29,42 @@ namespace AltOxite.Core.Config
         {
             if (!_sourceConfig.IsNewDatabase || IsInitialized) return;
 
-            setup_admin_user();
-            setup_sample_post();
-
+            var user = setup_admin_user();
+            setup_sample_post(user);
             _unitOfWork.Commit();
+
             IsInitialized = true;
         }
 
-        private void setup_admin_user()
+        private User setup_admin_user()
         {
             var defaultUser = new User
                 {
                     Username = "Admin",
                     Password = "pa$$w0rd",
-                    DisplayName = "Oxite Administrator"
+                    DisplayName = "Oxite Administrator",
+                    HashedEmail = "01d418308faffa0d07f34ace68b686ad"
                 };
 
             _repository.Save(defaultUser);
+            return defaultUser;
         }
 
-        private void setup_sample_post()
+        private void setup_sample_post(User user)
         {
             var oxiteTag = new Tag {Name = "Oxite"};
-            //_repository.Save(oxiteTag);
 
             var defaultPost = new Post
-                {
-                    Title = "World.Hello()",
-                    Slug = "World_Hello",
-                    BodyShort = "Welcome to Oxite! &nbsp;This is a sample application targeting developers built on <a href=\"http://asp.net/mvc\">ASP.NET MVC</a>. &nbsp;Make any changes you like. &nbsp;If you build a feature you think other developers would be interested in and would like to share your code go to the <a href=\"http://www.codeplex.com/oxite\">Oxite Code Plex project</a> to see how you can contribute.<br /><br />To get started, sign in with \"Admin\" and \"pa$$w0rd\" and click on the Admin tab.<br /><br />For more information about <a href=\"http://oxite.net\">Oxite</a> visit the default <a href=\"/About\">About</a> page.",
-                    Body = "body text",
-                    Published = DateTime.Parse("2008-12-05 09:29:03.270"),
-                    Tags = new List<Tag> { oxiteTag },
-                    Comments = new List<Comment>()
-                };
+            {
+                Title = "World.Hello()",
+                Slug = "World_Hello",
+                BodyShort = "Welcome to Oxite! &nbsp;This is a sample application targeting developers built on <a href=\"http://asp.net/mvc\">ASP.NET MVC</a>. &nbsp;Make any changes you like. &nbsp;If you build a feature you think other developers would be interested in and would like to share your code go to the <a href=\"http://www.codeplex.com/oxite\">Oxite Code Plex project</a> to see how you can contribute.<br /><br />To get started, sign in with \"Admin\" and \"pa$$w0rd\" and click on the Admin tab.<br /><br />For more information about <a href=\"http://oxite.net\">Oxite</a> visit the default <a href=\"/About\">About</a> page.",
+                Body = "body text",
+                Published = DateTime.Parse("2008-12-05 09:29:03.270"),
+                Tags = new List<Tag> {oxiteTag},
+                Comments = new List<Comment>(),
+                User = user
+            };
 
             _repository.Save(defaultPost);
 
@@ -74,7 +76,8 @@ namespace AltOxite.Core.Config
                 Body = "body text",
                 Published = DateTime.Parse("2008-12-05 09:29:03.270"),
                 Tags = new List<Tag> { oxiteTag, new Tag { Name = "AltOxite" } },
-                Comments = new List<Comment>{ new Comment() }
+                Comments = new List<Comment>{ new Comment() }, 
+                User = user
             };
             _repository.Save(defaultPost1);
         }

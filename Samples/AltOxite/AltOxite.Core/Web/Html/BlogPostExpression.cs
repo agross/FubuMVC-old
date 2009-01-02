@@ -19,6 +19,8 @@ namespace AltOxite.Core.Web.Html
 
         public IRenderPartialForScope RenderExpression { get; private set; }
 
+        public SiteConfiguration _siteConfiguration;
+
         public BlogPostExpression(IAltOxitePage viewPage, IWebFormsViewRenderer renderer)
         {
             _viewPage = viewPage;
@@ -31,10 +33,11 @@ namespace AltOxite.Core.Web.Html
             return this;
         }
 
-        public BlogPostExpression Display<USERCONTROL>()
+        public BlogPostExpression Display<USERCONTROL>(SiteConfiguration siteConfiguration)
             where USERCONTROL : AltOxiteUserControl<BlogPostViewModel>
         {
             RenderExpression = new RenderPartialExpression(_viewPage, _renderer).Using<USERCONTROL>();
+            _siteConfiguration = siteConfiguration;
             return this;
         }
 
@@ -52,7 +55,8 @@ namespace AltOxite.Core.Web.Html
                             Post = post, 
                             LocalPublishedDate = post.Published.Value.ToShortDateString(),
                             CurrentPostOnPage = postCounter++,
-                            TotalPostsOnPage = _posts.Count()
+                            TotalPostsOnPage = _posts.Count(),
+                            SiteConfig = _siteConfiguration
                         }))); 
             }
 

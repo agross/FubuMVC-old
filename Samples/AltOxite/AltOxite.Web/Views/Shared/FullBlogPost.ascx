@@ -1,10 +1,14 @@
-﻿<%@ Page Inherits="BlogPostIndexView" MasterPageFile="~/Views/Shared/Site.Master"%>
-<asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
-<div class="post">
-    <%= this.DisplayBlogPost().ForEach(new[]{Model.Post}).Display<FullBlogPost>(Model.SiteConfig) %>            
-</div>
-
-<%---
+﻿<%@ Import Namespace="FubuMVC.Core"%>
+<%@ Import Namespace="AltOxite.Core.Web.Html"%>
+<%@ Import Namespace="System.Linq"%>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="FullBlogPost" %>
+<div class="avatar"><%= this.GetGravatarImage(Model.Post.User, Model.SiteConfig.GravatarDefault)%></div>
+<h2 class="title"><%= Model.Post.Title %></h2>
+<div class="metadata">
+    <div class="posted"><%= Model.LocalPublishedDate %></div>
+    <%= this.DisplayTagList().ForEach(Model.Post.Tags).Display<TagLink>().AsUnorderedList()%>
+    <div class="content"><%= Model.Post.Body %></div>
+</div><%---
     **************************************
     **** ORIGINAL OXITE VERSION BELOW ****
     **************************************
@@ -42,7 +46,5 @@
                                                                                                   
 %>    </div>
     <div class="content"><%=post.Body %></div>
-    <% Html.RenderPartial("Comments", comments, ViewData); %>
 </div>
             ---%>
-</asp:Content>

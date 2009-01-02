@@ -3,7 +3,7 @@
 <div class="sections">
     <div class="primary">
         <ul class="posts">
-            <%= this.DisplayBlogPost().ForEach(Model.Posts).Display<BlogPost>() %>
+            <%= this.DisplayBlogPost().ForEach(Model.Posts).Display<BlogPost>(Model.SiteConfig) %>
         </ul>
     </div>
 </div>

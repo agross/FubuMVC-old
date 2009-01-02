@@ -32,7 +32,7 @@ namespace AltOxite.Tests.Web.Html
         public void should_be_of_type_blogpost()
         {
             _expression.ForEach(_posts)
-                .Display<BlogPost>()
+                .Display<BlogPost>(null)
                 .RenderExpression
                 .ShouldBeOfType<RenderPartialExpression.RenderPartialForScope<BlogPost>>();
         }

@@ -28,7 +28,7 @@ namespace AltOxite.Core.Web.Controllers
                 Post = post,
                 LocalPublishedDate = post.Published.Value.ToLongDateString(), //To local time
                 CurrentPostOnPage = inModel.CurrentPostOnPage,
-                TotalPostsOnPage = inModel.TotalPostsOnPage
+                TotalPostsOnPage = inModel.TotalPostsOnPage,
             };
         }
     }

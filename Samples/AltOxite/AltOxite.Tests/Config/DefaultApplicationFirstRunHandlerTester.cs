@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AltOxite.Core.Config;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
@@ -37,9 +39,9 @@ namespace AltOxite.Tests.Config
         public void should_create_default_admin_user_during_initialize()
         {
             _config.Stub(c => c.IsNewDatabase).Return(true);
-
             var catcher = _repo.CaptureArgumentsFor(u => u.Save<User>(null));
 
+            _handler.IsInitialized = false;
             _handler.InitializeIfNecessary();
 
             var user = catcher.First<User>();

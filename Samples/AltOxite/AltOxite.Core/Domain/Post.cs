@@ -12,7 +12,7 @@ namespace AltOxite.Core.Domain
         public virtual IEnumerable<Tag> Tags { get; set; }
         public virtual IEnumerable<Comment> Comments { get; set; }
         public virtual string Slug { get; set; }
-
+        public virtual User User { get; set; }
         ///////// Properties left from originalOxite source
         
         //public virtual IPost Parent { get; }

@@ -10,5 +10,5 @@
 TODO: implement this
 if ((int)ViewData["AreaCount"] > 1)
     Response.Write(string.Format(Localize("From the {0} {1}."), string.Format("<a href=\"{1}\">{0}</a>", post.Area.Name, Url.Area(post.Area)), post.Area.Type));
-    --%><%= this.DisplayTagList().ForEach(Model.Post.Tags).Display<TagLink>().AsUnorderedList() %><%= this.GetCommentsLink(Model.Post) %>  <a href="<%= this.UrlTo().Post(Model.Post) %>" class="arrow">&raquo;</a></div>
+    --%><%= this.DisplayTagList().ForEach(Model.Post.Tags).Display<TagLink>().AsUnorderedList().WithTrailingPipe() %><%= this.GetCommentsLink(Model.Post) %>  <a href="<%= this.UrlTo().Post(Model.Post) %>" class="arrow">&raquo;</a></div>
 </li>

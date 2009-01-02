@@ -171,6 +171,7 @@
     <Content Include="Views\BlogPost\Index.aspx" />
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\Shared\BlogPost.ascx" />
+    <Content Include="Views\Shared\FullBlogPost.ascx" />
     <Content Include="Views\Shared\TagLink.ascx" />
     <Content Include="Views\Shared\LoggedOutStatus.ascx" />
     <Content Include="Views\Login\Index.aspx" />

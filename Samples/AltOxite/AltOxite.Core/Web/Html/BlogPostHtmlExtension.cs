@@ -22,5 +22,15 @@ namespace AltOxite.Core.Web.Html
                        ? LocalizationManager.GetTextForKey("{0} comment").ToFormat(commentCount)
                        : LocalizationManager.GetTextForKey("{0} comments").ToFormat(commentCount));
         }
+
+        public static string GetGravatarImage(this IAltOxitePage viewPage, User user, string gravatarDefault)
+        {
+            return "<img alt=\"{0} (gravatar)\" class=\"gravatar\" height=\"48\" src=\"{1}\" title=\"{0} (gravatar)\" width=\"48\" />"
+                .ToFormat(
+                    user.DisplayName, 
+                    "http://www.gravatar.com/avatar/{0}?s=48&amp;default={1}".ToFormat(
+                        user.HashedEmail, 
+                        gravatarDefault));
+        }
     }
 }
