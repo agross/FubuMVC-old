@@ -4,6 +4,7 @@ using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
 using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Core;
+using FubuMVC.Core.Controller.Config;
 
 namespace AltOxite.Core.Web.Controllers
 {
@@ -31,10 +32,10 @@ namespace AltOxite.Core.Web.Controllers
 
     public class BlogPostSetupViewModel
     {
-        public int PostYear { get; set; }
-        public int PostMonth  { get; set; }
-        public int PostDay  { get; set; }
-        public string Slug { get; set; }
+        [Required] public int PostYear { get; set; }
+        [Required] public int PostMonth  { get; set; }
+        [Required] public int PostDay  { get; set; }
+        [Required] public string Slug { get; set; }
     }
 
     [Serializable]

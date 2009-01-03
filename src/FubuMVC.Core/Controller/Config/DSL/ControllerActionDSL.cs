@@ -29,6 +29,8 @@ namespace FubuMVC.Core.Controller.Config.DSL
             _config = config;
         }
 
+        public FubuConventions Conventions { get { return _conventions; } }
+
         public ByDefaultDSLChain ByDefault { get { return new ByDefaultDSLChain(_config); } }
 
         [Obsolete("Use ByDefault.EveryControllerAction(...) instead", true)]

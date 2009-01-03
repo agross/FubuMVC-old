@@ -80,6 +80,7 @@
     <Compile Include="Controller\Config\IControllerConfigurationContext.cs" />
     <Compile Include="Controller\Config\IUrlResolver.cs" />
     <Compile Include="Controller\Config\FubuConventions.cs" />
+    <Compile Include="Controller\Config\RequiredAttribute.cs" />
     <Compile Include="Controller\IInvocationResult.cs" />
     <Compile Include="Controller\Results\RedirectResult.cs" />
     <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResult.cs" />

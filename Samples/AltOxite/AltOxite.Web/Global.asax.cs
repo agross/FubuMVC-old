@@ -7,6 +7,7 @@ using AltOxite.Core.Web.Behaviors;
 using AltOxite.Core.Web.Controllers;
 using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Container.StructureMap.Config;
+using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Html.Expressions;
 
@@ -60,7 +61,8 @@ namespace AltOxite.Web
 
                 x.OverrideConfigFor(BlogPostIndexAction, config=>
                 {
-                    config.PrimaryUrl = "blog/{PostYear}/{PostMonth}/{PostDay}/{Slug}";
+                    //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
+                    config.PrimaryUrl = "blog{0}".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
                 });
 
                 x.OverrideConfigFor(TagIndexAction, config=>

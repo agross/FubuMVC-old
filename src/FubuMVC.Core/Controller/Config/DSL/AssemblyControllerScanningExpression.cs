@@ -26,10 +26,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
 
         private void apply_autoconfig_to_fubuconfig()
         {
-            _autoConfig.GetDiscoveredActions().Each(action =>
-            {
-                AddConfigFromDiscoveredAction(action);
-            });
+            _autoConfig.GetDiscoveredActions().Each(action => AddConfigFromDiscoveredAction(action));
         }
 
         public ControllerActionConfig AddConfigFromDiscoveredAction(DiscovererdAction action)

@@ -1,4 +1,7 @@
 using System;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 using FubuMVC.Core.Html.Expressions;
 
 namespace FubuMVC.Core.Controller.Config
@@ -14,6 +17,7 @@ namespace FubuMVC.Core.Controller.Config
         public string LayoutViewFileBasePath { get; set; }
         public string SharedViewFileBasePath { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
+        public Func<ControllerActionConfig, string> UrlRouteParametersForAction { get; set; }
         public Func<Type, string> DefaultPathToPartialView { get; set; }
         public Func<Type, string> CanonicalControllerName { get; set; }
         public Func<ControllerActionConfig, string> PrimaryUrlConvention { get; set; }
@@ -23,14 +27,19 @@ namespace FubuMVC.Core.Controller.Config
         public Func<object, int, int, HtmlExpressionBase> PartialForEachOfBeforeEachItem { get; set; }
         public Func<object, int, int, string> PartialForEachOfAfterEachItem { get; set; }
         public Func<object, int, string> PartialForEachOfFooter { get; set; }
+        
 
         protected void SetBaseDefaults()
         {
+            
             CanonicalControllerName = controllerType => controllerType.Name.ToLowerInvariant().Replace("controller", "");
 
-            PrimaryUrlConvention = config => "{0}/{1}".ToFormat(
+            UrlRouteParametersForAction = GetUrlRouteParameters;
+
+            PrimaryUrlConvention = config => "{0}/{1}{2}".ToFormat(
                                                  CanonicalControllerName(config.ControllerType),
-                                                 config.ActionName);
+                                                 config.ActionName,
+                                                 UrlRouteParametersForAction(config));
 
             DefaultUrlForController = CanonicalControllerName;
 
@@ -66,5 +75,17 @@ namespace FubuMVC.Core.Controller.Config
             return CanonicalControllerName(typeof (CONTROLLER));
         }
 
+        public virtual string GetUrlRouteParameters(ControllerActionConfig config)
+        {
+            var requiredProps =
+                config.InputType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                .Where(p => p.HasCustomAttribute<RequiredAttribute>());
+
+            var builder = new StringBuilder();
+
+            requiredProps.Each(p => builder.AppendFormat("/{{{0}}}", p.Name));
+
+            return builder.ToString();
+        }
     }
 }

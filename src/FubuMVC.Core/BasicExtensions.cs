@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using FubuMVC.Core.Html;
 using FubuMVC.Core.Util;
 
@@ -95,6 +96,12 @@ namespace FubuMVC.Core
             }
 
             return maxCount;
+        }
+
+        public static bool HasCustomAttribute<ATTRIBUTE>(this MemberInfo member)
+            where ATTRIBUTE : Attribute
+        {
+            return member.GetCustomAttributes(typeof (ATTRIBUTE), false).Any();
         }
 
         public static bool IsNullable(this Type theType)

@@ -2,12 +2,18 @@ using System;
 using System.Web.UI;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
+using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.View;
 
 namespace FubuMVC.Tests
 {
     public class TestController
     {
+        public TestOutputModel RequiredParamsAction(TestInputRequiredModel value)
+        {
+            return new TestOutputModel();
+        }
+
         public TestOutputModel SomeAction(TestInputModel value)
         {
             return new TestOutputModel { Prop1 = value.Prop1 };
@@ -33,6 +39,17 @@ namespace FubuMVC.Tests
     {
         public int PropInt { get; set; }
         public string Prop1 { get; set; }
+    }
+
+    public class TestInputRequiredModel
+    {
+        public int PropInt { get; set; }
+        [Required]
+        public string Prop1 { get; set; }
+        [Required]
+        public string Prop3 { get; set; } //NOTE: Purposely out of order to test that the Url parameter stuff preserves declared ordering
+        [Required]
+        public string Prop2 { get; set; }
     }
 
     public class TestOutputModel
