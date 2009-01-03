@@ -48,7 +48,7 @@ namespace AltOxite.Tests.Persistence
         }
 
         [Test]
-        public void Rollback_should_commit_the_transaction()
+        public void Rollback_should_rollback_the_transaction()
         {
             _uow.Rollback();
             _transaction.AssertWasCalled(t => t.Rollback());
