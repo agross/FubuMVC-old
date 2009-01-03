@@ -1,10 +1,7 @@
-using System.Linq;
+using System.Web.UI;
 using AltOxite.Core.Domain;
-using AltOxite.Core.Web.WebForms;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Html.Expressions;
-using FubuMVC.Core.View;
-using FubuMVC.Core.Html;
 using FubuMVC.Core.View.WebForms;
 
 namespace AltOxite.Core.Web.Html
@@ -16,7 +13,7 @@ namespace AltOxite.Core.Web.Html
         private readonly FubuConventions _conventions;
 
         private bool _loggedIn;
-        
+        private object _model;
 
         public LoginStatusExpression(IAltOxitePage viewPage, IWebFormsViewRenderer renderer, FubuConventions conventions)
         {
@@ -33,8 +30,14 @@ namespace AltOxite.Core.Web.Html
             return this;
         }
 
+        public LoginStatusExpression UseModel(object model)
+        {
+            _model = model;
+            return this;
+        }
+
         public LoginStatusExpression WhenLoggedInShow<USERCONTROL>()
-            where USERCONTROL : AltOxiteUserControl<ViewModel>
+            where USERCONTROL : UserControl, IAltOxitePage
         {
             RenderExpression = _loggedIn
                                    ? new RenderPartialExpression(_viewPage, _renderer, _conventions).Using<USERCONTROL>()
@@ -44,16 +47,19 @@ namespace AltOxite.Core.Web.Html
         }
 
         public LoginStatusExpression WhenLoggedOutShow<USERCONTROL>()
-            where USERCONTROL : AltOxiteUserControl<ViewModel>
+            where USERCONTROL : UserControl, IAltOxitePage
         {
             RenderExpression = ! _loggedIn
-                       ? new RenderPartialExpression(_viewPage, _renderer, _conventions).Using<USERCONTROL>()
-                       : RenderExpression;
+                ? new RenderPartialExpression(_viewPage, _renderer, _conventions).Using<USERCONTROL>()
+                : RenderExpression;
             return this;
         }
 
         public override string ToString()
         {
+            if (_model != null)
+                return RenderExpression.For(_model);
+
             return RenderExpression.For(_viewPage.Model);
         }
     }

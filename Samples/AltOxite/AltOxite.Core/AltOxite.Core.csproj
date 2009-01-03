@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{490D8AA7-12E4-4B61-A26C-C64D13DB44BE}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -111,7 +111,9 @@
     <Compile Include="Web\Controllers\HomeController.cs" />
     <Compile Include="Web\Controllers\LoginController.cs" />
     <Compile Include="Web\Controllers\TagController.cs" />
-    <Compile Include="Web\Controllers\TagLinkListViewModel.cs" />
+    <Compile Include="Web\DisplayModels\CommentFormDisplay.cs" />
+    <Compile Include="Web\DisplayModels\CommentDisplay.cs" />
+    <Compile Include="Web\DisplayModels\LoginStatusDisplay.cs" />
     <Compile Include="Web\DisplayModels\PostDisplay.cs" />
     <Compile Include="Web\Html\BlogPostHtmlExtension.cs" />
     <Compile Include="Web\Html\HtmlExtensions.cs" />

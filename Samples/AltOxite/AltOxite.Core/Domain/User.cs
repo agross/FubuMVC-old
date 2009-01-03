@@ -7,6 +7,8 @@ namespace AltOxite.Core.Domain
         public virtual string Username { get; set; }
         public virtual string DisplayName { get; set; }
         public virtual string HashedEmail { get; set; }
+        public virtual string Email { get; set; }
+        public virtual string Url { get; set; }
         public virtual string Password { get; set; }
         public virtual string PasswordSalt { get; set; }
         public virtual int Status { get; set; }

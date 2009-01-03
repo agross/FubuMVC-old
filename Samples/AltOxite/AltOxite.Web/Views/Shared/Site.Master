@@ -1,4 +1,5 @@
-﻿<%@ Import Namespace="AltOxite.Core.Web.Html"%>
+﻿<%@ Import Namespace="AltOxite.Core.Web.DisplayModels"%>
+<%@ Import Namespace="AltOxite.Core.Web.Html"%>
 <%@ Import Namespace="StructureMap"%>
 <%@ Master Language="C#" Inherits="SiteMasterView" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -37,7 +38,7 @@
                <h1><a href="<%= this.UrlTo().Home %>"><%= Model.SiteName %></a></h1>
             </div>
             <div id="logindisplay">
-                <%= this.DisplayLoginStatus().For(Model.CurrentUser).WhenLoggedInShow<LoggedInStatus>().WhenLoggedOutShow<LoggedOutStatus>()%>
+                <%= this.DisplayDependingOnLoginStatus().For(Model.CurrentUser).WhenLoggedInShow<LoggedInStatus>().WhenLoggedOutShow<LoggedOutStatus>()%>
             </div>
             <div id="menucontainer">
                 <!-- //TODO: Menu -->

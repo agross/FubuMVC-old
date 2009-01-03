@@ -4,8 +4,10 @@ namespace AltOxite.Core.Domain.Persistence
     {
         public CommentPersistenceMap()
         {
-            Map(c => c.Author);
+            Map(c => c.Body);
+            Map(c => c.Published);
             References(c => c.Post).CanNotBeNull().Cascade.All();
+            References(c => c.User).CanNotBeNull().Cascade.All();
         }      
     }
 }

@@ -8,15 +8,12 @@ namespace AltOxite.Core.Web.Html
 {
     public static class BlogPostHtmlExtension
     {
-        public static string GetCommentsLink(this IAltOxitePage viewPage, PostDisplay post)
+        public static string GetCommentsText(this IAltOxitePage viewPage, PostDisplay post)
         {
             var commentCount = post.CommentsCount;
-            return "<a href=\"{0}#comments\">{1}</a>"
-                .ToFormat(
-                    viewPage.UrlTo().PublishedPost(post),
-                   (commentCount == 1)
-                       ? LocalizationManager.GetTextForKey("{0} comment").ToFormat(commentCount)
-                       : LocalizationManager.GetTextForKey("{0} comments").ToFormat(commentCount));
+            return (commentCount == 1)
+                ? LocalizationManager.GetTextForKey("{0} comment").ToFormat(commentCount)
+                : LocalizationManager.GetTextForKey("{0} comments").ToFormat(commentCount);
         }
 
         public static string GetGravatarImage(this IAltOxitePage viewPage, User user)
@@ -30,5 +27,34 @@ namespace AltOxite.Core.Web.Html
                         user.HashedEmail, 
                         siteConfig.GravatarDefault));
         }
+
+        public static string GetCommentPremalink(this IAltOxitePage viewPage, CommentDisplay comment)
+        {
+            return (!string.IsNullOrEmpty(comment.PermalinkHash)) 
+                ? "<a href=\"#{0}\">{1}</a>".ToFormat(comment.PermalinkHash, comment.LocalPublishedDate)
+                : "";
+        }
+
+        public static string GetCommentPremalinkBookmark(this IAltOxitePage viewPage, CommentDisplay comment)
+        {
+            return (!string.IsNullOrEmpty(comment.PermalinkHash)) 
+                ? "<div><a name=\"{0}\"></a></div>".ToFormat(comment.PermalinkHash)
+                : "";
+        }
+
+        public static string GetCommenterGravatarAndLink(this IAltOxitePage viewPage, CommentDisplay comment)
+        {
+            return (!string.IsNullOrEmpty(comment.User.Url))
+                ? "<a class=\"avatar\" href=\"{0}\" rel=\"nofollow\">{1}</a>".ToFormat(comment.User.Url, viewPage.GetGravatarImage(comment.User))
+                : viewPage.GetGravatarImage(comment.User);
+        }
+
+        public static string GetCommenterNameAndLink(this IAltOxitePage viewPage, CommentDisplay comment)
+        {
+            return (!string.IsNullOrEmpty(comment.User.Url))
+                ? "<a href=\"{0}\"{1}</a>".ToFormat(comment.User.Url, comment.User.DisplayName)
+                : comment.User.DisplayName;
+        }
+
     }
 }

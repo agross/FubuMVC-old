@@ -19,10 +19,17 @@ namespace FubuMVC.Core.Html.Expressions
             where VIEWMODEL : class
             where PARTIALVIEWMODEL : class;
 
-        string For(object model);
+        string For<PARTIALVIEWMODEL>(PARTIALVIEWMODEL model)
+            where PARTIALVIEWMODEL : class;
 
         string ForEachOf<PARTIALVIEWMODEL>(IEnumerable<PARTIALVIEWMODEL> items)
             where PARTIALVIEWMODEL : class;
+    }
+
+    public interface IRenderPartialForScope<PARTIALVIEW> : IRenderPartialForScope
+        where PARTIALVIEW : Control, IFubuViewWithModel
+    {
+        IRenderPartialForScope<PARTIALVIEW> WithDefault(string defaultString);
     }
 
     public class RenderPartialExpression
@@ -38,13 +45,13 @@ namespace FubuMVC.Core.Html.Expressions
             _conventions = conventions;
         }
 
-        public IRenderPartialForScope Using<PARTIALVIEW>()
+        public IRenderPartialForScope<PARTIALVIEW> Using<PARTIALVIEW>()
             where PARTIALVIEW : Control, IFubuViewWithModel
         {
             return Using<PARTIALVIEW>(null);
         }
 
-        public IRenderPartialForScope Using<PARTIALVIEW>(Action<PARTIALVIEW> optionAction)
+        public IRenderPartialForScope<PARTIALVIEW> Using<PARTIALVIEW>(Action<PARTIALVIEW> optionAction)
             where PARTIALVIEW : Control, IFubuViewWithModel
         {
             return new RenderPartialForScope<PARTIALVIEW>()
@@ -56,7 +63,7 @@ namespace FubuMVC.Core.Html.Expressions
                 };
         }
 
-        public class RenderPartialForScope<PARTIALVIEW> : IRenderPartialForScope
+        public class RenderPartialForScope<PARTIALVIEW> : IRenderPartialForScope<PARTIALVIEW>
             where PARTIALVIEW : Control, IFubuViewWithModel
         {
             private readonly Type _viewType = typeof(PARTIALVIEW);
@@ -68,7 +75,14 @@ namespace FubuMVC.Core.Html.Expressions
 
             private object _partialModel;
             private int render_multiple_item_count = 0;
-            
+            private bool _renderMultipleItems;
+            private string _defaultString = "";
+
+            public IRenderPartialForScope<PARTIALVIEW> WithDefault(string defaultString)
+            {
+                _defaultString = defaultString;
+                return this;
+            }
 
             public string For<VIEWMODEL, PARTIALVIEWMODEL>(Expression<Func<VIEWMODEL, PARTIALVIEWMODEL>> expression) 
                 where VIEWMODEL : class
@@ -84,9 +98,11 @@ namespace FubuMVC.Core.Html.Expressions
                 return ToString();
             }
 
-            public string For(object model)
+            public string For<PARTIALVIEWMODEL>(PARTIALVIEWMODEL model)
+                where PARTIALVIEWMODEL : class
             {
                 _partialModel = model;
+                _renderMultipleItems = false;
 
                 return ToString();
             }
@@ -97,6 +113,7 @@ namespace FubuMVC.Core.Html.Expressions
                 var list = items.ToList();
 
                 _partialModel = list;
+                _renderMultipleItems = true;
                 render_multiple_item_count = list.Count;
 
                 return ToString();
@@ -104,7 +121,11 @@ namespace FubuMVC.Core.Html.Expressions
 
             public override string ToString()
             {
-                if (render_multiple_item_count > 0)
+                if (_partialModel == null) return _defaultString;
+
+                if (_renderMultipleItems && render_multiple_item_count <= 0) return _defaultString;
+
+                if (_renderMultipleItems)
                 {
                     var builder = new StringBuilder();
 
@@ -114,8 +135,7 @@ namespace FubuMVC.Core.Html.Expressions
 
                     foreach (var item in (IEnumerable) _partialModel)
                     {
-                        var before = Conventions.PartialForEachOfBeforeEachItem(item, current,
-                                                                                render_multiple_item_count);
+                        var before = Conventions.PartialForEachOfBeforeEachItem(item, current, render_multiple_item_count);
                         var renderedItem = RenderItem(item);
                         var after = Conventions.PartialForEachOfAfterEachItem(item, current, render_multiple_item_count);
                         builder.AppendFormat("{0}{1}{2}", before, renderedItem, after);

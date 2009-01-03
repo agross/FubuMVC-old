@@ -23,9 +23,9 @@ namespace AltOxite.Core.Web.Controllers
             var post = _repository.Query<Post>().Where(p => p.Slug == inModel.Slug).SingleOrDefault();
 
             return new BlogPostViewModel
-                {
-                    Post = post == null ? null : new PostDisplay(post)
-                };
+            {
+                Post = post == null ? null : new PostDisplay(post),
+            };
         }
     }
 

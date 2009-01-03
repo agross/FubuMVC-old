@@ -6,6 +6,7 @@ using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Behaviors;
 using AltOxite.Core.Web.Controllers;
+using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Container.StructureMap.Config;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Html.Expressions;
@@ -77,6 +78,7 @@ namespace AltOxite.Web
             var expr = new GenericOpenTagExpression("ul");
             
             if (itemList is IEnumerable<Tag>) expr.Class("tags");
+            if (itemList is IEnumerable<CommentDisplay>) expr.Class("commented");
 
             return expr;
         }
@@ -87,6 +89,9 @@ namespace AltOxite.Web
 
             if (index == 0) expr.Class("first");
             if (index >= (total - 1)) expr.Class("last");
+
+            if (item is Comment && index % 2 != 0) expr.Class("odd");
+            // TODO: Implement: sbClass.Append(comment.CreatorUser.IsAnonymous ? "anon " : comment.CreatorUser.ID == comment.Post.CreatorUser.ID ? "author " : "user ");
 
             return expr;
         }

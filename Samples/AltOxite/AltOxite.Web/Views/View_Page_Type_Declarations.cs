@@ -15,11 +15,12 @@ public class BlogPostIndexView : AltOxitePage<BlogPostViewModel> { }
 public class TagIndexView : AltOxitePage<TagViewModel> { }
 
 // User Controls
-public class LoggedInStatus : AltOxiteUserControl<ViewModel>{}
+public class LoggedInStatus : AltOxiteUserControl<ViewModel> { }
 public class LoggedOutStatus : AltOxiteUserControl<ViewModel> { }
 
-public class BlogPost : AltOxiteUserControl<PostDisplay>
-{
-}
+public class BlogPost : AltOxiteUserControl<PostDisplay> { }
+public class BlogPostComment : AltOxiteUserControl<CommentDisplay> { }
+public class LoggedInCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
+public class LoggedOutCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
 
 public class TagLink : AltOxiteUserControl<Tag> { }

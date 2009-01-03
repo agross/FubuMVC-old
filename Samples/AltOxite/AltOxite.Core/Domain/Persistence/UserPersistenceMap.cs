@@ -9,6 +9,8 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.Username);
             Map(u => u.DisplayName);
             Map(u => u.HashedEmail);
+            Map(u => u.Email);
+            Map(u => u.Url);
             Map(u => u.Password);
             Map(u => u.PasswordSalt);
             Map(u => u.Status);

@@ -31,7 +31,7 @@ namespace AltOxite.Core.Web.Html
             return viewPage.Script(urls).BasedAt(baseUrl);
         }
 
-        public static LoginStatusExpression DisplayLoginStatus(this IAltOxitePage viewPage)
+        public static LoginStatusExpression DisplayDependingOnLoginStatus(this IAltOxitePage viewPage)
         {
             var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
             var conventions = ServiceLocator.Current.GetInstance<FubuConventions>();
