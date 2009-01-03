@@ -69,16 +69,16 @@ namespace FubuMVC.Tests.Controller.Config
             var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
                 (c, i) => c.SomeAction(i));
 
-            var conv = new FubuConventions { ViewFileBasePath = "foo" };
+            var conv = new FubuConventions { ViewFileBasePath = "foo"};
             conv.DefaultPathToViewForAction(config).ShouldEqual("foo/test/someaction.aspx");
         }
 
         [Test]
-        public void DefaultPathToPartial_should_be_view_base_path_plus_shared_folder_then_action_name()
+        public void DefaultPathToPartial_should_be_shared_view_base_path_plus_shared_folder_then_action_name()
         {
-            var conv = new FubuConventions { ViewFileBasePath = "foo" };
+            var conv = new FubuConventions { SharedViewFileBasePath = "foo" };
 
-            conv.DefaultPathToPartialView(typeof(TestPartialView)).ShouldEqual("foo/Shared/TestPartialView.ascx");
+            conv.DefaultPathToPartialView(typeof(TestPartialView)).ShouldEqual("foo/TestPartialView.ascx");
         }
 
         [Test]

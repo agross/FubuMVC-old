@@ -137,6 +137,7 @@
     <Compile Include="Web\WebForms\AltOxiteUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Well_known_URLs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\FubuMVC.Container.StructureMap\FubuMVC.Container.StructureMap.csproj">

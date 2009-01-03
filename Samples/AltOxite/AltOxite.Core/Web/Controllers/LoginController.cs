@@ -37,7 +37,7 @@ namespace AltOxite.Core.Web.Controllers
 
                     var redirectUrl = loginModel.ReturnUrl.IsNotEmpty()
                                           ? loginModel.ReturnUrl
-                                          : new UrlToExpression(_resolver).Home;
+                                          : _resolver.Home();
 
                     loginModel.ResultOverride = new RedirectResult(redirectUrl);
 
@@ -55,7 +55,7 @@ namespace AltOxite.Core.Web.Controllers
             _authContext.SignOut();
             var logoutModel = new LogoutViewModel
                 {
-                    ResultOverride = new RedirectResult(new UrlToExpression(_resolver).Home)
+                    ResultOverride = new RedirectResult(_resolver.Home())
                 };
             ;
             return logoutModel;

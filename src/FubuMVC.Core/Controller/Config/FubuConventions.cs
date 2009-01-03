@@ -11,6 +11,8 @@ namespace FubuMVC.Core.Controller.Config
         }
 
         public string ViewFileBasePath { get; set; }
+        public string LayoutViewFileBasePath { get; set; }
+        public string SharedViewFileBasePath { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
         public Func<Type, string> DefaultPathToPartialView { get; set; }
         public Func<Type, string> CanonicalControllerName { get; set; }
@@ -35,6 +37,8 @@ namespace FubuMVC.Core.Controller.Config
             IsAppDefaultUrl = config => PrimaryUrlConvention(config) == "home/index";
             
             ViewFileBasePath = "~/Views";
+            LayoutViewFileBasePath = "~/Views/Layouts";
+            SharedViewFileBasePath = "~/Views/Shared";
 
             DefaultPathToViewForAction = config =>
             {
@@ -43,7 +47,7 @@ namespace FubuMVC.Core.Controller.Config
                 return "{0}/{1}/{2}.aspx".ToFormat(ViewFileBasePath, controllerName, actionName);
             };
 
-            DefaultPathToPartialView = viewType => "{0}/Shared/{1}.ascx".ToFormat(ViewFileBasePath, viewType.Name);
+            DefaultPathToPartialView = viewType => "{0}/{1}.ascx".ToFormat(SharedViewFileBasePath, viewType.Name);
 
             PartialForEachOfHeader = (model, totalCount) => new GenericOpenTagExpression("ul");
             PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression("li");
