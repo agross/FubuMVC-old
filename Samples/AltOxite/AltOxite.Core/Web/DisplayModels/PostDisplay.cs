@@ -12,12 +12,12 @@ namespace AltOxite.Core.Web.DisplayModels
             Published = post.Published.GetValueOrDefault(DateTime.MinValue);
             LocalPublishedDate = Published.ToLongDateString(); //TODO: To local time
             Slug = post.Slug;
-            Comments = post.Comments.ToList().Select(c => new CommentDisplay(c));
-            CommentsCount = (post.Comments != null) ? post.Comments.Count() : 0;
+            Comments = post.GetComments().Select(c => new CommentDisplay(c));
+            CommentsCount = post.GetComments().Count();
             Title = post.Title;
             BodyShort = post.BodyShort;
             Body = post.Body;
-            Tags = post.Tags.OrderByDescending(t => t.CreatedDate).Select(t => new TagDisplay(t)); //TODO: this (OrderByDescending) is business logic and needs to be moved outta here most likely
+            Tags = post.GetTags().OrderByDescending(t => t.CreatedDate).Select(t => new TagDisplay(t)); //TODO: this (OrderByDescending) is business logic and needs to be moved outta here most likely
             User = post.User;
         }
 

@@ -100,7 +100,7 @@ img:hover.ui-datepicker-trigger {
 }
 .message.info {
     border:1px solid #96B1CE;
-    background:#E3EFF9 url(/Content/skins/default/images/information.png) no-repeat 9px 9px;
+    background:#E3EFF9 url(../images/information.png) no-repeat 9px 9px;
     font-weight:bold;
     color:#344F88;
     text-transform:capitalize;
@@ -525,7 +525,7 @@ ul.tags li {
     list-style-type:none;
     margin:0;
     display:inline;
-    background:url(/Content/skins/default/images/bullet_grey.png) no-repeat 1px 1px;
+    background:url(../images/bullet_grey.png) no-repeat 1px 1px;
 }
 ul.tags li.first {
     padding:0;
@@ -712,7 +712,7 @@ body.dyn .post .comments fieldset .help {
 }
 .archives ul.yearList li {
     margin:.6em 0 0;
-    background:url(/Content/skins/default/images/bullet_toggle_minus_onoff.png) no-repeat -9999px 0;
+    background:url(../images/bullet_toggle_minus_onoff.png) no-repeat -9999px 0;
 }
 .archives ul.archiveMonthList li
 {
@@ -740,14 +740,14 @@ body.dyn .archives ul.yearList li ul
 body.dyn .archives ul.yearList li.previous {
     cursor:pointer;
     padding:.1em .2ex .2em 2ex;
-    background:url(/Content/skins/default/images/bullet_toggle_plus_onoff.png) no-repeat 0 -25px;
+    background:url(../images/bullet_toggle_plus_onoff.png) no-repeat 0 -25px;
     margin:0 -2ex;
 }
 body.dyn .archives ul.yearList li.previous.hover {
     background-position:0 6px;
 }
 body.dyn .archives ul.yearList li.previous.open {
-    background:url(/Content/skins/default/images/bullet_toggle_minus_onoff.png) no-repeat -209px 6px;
+    background:url(../images/bullet_toggle_minus_onoff.png) no-repeat -209px 6px;
 }
 body.dyn .archives ul.yearList li.previous.open.hover {
     background-position:0 6px;
