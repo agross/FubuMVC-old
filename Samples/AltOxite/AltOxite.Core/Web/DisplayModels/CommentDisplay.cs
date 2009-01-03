@@ -1,4 +1,3 @@
-using System;
 using AltOxite.Core.Domain;
 
 namespace AltOxite.Core.Web.DisplayModels
@@ -11,10 +10,12 @@ namespace AltOxite.Core.Web.DisplayModels
             PermalinkHash = comment.Published.Value.ToString("yyyyMMddhhmmssf");
             User = comment.User;
             Body = comment.Body;
+            Post = comment.Post;
         }
 
         public string Body { get; private set; }
         public User User { get; private set; }
+        public Post Post { get; private set; }
         public string LocalPublishedDate { get; private set; }
         public string PermalinkHash { get; private set; }
     }

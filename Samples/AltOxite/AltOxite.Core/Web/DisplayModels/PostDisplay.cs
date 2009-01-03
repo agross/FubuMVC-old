@@ -17,7 +17,7 @@ namespace AltOxite.Core.Web.DisplayModels
             Title = post.Title;
             BodyShort = post.BodyShort;
             Body = post.Body;
-            Tags = post.Tags.OrderByDescending(t=>t.CreatedDate); //TODO: this is business logic and needs to be moved outta here most likely
+            Tags = post.Tags.OrderByDescending(t => t.CreatedDate).Select(t => new TagDisplay(t)); //TODO: this (OrderByDescending) is business logic and needs to be moved outta here most likely
             User = post.User;
         }
 
@@ -30,11 +30,7 @@ namespace AltOxite.Core.Web.DisplayModels
         public string Body { get; set; }
 
         public IEnumerable<CommentDisplay> Comments { get; set; } //TODO: Make this 'CommentDisplay' or something
-        public IEnumerable<Tag> Tags { get; set; } //TODO: Make this 'TagDisplay' or something
+        public IEnumerable<TagDisplay> Tags { get; set; } //TODO: Make this 'TagDisplay' or something
         public User User { get; set; } //TODO: Make this 'UserDisplay' or something
-
-        
-
-
     }
 }

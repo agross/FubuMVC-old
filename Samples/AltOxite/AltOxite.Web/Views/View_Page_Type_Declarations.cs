@@ -23,4 +23,4 @@ public class BlogPostComment : AltOxiteUserControl<CommentDisplay> { }
 public class LoggedInCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
 public class LoggedOutCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
 
-public class TagLink : AltOxiteUserControl<Tag> { }
+public class TagLink : AltOxiteUserControl<TagDisplay> { }

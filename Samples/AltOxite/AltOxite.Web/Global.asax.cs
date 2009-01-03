@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
-using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Behaviors;
 using AltOxite.Core.Web.Controllers;
@@ -77,7 +76,7 @@ namespace AltOxite.Web
         {
             var expr = new GenericOpenTagExpression("ul");
             
-            if (itemList is IEnumerable<Tag>) expr.Class("tags");
+            if (itemList is IEnumerable<TagDisplay>) expr.Class("tags");
             if (itemList is IEnumerable<CommentDisplay>) expr.Class("commented");
 
             return expr;
@@ -90,8 +89,13 @@ namespace AltOxite.Web
             if (index == 0) expr.Class("first");
             if (index >= (total - 1)) expr.Class("last");
 
-            if (item is Comment && index % 2 != 0) expr.Class("odd");
-            // TODO: Implement: sbClass.Append(comment.CreatorUser.IsAnonymous ? "anon " : comment.CreatorUser.ID == comment.Post.CreatorUser.ID ? "author " : "user ");
+            if (item is CommentDisplay)
+            {
+                if (index % 2 != 0) expr.Class("odd");
+
+                var comment = (CommentDisplay) item;
+                if (comment.User != null) expr.Class(comment.User.IsAnonymous ? "anon" : comment.User.ID == comment.Post.User.ID ? "author" : "user");
+            }
 
             return expr;
         }
