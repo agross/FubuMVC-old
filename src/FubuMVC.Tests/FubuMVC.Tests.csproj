@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -81,6 +81,7 @@
     <Compile Include="Controller\Config\DSL\AssemblyControllerScanningExpressionTester.cs" />
     <Compile Include="Controller\Config\DSL\ControllerTypeScanningExpressionTester.cs" />
     <Compile Include="Controller\Config\DSL\MethodInfoActionConfigurerTester.cs" />
+    <Compile Include="Controller\Config\LocalizationTester.cs" />
     <Compile Include="Controller\Config\RouteConfigurerTester.cs" />
     <Compile Include="Controller\Config\DSL\ControllerActionConfigExpressionTester.cs" />
     <Compile Include="Behaviors\BehaviorTestContext.cs" />

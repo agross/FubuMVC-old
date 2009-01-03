@@ -10,10 +10,13 @@ namespace AltOxite.Core.Web.Html
     {
         public static string GetCommentsText(this IAltOxitePage viewPage, PostDisplay post)
         {
-            var commentCount = post.CommentsCount;
-            return (commentCount == 1)
-                ? LocalizationManager.GetTextForKey("{0} comment").ToFormat(commentCount)
-                : LocalizationManager.GetTextForKey("{0} comments").ToFormat(commentCount);
+           var commentCount = (post.Comments == null) ? 0 : post.Comments.Count();
+            return "<a href=\"{0}#comments\">{1}</a>"
+                .ToFormat(
+                    viewPage.UrlTo().PublishedPost(post),
+                   (commentCount == 1)
+                       ? Properties.Strings.COMMENT_LINK_TEXT.ToFormat(commentCount)
+                       : Properties.Strings.COMMENT_LINK_TEXT_PLURAL.ToFormat(commentCount));
         }
 
         public static string GetGravatarImage(this IAltOxitePage viewPage, User user)

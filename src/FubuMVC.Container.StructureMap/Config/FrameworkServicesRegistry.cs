@@ -59,6 +59,7 @@ namespace FubuMVC.Container.StructureMap.Config
             ForRequestedType<IWebFormsControlBuilder>().TheDefault.Is.OfConcreteType<WebFormsControlBuilder>();
             ForRequestedType<IWebFormsViewRenderer>().TheDefault.Is.OfConcreteType<WebFormsViewRenderer>();
             ForRequestedType<IUrlResolver>().TheDefault.Is.OfConcreteType<UrlResolver>();
+            ForRequestedType<ILocalization>().CacheBy(InstanceScope.PerRequest).TheDefault.Is.OfConcreteType<Localization>();
             //***  
 
             Scan(x =>

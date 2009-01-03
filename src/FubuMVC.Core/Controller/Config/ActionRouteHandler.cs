@@ -55,6 +55,9 @@ namespace FubuMVC.Core.Controller.Config
         public virtual void HandleRequest()
         {
             var locator = ServiceLocator.Current;
+
+            var localization = locator.GetInstance<ILocalization>();
+            localization.Configure(_requestData);
             
             var configContext = locator.GetInstance<IControllerConfigContext>();
             configContext.CurrentConfig = _config;

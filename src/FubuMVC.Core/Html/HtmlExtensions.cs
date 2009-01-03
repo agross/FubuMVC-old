@@ -71,11 +71,6 @@ namespace FubuMVC.Core.Html
             return new FormExpression( actionUrl );
         }
 
-        public static string Localize(this IFubuView view, string key)
-        {
-            return LocalizationManager.GetTextForKey(key);
-        }
-
         public static HiddenExpression<VIEWMODEL> HiddenFor<VIEWMODEL>(this IFubuView<VIEWMODEL> viewPage,
                                                                Expression<Func<VIEWMODEL, object>> expression)
             where VIEWMODEL : class

@@ -22,7 +22,7 @@
 <%= this.GetCommentPremalinkBookmark(Model) %>
 <div class="name">
     <div><%= this.GetCommenterGravatarAndLink(Model) %></div>
-    <p class="comment"><strong><%= this.GetCommenterNameAndLink(Model) %></strong><span> <%= this.Localize("said") %><br /> <%= this.GetCommentPremalink(Model) %></span></p>
+    <p class="comment"><strong><%= this.GetCommenterNameAndLink(Model) %></strong><span> <%= Resources.Strings.SAID %><br /> <%= this.GetCommentPremalink(Model) %></span></p>
 </div>
 <div class="text">
     <p><%= Model.Body %></p>
