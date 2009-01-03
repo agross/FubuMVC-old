@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
@@ -14,6 +15,7 @@ namespace FubuMVC.Core.Controller.Config
         private readonly IList<Route> _registeredRoutes = new List<Route>();
         private readonly FubuConventions _conventions;
         private readonly FubuConfiguration _config;
+        private readonly HashSet<Type> _alreadyVisitedControllerTypes = new HashSet<Type>();
 
         public RouteConfigurer(FubuConfiguration configuration, FubuConventions conventions)
         {
@@ -34,7 +36,11 @@ namespace FubuMVC.Core.Controller.Config
 
         private void register_Routes(ControllerActionConfig config)
         {
-            _registeredRoutes.Add(CreateRoute(config, _config.GetDefaultUrlFor(config.ControllerType)));
+            if (! _alreadyVisitedControllerTypes.Contains(config.ControllerType))
+            {
+                _registeredRoutes.Add(CreateRoute(config, _config.GetDefaultUrlFor(config.ControllerType)));
+                _alreadyVisitedControllerTypes.Add(config.ControllerType);
+            }
 
             _registeredRoutes.Add(CreateRoute(config, config.PrimaryUrl));
 

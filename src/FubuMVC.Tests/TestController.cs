@@ -13,6 +13,11 @@ namespace FubuMVC.Tests
             return new TestOutputModel { Prop1 = value.Prop1 };
         }
 
+        public TestOutputModel SomeAction(int not_used)
+        {
+            return new TestOutputModel();
+        }
+
         public TestOutputModel2 AnotherAction(TestInputModel value)
         {
             return new TestOutputModel2 { Prop1 = value.Prop1 };

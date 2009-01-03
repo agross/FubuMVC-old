@@ -31,6 +31,19 @@ namespace FubuMVC.Tests.Controller.Config
         }
 
         [Test]
+        public void IsTheSameActionAs_should_be_false_if_the_method_is_not_OMIOMO()
+        {
+            _config.IsTheSameActionAs<string>(s => s.Clone()).ShouldBeFalse();
+        }
+
+        [Test]
+        public void IsTheSameActionAs_should_be_false_if_the_method_signature_does_not_match()
+        {
+            _config.IsTheSameActionAs<TestController>(c => c.SomeAction(0))
+                .ShouldBeFalse();
+        }
+
+        [Test]
         public void IsTheSameActionAs_should_compare_action_expression_and_return_true_if_they_represent_the_same_action()
         {
             _config.IsTheSameActionAs<TestController>(c => c.SomeAction(null))

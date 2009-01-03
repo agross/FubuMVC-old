@@ -46,8 +46,9 @@ namespace FubuMVC.Core.Controller.Config
 
             if (_configByController.Has(config.ControllerType)) return;
 
-            var defaultPathToController = _conventions.DefaultUrlForController(config.ControllerType);
             _configByController.Store(config.ControllerType, config);
+
+            var defaultPathToController = _conventions.DefaultUrlForController(config.ControllerType);
             _defaultUrlByController.Store(config.ControllerType, defaultPathToController);
         }
 

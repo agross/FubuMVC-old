@@ -32,6 +32,14 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         }
 
         [Test]
+        public void The_controller_default_url_should_be_setup_the_first_time_any_action_on_this_controller_is_configured()
+        {
+            _expression.Action<TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));
+
+            _config.GetDefaultUrlFor<TestController>().ShouldEqual("test");
+        }
+
+        [Test]
         public void Action_should_add_actionconfig_to_the_overall_config()
         {
             _expression.Action<TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));

@@ -72,15 +72,26 @@ namespace FubuMVC.Core.Controller.Config
             where I : class
             where O : class
         {
-            var otherActionName = GetActionName(ReflectionHelper.GetMethod(otherFunc));
-            return IsTheSameActionAs(typeof(C), otherActionName);
+            return IsTheSameActionAs(typeof(C), ReflectionHelper.GetMethod(otherFunc));
         }
 
         public bool IsTheSameActionAs<C>(Expression<Func<C, object>> otherFunc)
            where C : class
         {
-            var otherActionName = GetActionName(ReflectionHelper.GetMethod(otherFunc));
-            return IsTheSameActionAs(typeof(C), otherActionName);
+            return IsTheSameActionAs(typeof(C), ReflectionHelper.GetMethod(otherFunc));
+        }
+
+        protected virtual bool IsTheSameActionAs(Type otherControllerType, MethodInfo actionMethod)
+        {
+            var methodParams = actionMethod.GetParameters();
+
+            if (methodParams.Length != 1)
+            {
+                return false;
+            }
+
+            var otherActionName = GetActionName(actionMethod);
+            return IsTheSameActionAs(otherControllerType, otherActionName, methodParams[0].ParameterType, actionMethod.ReturnType);
         }
 
         public virtual bool IsTheSameActionAs(ControllerActionConfig otherConfig)
@@ -88,12 +99,15 @@ namespace FubuMVC.Core.Controller.Config
             var otherControllerType = otherConfig.ControllerType;
             var otherActionName = otherConfig.ActionName;
 
-            return IsTheSameActionAs(otherControllerType, otherActionName);
+            return IsTheSameActionAs(otherControllerType, otherActionName, otherConfig.InputType, otherConfig.OutputType);
         }
 
-        protected virtual bool IsTheSameActionAs(Type otherControllerType, string otherActionName)
+        protected virtual bool IsTheSameActionAs(Type otherControllerType, string otherActionName, Type otherInputType, Type otherOutputType)
         {
-            return ActionName.Equals(otherActionName, StringComparison.OrdinalIgnoreCase) && otherControllerType == ControllerType;
+            return ActionName.Equals(otherActionName, StringComparison.OrdinalIgnoreCase) 
+                    && otherControllerType == ControllerType
+                    && otherInputType == InputType
+                    && otherOutputType == OutputType;
         }
 
         public virtual void ApplyDefaultBehaviors(IEnumerable<Type> defaultBehaviors)

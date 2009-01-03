@@ -12,6 +12,7 @@ namespace FubuMVC.Tests.Controller.Config
         private ControllerActionConfig _config;
         private FubuConventions _conventions;
         private FubuConfiguration _fubuConfig;
+        private ControllerActionConfig _otherConfig;
 
         [SetUp]
         public void SetUp()
@@ -19,11 +20,16 @@ namespace FubuMVC.Tests.Controller.Config
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
                 (c, i) => c.SomeAction(i));
 
+            _otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
+                (c, i) => c.AnotherAction(i));
+
             _config.PrimaryUrl = "test/someaction";
+            _otherConfig.PrimaryUrl = "test/anotheraction";
             
             _conventions = new FubuConventions();
             _fubuConfig = new FubuConfiguration(_conventions);
             _fubuConfig.AddControllerActionConfig(_config);
+            _fubuConfig.AddControllerActionConfig(_otherConfig);
             _registry = new RouteConfigurer(_fubuConfig, _conventions);
         }
 
@@ -36,7 +42,13 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void should_register_index_url_for_controller()
         {
-            _registry.GetRegisteredRoutes().Skip(1).First().Url.ShouldEqual("test");
+            _registry.GetRegisteredRoutes().ToArray()[1].Url.ShouldEqual("test");
+        }
+
+        [Test]
+        public void should_register_index_url_for_controller_only_once()
+        {
+            _registry.GetRegisteredRoutes().Where(r=>r.Url.Equals("test")).ShouldHaveCount(1);
         }
         
         [Test]
@@ -86,7 +98,18 @@ namespace FubuMVC.Tests.Controller.Config
         {
             var col = new RouteCollection();
             _registry.LoadRoutes(col);
-            col.ShouldHaveCount(3);
+            col.ShouldHaveCount(4);
+        }
+
+        [Test]
+        public void should_have_all_expected_route_urls()
+        {
+            var routes = _registry.GetRegisteredRoutes().ToArray();
+
+            routes[0].Url.ShouldEqual("");
+            routes[1].Url.ShouldEqual("test");
+            routes[2].Url.ShouldEqual("test/someaction");
+            routes[3].Url.ShouldEqual("test/anotheraction");
         }
     }
 }
