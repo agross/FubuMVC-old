@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AltOxite.Core.Domain
 {
     public class User : DomainEntity
     {
+        public virtual IList<Post> _posts { get; set; } // TODO: Make private
+
         public virtual string Username { get; set; }
         public virtual string DisplayName { get; set; }
         public virtual string HashedEmail { get; set; }
@@ -13,7 +16,19 @@ namespace AltOxite.Core.Domain
         public virtual string PasswordSalt { get; set; }
         public virtual int Status { get; set; }
         public virtual bool IsAnonymous { get; set; }
-        public virtual IList<Post> Posts { get; set; }
+
+        public virtual void AddPost(Post post)
+        {
+            _posts.Add(post);
+        }
+        public virtual void RemovePost(Post post)
+        {
+            _posts.Remove(post);
+        }
+        public virtual IEnumerable<Post> GetPosts()
+        {
+            return _posts.AsEnumerable();
+        }
 
         // public virtual Language LanguageDefault{ get; set; }
         // public IEnumerable<Language> GetLanguages();

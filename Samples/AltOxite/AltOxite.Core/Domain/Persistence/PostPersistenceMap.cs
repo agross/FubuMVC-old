@@ -10,8 +10,8 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.Slug).WithUniqueConstraint();
             Map(u => u.Published);
             References(u => u.User).Cascade.SaveUpdate();
-            HasManyToMany<Tag>(u => u.Tags).WithTableName("PostsToTags").Cascade.SaveUpdate();
-            HasMany<Comment>(u => u.Comments).Cascade.All().IsInverse();
+            HasManyToMany<Tag>(u => u._tags).WithTableName("PostsToTags").Cascade.SaveUpdate();
+            HasMany<Comment>(u => u._comments).Cascade.All().IsInverse();
         }
     }
 }
