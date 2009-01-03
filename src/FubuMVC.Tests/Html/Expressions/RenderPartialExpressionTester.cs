@@ -5,7 +5,6 @@ using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.View;
 using FubuMVC.Core.View.WebForms;
 using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
 
 namespace FubuMVC.Tests.Html.Expressions
 {
@@ -52,11 +51,35 @@ namespace FubuMVC.Tests.Html.Expressions
         public void a_call_to_For_should_pass_the_correct_model_to_render()
         {
             var expectedResult = "FOO";
-            var catcher = _renderer.CaptureArgumentsFor(r => r.RenderView<TestUserControl>(null, null, null), o=>o.Return(expectedResult));
+            var catcher = _renderer.CaptureArgumentsFor(r => r.RenderView<TestUserControl>(null, null, null), o => o.Return(expectedResult));
 
             _forExpression.For<TestModel, PartialTestModel>(m => m.PartialModel).ShouldEqual(expectedResult);
 
             catcher.Second<PartialTestModel>().ShouldBeTheSameAs(_partialModel);
+        }
+
+        [Test]
+        public void a_call_to_For_with_null_and_WithDefault_should_reneder_default_value()
+        {
+            var expectedResult = "FOO";
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                    .Using<TestUserControl>()
+                    .WithDefault(expectedResult)
+                    .For(null as object)
+                    .ShouldEqual(expectedResult);
+        }
+
+        [Test]
+        public void a_call_to_ForEachOf_with_empty_list_and_WithDefault_should_reneder_default_value()
+        {
+            var expectedResult = "FOO";
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                    .Using<TestUserControl>()
+                    .WithDefault(expectedResult)
+                    .ForEachOf(new object[]{})
+                    .ShouldEqual(expectedResult);
         }
 
         [Test]
