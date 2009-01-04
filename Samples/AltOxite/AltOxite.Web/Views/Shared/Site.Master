@@ -28,10 +28,11 @@
     <%= this.SkinCSS("yui.reset.2.6.0.css") %>
     <%= this.SkinCSS("site.css") %>
     <!-- //TODO: CSS  Additional skin stylesheets  -->
-    <%= this.SkinScript(new[] { "Script.Url.1", "Script.Url.2" }).Indent("    ")%>
+    <%= this.SkinScript(new[] { "jquery-1.2.6.js" }).Indent("    ")%>
 </head>
 <body class="dyn">
     <!-- //TODO: append 'dyn' class to body element dynamically (for some reason, need to investigate this odd behavior in Oxite Site.Master -->
+    <script type="text/javascript">/*<![CDATA[*/document.body.className += (document.body.className.length > 0 ? ' ' : '') + 'dyn'; //]]></script>
     <div class="page">
         <div id="header">
             <div id="title">
@@ -59,6 +60,7 @@
     
     <!-- //TODO: ScriptVariablesPre -->
     <asp:ContentPlaceHolder ID="StringResourcesContent" runat="server"></asp:ContentPlaceHolder>
+    <%= this.SkinScript(new[] { "site.js" }).Indent("    ")%>
     <!-- //TODO: Scripts -->
     <!-- //TODO: ScriptVariablesPost -->
 </body>

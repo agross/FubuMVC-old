@@ -86,11 +86,9 @@ namespace FubuMVC.Core.Html
             return new RenderPartialExpression(viewPage, renderer, conventions);
         }
 
-        public static string SubmitButton(this IFubuView viewPage, string value, string name)
+        public static SubmitButtonExpression SubmitButton(this IFubuView viewPage, string value, string name)
         {
-            return @"<input type=""submit"" value=""{0}"" name=""{1}""/>".ToFormat(
-                value,
-                name);
+            return new SubmitButtonExpression(value, name);
         }
 
         public static ImageExpression Image(this IFubuView viewPage, string imageSrcUrl)

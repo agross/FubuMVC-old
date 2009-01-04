@@ -6,6 +6,7 @@ namespace AltOxite.Core.Domain.Persistence
         {
             Map(c => c.Body);
             Map(c => c.Published);
+            Map(c => c.UserSubscribed);
             References(c => c.Post).CanNotBeNull().Cascade.All();
             References(c => c.User).CanNotBeNull().Cascade.All();
         }      
