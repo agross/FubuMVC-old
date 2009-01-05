@@ -1,4 +1,3 @@
-using System;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
 using FubuMVC.Core.Behaviors;
@@ -20,9 +19,15 @@ namespace AltOxite.Core.Web.Behaviors
 
             var prin = AltOxitePrincipal.Current;
 
+
             if (prin == null) return;
 
-            model.CurrentUser = _repository.Load<User>(prin.UserId);
+            var user = _repository.Load<User>(prin.UserId);
+            if (user != null)
+            {
+                user.IsAuthenticated = true;
+                model.CurrentUser = user;
+            }
         }
 
         public override void ModifyOutput<OUTPUT>(OUTPUT output)

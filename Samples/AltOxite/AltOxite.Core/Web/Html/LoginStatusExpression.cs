@@ -26,7 +26,7 @@ namespace AltOxite.Core.Web.Html
 
         public LoginStatusExpression For(User loggedInUser)
         {
-            _loggedIn = loggedInUser != null;
+            _loggedIn = (loggedInUser != null && loggedInUser.IsAuthenticated);
             return this;
         }
 

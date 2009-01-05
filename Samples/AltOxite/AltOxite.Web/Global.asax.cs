@@ -30,7 +30,9 @@ namespace AltOxite.Web
                 x.ByDefault.EveryControllerAction(d => d
                     .Will<set_the_current_site_details_on_the_output_viewmodel>()
                     .Will<set_the_current_logged_in_user_on_the_output_viewmodel>()
+                    .Will<set_empty_default_user_on_the_output_viewmodel_to_make_sure_one_exists>()
                     .Will<load_the_current_principal>()
+                    .Will<set_user_from_http_cookie_if_current_user_is_not_authenticated>()
                     .Will<set_up_default_data_the_first_time_this_app_is_run>()
                     .Will<execute_the_result>()
                     .Will<access_the_database_through_a_unit_of_work>());
@@ -96,7 +98,7 @@ namespace AltOxite.Web
                 if (index % 2 != 0) expr.Class("odd");
 
                 var comment = (CommentDisplay) item;
-                if (comment.User != null) expr.Class(comment.User.IsAnonymous ? "anon" : comment.User.ID == comment.Post.User.ID ? "author" : "user");
+                if (comment.User != null) expr.Class(!comment.User.IsAuthenticated ? "anon" : comment.User.ID == comment.Post.User.ID ? "author" : "user");
             }
 
             return expr;

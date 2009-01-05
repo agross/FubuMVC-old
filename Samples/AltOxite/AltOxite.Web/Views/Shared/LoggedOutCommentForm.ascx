@@ -1,6 +1,16 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedOutCommentForm" %>
-Logged out
-
+<form>
+<%--<%= this.FormFor<BlogPostController>(l => l.Index(new BlogPostSetupViewModel { PostDay = 5, PostMonth = 12, PostYear = 2008, Slug = "World_Hello" })).Class("user")%>--%> <%-- TODO: Link to comments section --%>
+    <fieldset class="info">
+        <legend><%= "Your Information" %></legend>
+        <div id="comment_grav"><%= this.GetGravatarImage(Model.User) %></div>
+        <p class="gravatarhelp"><%= "&lt;-- It's a "%><a href="<%= "http://en.gravatar.com/site/signup" %>"><%= "gravatar"%></a>
+        <div class="name">
+            <label for="comment_name"><%= "Name" %></label>
+            <%= this.TextBoxFor(m => m.User.DisplayName).ElementId("comment_name").Class("text").Attr("tabindex", "1").Attr("title", "Your name...")%><%--<%= Html.ValidationMessage("AnonymousUser.Name", "You must provide a name.") %>--%>
+        </div>
+    </fieldset>
+</form>
 <%--    <form method="post" id="comment" action="<%=Url.Post((IPost)ViewData["Post"]) %>#comment">
         <fieldset class="info">
             <legend><%= Localize("Your Information") %></legend>

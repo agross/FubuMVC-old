@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
 
@@ -39,12 +38,13 @@ namespace AltOxite.Core.Config
         private User setup_admin_user()
         {
             var defaultUser = new User
-                {
-                    Username = "Admin",
-                    Password = "pa$$w0rd",
-                    DisplayName = "Oxite Administrator",
-                    HashedEmail = "01d418308faffa0d07f34ace68b686ad"
-                };
+            {
+                Username = "Admin",
+                Password = "pa$$w0rd",
+                DisplayName = "Oxite Administrator",
+                HashedEmail = "01d418308faffa0d07f34ace68b686ad",
+                UserRole = UserRoles.SiteUser
+            };
 
             _repository.Save(defaultUser);
             return defaultUser;

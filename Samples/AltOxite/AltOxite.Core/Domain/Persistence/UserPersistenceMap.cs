@@ -14,7 +14,8 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.Password);
             Map(u => u.PasswordSalt);
             Map(u => u.Status);
-            Map(u => u.IsAnonymous);
+            Map(u => u.UserRole);
+            // Map(u => u.IsAuthenticated); // Does not have to be persisted
             HasMany<Post>(u => u._posts).AsBag().Cascade.SaveUpdate().IsInverse();
         }
     }

@@ -15,8 +15,8 @@ namespace AltOxite.Core.Web.Html
                 .ToFormat(
                     viewPage.UrlTo().PublishedPost(post),
                    (commentCount == 1)
-                       ? Properties.Strings.COMMENT_LINK_TEXT.ToFormat(commentCount)
-                       : Properties.Strings.COMMENT_LINK_TEXT_PLURAL.ToFormat(commentCount));
+                       ? "{0} comment".ToFormat(commentCount)
+                       : "{0} comments".ToFormat(commentCount));
         }
 
         public static string GetGravatarImage(this IAltOxitePage viewPage, User user)

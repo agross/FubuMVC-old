@@ -21,6 +21,11 @@ namespace AltOxite.Web
                 .WithCtorArg("db_file_name")
                     .EqualToAppSetting("AltOxite.sql_lite_db_file_name");
 
+            ForRequestedType<ICookieHandler>().AsSingletons()
+                .TheDefault.Is.OfConcreteType<CookieHandler>()
+                .WithCtorArg("cookie_path")
+                    .EqualToAppSetting("AltOxite.cookie_path_for_user_id");
+
             ForRequestedType<ISessionSource>().AsSingletons()
                 .TheDefault.Is.ConstructedBy(ctx => 
                     ctx.GetInstance<ISessionSourceConfiguration>()
