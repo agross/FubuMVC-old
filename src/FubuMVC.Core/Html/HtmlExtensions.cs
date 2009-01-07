@@ -71,6 +71,12 @@ namespace FubuMVC.Core.Html
             return new FormExpression( actionUrl );
         }
 
+        // TODO: Just a temp work around to get the form to use the correct Url
+        public static FormExpression FormFor(this IFubuView view, string actionUrl)
+        {
+            return new FormExpression(actionUrl);
+        }
+
         public static HiddenExpression<VIEWMODEL> HiddenFor<VIEWMODEL>(this IFubuView<VIEWMODEL> viewPage,
                                                                Expression<Func<VIEWMODEL, object>> expression)
             where VIEWMODEL : class
@@ -84,6 +90,11 @@ namespace FubuMVC.Core.Html
             var renderer = ServiceLocator.Current.GetInstance<IWebFormsViewRenderer>();
             var conventions = ServiceLocator.Current.GetInstance<FubuConventions>();
             return new RenderPartialExpression(viewPage, renderer, conventions);
+        }
+
+        public static WhenExpression DisplayText(this IFubuView view)
+        {
+            return new WhenExpression();
         }
 
         public static SubmitButtonExpression SubmitButton(this IFubuView viewPage, string value, string name)

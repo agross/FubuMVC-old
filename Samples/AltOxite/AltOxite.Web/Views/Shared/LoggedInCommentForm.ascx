@@ -1,7 +1,7 @@
 ﻿<%@ Import Namespace="AltOxite.Core.Web.DisplayModels"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedInCommentForm" %>
 <form>
-<%--<%= this.FormFor<BlogPostController>(l => l.Index(new BlogPostSetupViewModel { PostDay = 5, PostMonth = 12, PostYear = 2008, Slug = "World_Hello" })).Class("user")%>--%> <%-- TODO: Link to comments section --%>
+<%= this.FormFor(this.UrlTo().PublishedPost(Model.Post)).Class("user")%><%-- TODO: Link to comments section --%>
     <div><%= this.GetGravatarImage(Model.User) %></div>
     <fieldset class="comment">
         <legend>your comment</legend>
@@ -15,7 +15,7 @@
         </div>
         <div class="submit">
             <%= this.SubmitButton("Submit Comment", "comment_submit").ElementId("comment_submit").Class("submit").Class("button").Attr("tabindex", "3")%>
-<%-- TODO: Implement this
+            <%-- TODO: Implement this
             <%= Html.AntiForgeryToken(ViewData["AntiForgeryToken"] as string) %>
             <%= Html.AntiForgeryTicks(ViewData["AntiForgeryTicks"] as string)%>--%>
         </div>

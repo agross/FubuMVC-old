@@ -15,6 +15,7 @@ namespace AltOxite.Core.Domain
         public virtual string Password { get; set; }
         public virtual string PasswordSalt { get; set; }
         public virtual int Status { get; set; }
+        public virtual bool Remember { get; set; }
         public virtual bool IsAuthenticated { get; set; }
         public virtual UserRoles UserRole { get; set; }
 
