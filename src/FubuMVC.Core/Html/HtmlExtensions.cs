@@ -92,11 +92,6 @@ namespace FubuMVC.Core.Html
             return new RenderPartialExpression(viewPage, renderer, conventions);
         }
 
-        public static WhenExpression DisplayText(this IFubuView view)
-        {
-            return new WhenExpression();
-        }
-
         public static SubmitButtonExpression SubmitButton(this IFubuView viewPage, string value, string name)
         {
             return new SubmitButtonExpression(value, name);

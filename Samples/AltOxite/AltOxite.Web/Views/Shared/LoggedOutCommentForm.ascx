@@ -1,6 +1,8 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedOutCommentForm" %>
+﻿<%@ Import Namespace="AltOxite.Core.Web.DisplayModels"%>
+<%@ Import Namespace="FubuMVC.Core"%>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedOutCommentForm" %>
 <form>
-<%= this.FormFor(this.UrlTo().PublishedPost(Model.Post)).Class("user")%><%-- TODO: Link to comments section --%>
+<%= this.FormFor(this.UrlTo().PublishedPost(Model.Post)).Class("user") %><%-- TODO: Link to comments section --%>
     <fieldset class="info">
         <legend><%= "Your Information" %></legend>
         <div id="comment_grav"><%= this.GetGravatarImage(Model.User) %></div>
@@ -9,8 +11,8 @@
             <label for="comment_name"><%= "Name" %></label>
             <%= this.TextBoxFor(m => m.User.DisplayName).ElementId("comment_name").Class("text").Attr("tabindex", "1").Attr("title", "Your name...")%><%--<%= Html.ValidationMessage("AnonymousUser.Name", "You must provide a name.") %>--%>
         </div>
-        <div class="email">
-            <label for="comment_email"><%= "Email" %><span> (saved for notifications but never distributed)<%= this.DisplayText().For(Model.User).When(u => !string.IsNullOrEmpty(u.HashedEmail)).Display("<br />- enter if subscribing to this post or changing your gravatar")%></span></label>
+        <div class="email"><%="Test1".If(Model, m => m.User.IsAuthenticated)%><%="Test2".If(Model, m => !m.User.IsAuthenticated)%>
+            <label for="comment_email"><%= "Email" %><span> (saved for notifications but never distributed)<%="<br />- enter if subscribing to this post or changing your gravatar".If(Model, m => m.User.Email == "") %></span></label>
             <%= this.TextBoxFor(m => m.User.Email).ElementId("comment_email").Class("text").Attr("tabindex", "2").Attr("title", "Your email...")%><%--<%= Html.ValidationMessage("AnonymousUser.Email", "Your email address must be valid.") %>--%>
         </div>
         <div class="url">

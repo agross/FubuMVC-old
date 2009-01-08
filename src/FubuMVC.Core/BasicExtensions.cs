@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FubuMVC.Core.Html;
 using FubuMVC.Core.Util;
+using FubuMVC.Core.View;
 
 namespace FubuMVC.Core
 {
@@ -32,6 +33,13 @@ namespace FubuMVC.Core
         public static string ToFormat(this string stringFormat, params object[] args)
         {
             return String.Format(stringFormat, args);
+        }
+
+        // TODO: not happy with this yet
+        public static string If<MODEL>(this string html, MODEL model, Expression<Func<MODEL, bool>> modelBooleanValue)
+            where MODEL : class
+        {
+            return modelBooleanValue.Compile()(model) ? html : string.Empty;
         }
 
         public static string ToFullUrl(this string relativeUrl, params object[] args)

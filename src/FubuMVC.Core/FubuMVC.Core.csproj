@@ -100,7 +100,6 @@
     <Compile Include="Html\Expressions\RenderPartialExpression.cs" />
     <Compile Include="Html\Expressions\ScriptReferenceExpression.cs" />
     <Compile Include="Html\Expressions\SubmitButtonExpression.cs" />
-    <Compile Include="Html\Expressions\WhenExpression.cs" />
     <Compile Include="Html\HtmlExtensions.cs" />
     <Compile Include="Html\Expressions\TextBoxExpression.cs" />
     <Compile Include="Html\UrlContext.cs" />
