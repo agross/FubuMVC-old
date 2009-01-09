@@ -35,11 +35,19 @@ namespace FubuMVC.Core
             return String.Format(stringFormat, args);
         }
 
-        // TODO: not happy with this yet
         public static string If<MODEL>(this string html, MODEL model, Expression<Func<MODEL, bool>> modelBooleanValue)
             where MODEL : class
         {
-            return modelBooleanValue.Compile()(model) ? html : string.Empty;
+            var prop = modelBooleanValue.Body as MemberExpression;
+            if (prop != null)
+            {
+                var info = prop.Member as PropertyInfo;
+                if (info != null)
+                {
+                    return modelBooleanValue.Compile().Invoke(model) ? html : string.Empty;
+                }
+            }
+            throw new ArgumentException("The modelBooleanValue parameter should be a single property from type '{0}', validation logic is not allowed, only 'x => x.BooleanValue' usage is allowed".ToFormat(typeof(MODEL), modelBooleanValue.ToString()));
         }
 
         public static string ToFullUrl(this string relativeUrl, params object[] args)
@@ -48,7 +56,6 @@ namespace FubuMVC.Core
 
             return UrlContext.GetFullUrl(formattedUrl);
         }
-
 
         public static VALUE Get<KEY, VALUE>(this IDictionary<KEY, VALUE> dictionary, KEY key)
         {
@@ -61,12 +68,13 @@ namespace FubuMVC.Core
             return defaultValue;
         }
 
-        public static string GetViewModelProperty<VIEWMODEL>(this IDictionary<string, object> dictionary, Expression<Func<VIEWMODEL, object>> expression)
-        {
-            string key = ReflectionHelper.GetProperty(expression).Name;
-            if (dictionary.ContainsKey(key)) return dictionary[key].ToString();
-            return string.Empty;
-        }
+        // TODO: Not used and seems not wanted anyway
+        //public static string GetViewModelProperty<VIEWMODEL>(this IDictionary<string, object> dictionary, Expression<Func<VIEWMODEL, object>> expression)
+        //{
+        //    string key = ReflectionHelper.GetProperty(expression).Name;
+        //    if (dictionary.ContainsKey(key)) return dictionary[key].ToString();
+        //    return string.Empty;
+        //}
 
         public static bool Exists<T>(this IEnumerable<T> values, Func<T, bool> evaluator)
         {

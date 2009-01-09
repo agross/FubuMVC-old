@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using FubuMVC.Core;
 
@@ -6,6 +7,40 @@ namespace FubuMVC.Tests
     [TestFixture]
     public class BasicExtensionsTester
     {
+        [Test]
+        public void If_should_return_original_value()
+        {
+            var test = new TestObject { Boolean = true };
+
+            "test".If(test, t => t.Boolean).ShouldEqual("test");
+        }
+
+        [Test]
+        public void If_should_return_empty_string_value()
+        {
+            var test = new TestObject { Boolean = false };
+
+            "test".If(test, t => t.Boolean).ShouldEqual("");
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void If_should_return_an_ArgumentException()
+        {
+            var test = new TestObject { Value = 1 };
+
+            "test".If(test, t => t.Value == 1);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void If_should_also_return_an_ArgumentException()
+        {
+            var test = new TestObject { Boolean = true };
+
+            "test".If(test, t => t.Boolean && t.Boolean);
+        }
+
         [Test]
         public void ValueOrDefault_should_return_null_if_the_root_is_null()
         {
@@ -42,6 +77,7 @@ namespace FubuMVC.Tests
         {
             public TestObject Child { get; set; }
             public int Value { get; set; }
+            public bool Boolean { get; set; }
         }
     }
 }
