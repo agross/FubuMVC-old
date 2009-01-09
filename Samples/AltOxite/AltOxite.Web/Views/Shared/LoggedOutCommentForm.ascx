@@ -12,7 +12,7 @@
             <%= this.TextBoxFor(m => m.User.DisplayName).ElementId("comment_name").Class("text").Attr("tabindex", "1").Attr("title", "Your name...")%><%--<%= Html.ValidationMessage("AnonymousUser.Name", "You must provide a name.") %>--%>
         </div>
         <div class="email">
-            <label for="comment_email"><%= "Email" %><span> (saved for notifications but never distributed)<%="<br />- enter if subscribing to this post or changing your gravatar".If(() => m.User.IsAuthenticated) %></span></label>
+            <label for="comment_email"><%= "Email" %><span> (saved for notifications but never distributed)<%="<br />- enter if subscribing to this post or changing your gravatar".If(() => Model.User.IsAuthenticated) %></span></label>
             <%= this.TextBoxFor(m => m.User.Email).ElementId("comment_email").Class("text").Attr("tabindex", "2").Attr("title", "Your email...")%><%--<%= Html.ValidationMessage("AnonymousUser.Email", "Your email address must be valid.") %>--%>
         </div>
         <div class="url">
