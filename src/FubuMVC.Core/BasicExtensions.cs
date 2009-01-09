@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using FubuMVC.Core.Html;
 using FubuMVC.Core.Util;
-using FubuMVC.Core.View;
 
 namespace FubuMVC.Core
 {
@@ -35,8 +34,17 @@ namespace FubuMVC.Core
             return String.Format(stringFormat, args);
         }
 
-        public static string If<MODEL>(this string html, MODEL model, Expression<Func<MODEL, bool>> modelBooleanValue)
-            where MODEL : class
+        public static string If(this string html, Expression<Func<bool>> modelBooleanValue)
+        {
+            return GetBooleanPropertyValue(modelBooleanValue) ? html : string.Empty;
+        }
+
+        public static string IfNot(this string html, Expression<Func<bool>> modelBooleanValue)
+        {
+            return !GetBooleanPropertyValue(modelBooleanValue) ? html : string.Empty;
+        }
+
+        private static bool GetBooleanPropertyValue(Expression<Func<bool>> modelBooleanValue)
         {
             var prop = modelBooleanValue.Body as MemberExpression;
             if (prop != null)
@@ -44,10 +52,10 @@ namespace FubuMVC.Core
                 var info = prop.Member as PropertyInfo;
                 if (info != null)
                 {
-                    return modelBooleanValue.Compile().Invoke(model) ? html : string.Empty;
+                    return modelBooleanValue.Compile().Invoke();
                 }
             }
-            throw new ArgumentException("The modelBooleanValue parameter should be a single property from type '{0}', validation logic is not allowed, only 'x => x.BooleanValue' usage is allowed".ToFormat(typeof(MODEL), modelBooleanValue.ToString()));
+            throw new ArgumentException("The modelBooleanValue parameter should be a single property, validation logic is not allowed, only 'x => x.BooleanValue' usage is allowed");
         }
 
         public static string ToFullUrl(this string relativeUrl, params object[] args)
