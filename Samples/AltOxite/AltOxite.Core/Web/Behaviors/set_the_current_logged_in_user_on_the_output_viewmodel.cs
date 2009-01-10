@@ -19,7 +19,6 @@ namespace AltOxite.Core.Web.Behaviors
 
             var prin = AltOxitePrincipal.Current;
 
-
             if (prin == null) return;
 
             var user = _repository.Load<User>(prin.UserId);
@@ -30,9 +29,9 @@ namespace AltOxite.Core.Web.Behaviors
             }
         }
 
-        public override void ModifyOutput<OUTPUT>(OUTPUT output)
+        public override void PrepareInput<INPUT>(INPUT input)
         {
-            UpdateModel(output as ViewModel);
+            UpdateModel(input as ViewModel);
         }
     }
 }

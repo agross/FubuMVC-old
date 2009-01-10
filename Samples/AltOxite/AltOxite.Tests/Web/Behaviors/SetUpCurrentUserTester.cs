@@ -54,7 +54,7 @@ namespace AltOxite.Tests.Web.Behaviors
         public void should_load_the_user_from_the_id_on_the_principal()
         {
             var model = new TestViewModel();
-            _behavior.ModifyOutput(model);
+            _behavior.PrepareInput(model);
 
             _repo.AssertWasCalled(r => r.Load<User>(_userId));
         }

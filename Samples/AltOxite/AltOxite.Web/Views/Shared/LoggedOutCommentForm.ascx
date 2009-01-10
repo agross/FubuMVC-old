@@ -2,7 +2,7 @@
 <%@ Import Namespace="FubuMVC.Core"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedOutCommentForm" %>
 <form>
-<%= this.FormFor(this.UrlTo().PublishedPost(Model.Post)).Class("user") %><%-- TODO: Link to comments section --%>
+<%= this.FormFor("{0}".ToFormat(this.UrlTo().PublishedPost(Model.Post))).Class("user") %><%-- TODO: Link to comments section --%>
     <fieldset class="info">
         <legend><%= "Your Information" %></legend>
         <div id="comment_grav"><%= this.GetGravatarImage(Model.User) %></div>
@@ -40,7 +40,7 @@
         <%= Html.AntiForgeryTicks(ViewData["AntiForgeryTicks"] as string)%>--%>
     </fieldset>
     <%--<% RenderStringResources(); %>--%>
-    <script type="text/javascript">        window.stringResources = { "comment_body.Leave a comment...": "Leave a comment..." };</script>
+    <script type="text/javascript">window.stringResources = { "comment_name.Your name...": "Your name...", "comment_email.Your email...": "Your email...", "comment_url.Your home on the interwebs (URL)...": "Your home on the interwebs (URL)...", "comment_body.Leave a comment...": "Leave a comment..." };</script>
 </form>
 <%--    <form method="post" id="comment" action="<%=Url.Post((IPost)ViewData["Post"]) %>#comment">
         <fieldset class="info">

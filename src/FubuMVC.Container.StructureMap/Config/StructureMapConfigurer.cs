@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
@@ -35,7 +36,8 @@ namespace FubuMVC.Container.StructureMap.Config
 
                 var behaviorInstance = new ConfiguredInstance(typeof(DefaultBehavior));
 
-                e.GetBehaviors().Each(t =>
+                // TODO: #123 Added Reverse() here to ge the order correct, need to verify that this is the appropriate location
+                e.GetBehaviors().Reverse().Each(t =>
                 {
                     behaviorInstance = new ConfiguredInstance(t)
                         .SetterDependency<IControllerActionBehavior>(INSIDE_PROP_NAME)

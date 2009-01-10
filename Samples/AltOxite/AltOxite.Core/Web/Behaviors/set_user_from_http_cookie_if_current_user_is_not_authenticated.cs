@@ -1,5 +1,4 @@
 using System;
-using System.Web;
 using AltOxite.Core.Config;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
@@ -39,9 +38,9 @@ namespace AltOxite.Core.Web.Behaviors
             }
         }
 
-        public override void ModifyOutput<OUTPUT>(OUTPUT output)
+        public override void PrepareInput<INPUT>(INPUT input)
         {
-            UpdateModel(output as ViewModel);
+            UpdateModel(input as ViewModel);
         }
     }
 }

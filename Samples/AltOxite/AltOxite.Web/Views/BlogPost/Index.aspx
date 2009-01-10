@@ -19,7 +19,7 @@
 	    </div>    
         <%= this.RenderPartial().Using<BlogPostComment>().WithDefault("<h3>{0}</h3>".ToFormat(Resources.Strings.NO_COMMENTS_HERE)).ForEachOf(Model.Post.Comments) %>
 <%--        <div class="pager"><%= Html.SimplePager<IComment>(comments, this, "PageOfAnAdminComments", new { }) %></div>--%>
-        <%= this.DisplayDependingOnLoginStatus().For(Model.CurrentUser).UseModel(new CommentFormDisplay(Model.CurrentUser, new Comment(), Model.Post)).WhenLoggedInShow<LoggedInCommentForm>().WhenLoggedOutShow<LoggedOutCommentForm>()%>
+        <%= this.DisplayDependingOnLoginStatus().For(Model.CurrentUser).UseModel(Model.Comment).WhenLoggedInShow<LoggedInCommentForm>().WhenLoggedOutShow<LoggedOutCommentForm>()%>
     </div>
 </div>
 </asp:Content>

@@ -23,7 +23,7 @@ namespace AltOxite.Core.Web.Controllers
         }
     }
 
-    public class IndexSetupViewModel
+    public class IndexSetupViewModel : ViewModel
     {
     }
 

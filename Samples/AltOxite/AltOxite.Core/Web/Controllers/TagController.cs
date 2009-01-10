@@ -32,7 +32,7 @@ namespace AltOxite.Core.Web.Controllers
         }
     }
 
-    public class TagSetupViewModel
+    public class TagSetupViewModel : ViewModel
     {
         public string Tag { get; set; }
     }

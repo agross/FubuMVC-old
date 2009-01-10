@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Collections.Generic;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
 using AltOxite.Core.Web.Controllers;
@@ -25,7 +23,7 @@ namespace AltOxite.Tests.Web.Controllers
         [Test]
         public void index_should_do_nothing_but_just_render_the_view_if_nothing_was_supplied()
         {
-            var output = _controller.Index(new BlogPostSetupViewModel());
+            var output = _controller.Index(new BlogPostViewModel());
             
             output.Post.ShouldBeNull();
             _repository.AssertWasNotCalled(r=>r.Query<Post>());
@@ -36,7 +34,7 @@ namespace AltOxite.Tests.Web.Controllers
         {
             _repository.Stub(r => r.Query<Post>()).Return(new Post[0].AsQueryable());
 
-            var output = _controller.Index(new BlogPostSetupViewModel {Slug = "badslug"});
+            var output = _controller.Index(new BlogPostViewModel {Slug = "badslug"});
 
             output.Post.ShouldBeNull();
         }

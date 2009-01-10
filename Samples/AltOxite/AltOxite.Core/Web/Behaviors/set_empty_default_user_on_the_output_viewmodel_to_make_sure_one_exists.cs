@@ -9,12 +9,22 @@ namespace AltOxite.Core.Web.Behaviors
         {
             if (model == null) return;
 
-            model.CurrentUser = new User {IsAuthenticated = false, UserRole = UserRoles.NotAuthenticated};
+            model.CurrentUser = new User
+                                {
+                                    IsAuthenticated = false,
+                                    UserRole = UserRoles.NotAuthenticated,
+                                    DisplayName = "",
+                                    Email = "",
+                                    HashedEmail = "",
+                                    Password = "",
+                                    PasswordSalt = "",
+                                    Remember = false,
+                                };
         }
 
-        public override void ModifyOutput<OUTPUT>(OUTPUT output)
+        public override void PrepareInput<INPUT>(INPUT input)
         {
-            UpdateModel(output as ViewModel);
-        }        
+            UpdateModel(input as ViewModel);
+        }
     }
 }

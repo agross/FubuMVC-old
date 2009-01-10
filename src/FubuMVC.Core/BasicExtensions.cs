@@ -77,12 +77,12 @@ namespace FubuMVC.Core
         }
 
         // TODO: Not used and seems not wanted anyway
-        //public static string GetViewModelProperty<VIEWMODEL>(this IDictionary<string, object> dictionary, Expression<Func<VIEWMODEL, object>> expression)
-        //{
-        //    string key = ReflectionHelper.GetProperty(expression).Name;
-        //    if (dictionary.ContainsKey(key)) return dictionary[key].ToString();
-        //    return string.Empty;
-        //}
+        public static string GetViewModelProperty<VIEWMODEL>(this IDictionary<string, object> dictionary, Expression<Func<VIEWMODEL, object>> expression)
+        {
+            string key = ReflectionHelper.GetProperty(expression).Name;
+            if (dictionary.ContainsKey(key)) return dictionary[key].ToString();
+            return string.Empty;
+        }
 
         public static bool Exists<T>(this IEnumerable<T> values, Func<T, bool> evaluator)
         {
