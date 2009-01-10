@@ -58,7 +58,15 @@ namespace FubuMVC.Core.Controller.Config
 
         public Route CreateRoute(ControllerActionConfig config, string urlFormat)
         {
-            return new Route(urlFormat, new ActionRouteHandler(config));
+            try
+            {
+                return new Route(urlFormat, new ActionRouteHandler(config));
+            }
+            catch (ArgumentException aex)
+            {
+                throw new ArgumentException("Could not create route with URL format '{0}'. See inner exception for details.".ToFormat(urlFormat), aex);
+            }
+            
         }
 
         public IEnumerable<Route> GetRegisteredRoutes()

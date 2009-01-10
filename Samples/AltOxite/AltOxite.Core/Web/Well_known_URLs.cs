@@ -27,10 +27,20 @@ namespace AltOxite.Core.Web
             return ("~/Tag/" + tagName).ToFullUrl(); // TODO: _resolver.UrlFor<TagController>() + "/" + tagName;
         }
 
+        public static string CommentToPublishedPost(this IUrlResolver resolver, PostDisplay post)
+        {
+            // TODO: _resolver.UrlFor<BlogController>() + "/" + ...;
+            return ("~/blog/" +
+                    post.Published.Year + "/" +
+                    post.Published.Month + "/" +
+                    post.Published.Day + "/" +
+                    post.Slug + "/comment").ToFullUrl();
+        }
+
         public static string PublishedPost(this IUrlResolver resolver, PostDisplay post)
         {
             // TODO: _resolver.UrlFor<BlogController>() + "/" + ...;
-            return ("~/Blog/" +
+            return ("~/blog/" +
                     post.Published.Year + "/" +
                     post.Published.Month + "/" +
                     post.Published.Day + "/" +

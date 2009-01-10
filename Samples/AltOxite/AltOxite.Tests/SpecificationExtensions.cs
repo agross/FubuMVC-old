@@ -11,6 +11,7 @@ using NUnit.Framework.Constraints;
 using FubuMVC.Core.Util;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
+using Rhino.Mocks.Interfaces;
 using Is=NUnit.Framework.SyntaxHelpers.Is;
 using Text=NUnit.Framework.SyntaxHelpers.Text;
 using FubuMVC.Core;
@@ -368,19 +369,55 @@ namespace AltOxite.Tests
 
 
         public static CapturingConstraint CaptureArgumentsFor<MOCK>(this MOCK mock,
-                                                                    Expression<Action<MOCK>> methodExpression) where MOCK : class
+                                                                    Expression<Action<MOCK>> methodExpression)
+            where MOCK : class
         {
-            MethodInfo method = FubuMVC.Core.Util.ReflectionHelper.GetMethod(methodExpression);
+            return CaptureArgumentsFor(mock, methodExpression, o => { });
+        }
 
+        public static CapturingConstraint CaptureArgumentsFor<MOCK>(this MOCK mock,
+                                                                    Expression<Action<MOCK>> methodExpression,
+                                                                    Action<IMethodOptions<RhinoMocksExtensions.VoidType>> optionsAction)
+            where MOCK : class
+        {
+            return CaptureArgumentsFor(mock,
+                methodExpression,
+                m => m.Expect(methodExpression.Compile()),
+                optionsAction);
+        }
+
+        public static CapturingConstraint CaptureArgumentsFor<MOCK>(this MOCK mock,
+                                                                    Expression<Function<MOCK, object>> methodExpression)
+            where MOCK : class
+        {
+            return CaptureArgumentsFor(mock, methodExpression, o => { });
+        }
+
+        public static CapturingConstraint CaptureArgumentsFor<MOCK, RESULT>(this MOCK mock,
+                                                                    Expression<Function<MOCK, RESULT>> methodExpression,
+                                                                    Action<IMethodOptions<RESULT>> optionsAction)
+            where MOCK : class
+        {
+            return CaptureArgumentsFor(mock,
+                methodExpression,
+                m => m.Stub(methodExpression.Compile()),
+                optionsAction);
+        }
+
+        public static CapturingConstraint CaptureArgumentsFor<MOCK, DELEGATETYPE, OPTIONTYPE>(MOCK mock,
+                                                                    Expression<DELEGATETYPE> methodExpression,
+                                                                    Func<MOCK, IMethodOptions<OPTIONTYPE>> expectAction,
+                                                                    Action<IMethodOptions<OPTIONTYPE>> optionsAction)
+            where MOCK : class
+        {
+            var method = ReflectionHelper.GetMethod(methodExpression);
             var constraint = new CapturingConstraint();
             var constraints = new List<AbstractConstraint>();
 
-            foreach (ParameterInfo arg in method.GetParameters())
-            {
-                constraints.Add(constraint);
-            }
+            method.GetParameters().Each(p => constraints.Add(constraint));
 
-            mock.Expect(methodExpression.Compile()).Constraints(constraints.ToArray()).Repeat.Any();
+            var expectation = expectAction(mock).Constraints(constraints.ToArray()).Repeat.Any();
+            optionsAction(expectation);
 
             return constraint;
         }
@@ -394,6 +431,11 @@ namespace AltOxite.Tests
             public override string Message
             {
                 get { return ""; }
+            }
+
+            public void Clear()
+            {
+                argList.Clear();
             }
 
             public override bool Eval(object obj)

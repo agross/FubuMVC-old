@@ -15,6 +15,9 @@ namespace AltOxite.Core.Persistence
 
         IQueryable<ENTITY> Query<ENTITY>()
             where ENTITY : DomainEntity;
+
+        IQueryable<ENTITY> Query<ENTITY>(IDomainQuery<ENTITY> whereQuery)
+            where ENTITY : DomainEntity;
     }
 
     public class NHibernateRepository : IRepository
@@ -39,6 +42,11 @@ namespace AltOxite.Core.Persistence
         public IQueryable<ENTITY> Query<ENTITY>() where ENTITY : DomainEntity
         {
             return _unitOfWork.CurrentSession.Linq<ENTITY>();
+        }
+
+        public IQueryable<ENTITY> Query<ENTITY>(IDomainQuery<ENTITY> whereQuery) where ENTITY : DomainEntity
+        {
+            return _unitOfWork.CurrentSession.Linq<ENTITY>().Where(whereQuery.Expression);
         }
     }
 }

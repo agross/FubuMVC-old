@@ -76,6 +76,12 @@ namespace FubuMVC.Core.Util
             return methodCall.Method;
         }
 
+        public static MethodInfo GetMethod<DELEGATE>(Expression<DELEGATE> expression)
+        {
+            var methodCall = (MethodCallExpression)expression.Body;
+            return methodCall.Method;
+        }
+
         public static MethodInfo GetMethod<T, U>(Expression<Func<T, U>> expression)
         {
             var methodCall = (MethodCallExpression)expression.Body;

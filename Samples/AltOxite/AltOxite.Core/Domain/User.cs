@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace AltOxite.Core.Domain
 {
@@ -34,6 +36,28 @@ namespace AltOxite.Core.Domain
 
         // public virtual Language LanguageDefault{ get; set; }
         // public IEnumerable<Language> GetLanguages();
+    }
+
+    public class UserByEmail : IDomainQuery<User>
+    {
+        private string _email;
+
+        public UserByEmail(string email)
+        {
+            Email = email;
+        }
+
+        public string Email
+        {
+            get { return _email; }
+            set 
+            { 
+                _email = value;
+                Expression = u => u.Email.Equals(_email, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+
+        public Expression<Func<User, bool>> Expression { get; private set; }
     }
 
     public enum UserRoles

@@ -51,11 +51,11 @@ namespace FubuMVC.Tests.StructureMap
 
             _controller = _container.GetInstance<TestController>();
 
-            var configs = _config.GetControllerActionConfigs();
+            var configs = _config.GetControllerActionConfigs().ToArray();
 
-            var firstActionConfig = configs.First();
-            var secondActionConfig = configs.Skip(1).First();
-            var thirdActionConfig = configs.Skip(2).First();
+            var firstActionConfig = configs[0];
+            var secondActionConfig = configs[1];
+            var thirdActionConfig = configs[2];
 
             _invoker =
                 _container.GetInstance<IControllerActionInvoker<TestController, TestInputModel, TestOutputModel>>(
@@ -96,11 +96,11 @@ namespace FubuMVC.Tests.StructureMap
         }
 
         [Test]
-        [Ignore("I added Reverse() to the behaviours search for #123 I don't know where the order gets reversed but this is very close to the actual usage")]
         public void DSL_should_preserve_behavior_ordering()
         {
-            _anotherInvoker.Behavior.ShouldBeOfType<TestBehavior2>()
-                .InsideBehavior.ShouldBeOfType<TestBehavior>()
+            _anotherInvoker
+                .Behavior.ShouldBeOfType<TestBehavior>()
+                .InsideBehavior.ShouldBeOfType<TestBehavior2>()
                 .InsideBehavior.ShouldBeOfType<DefaultBehavior>();
         }
 

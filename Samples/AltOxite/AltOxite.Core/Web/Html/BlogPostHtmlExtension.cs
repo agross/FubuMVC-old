@@ -55,7 +55,7 @@ namespace AltOxite.Core.Web.Html
         public static string GetCommenterNameAndLink(this IAltOxitePage viewPage, CommentDisplay comment)
         {
             return (!string.IsNullOrEmpty(comment.User.Url))
-                ? "<a href=\"{0}\"{1}</a>".ToFormat(comment.User.Url, comment.User.DisplayName)
+                ? "<a href=\"{0}\">{1}</a>".ToFormat(comment.User.Url, comment.User.DisplayName)
                 : comment.User.DisplayName;
         }
 

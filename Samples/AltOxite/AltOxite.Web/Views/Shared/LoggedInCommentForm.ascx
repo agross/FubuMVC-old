@@ -2,7 +2,7 @@
 <%@ Import Namespace="AltOxite.Core.Web.DisplayModels"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedInCommentForm" %>
 <form>
-<%= this.FormFor("{0}".ToFormat(this.UrlTo().PublishedPost(Model.Post))).Class("user")%><%-- TODO: Link to comments section --%>
+<%= this.FormFor("{0}".ToFormat(this.UrlTo().CommentToPublishedPost(Model.Post))).Class("user")%><%-- TODO: Link to comments section --%>
     <div><%= this.GetGravatarImage(Model.User) %></div>
     <fieldset class="comment">
         <legend>your comment</legend>

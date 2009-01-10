@@ -1,19 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace AltOxite.Core.Domain
 {
     public class Post : DomainEntity
     {
-        public virtual IList<Tag> _tags { get; set; } // = new List<Tag>();  // TODO: make these private, add "AddTag/RemoveTag" type methods
-        public virtual IList<Comment> _comments { get; set; } // = new List<Comment>(); // TODO: make these private, add "AddComment/RemoveComment" type methods
-
-        public Post() // TODO: Probably o be removed later when these lists are private
-        {
-            _tags = new List<Tag>();
-            _comments = new List<Comment>();
-        }
+        private IList<Tag> _tags = new List<Tag>();
+        private  IList<Comment> _comments = new List<Comment>();
 
         public virtual string Title { get; set; }
         public virtual DateTime? Published { get; set; }
@@ -59,5 +54,27 @@ namespace AltOxite.Core.Domain
         //public virtual DateTime? Modified { get; set; }
         //public virtual string SearchBody { get; set;  }
         //public virtual IArea Area { get; }
+    }
+
+    public class PostBySlug : IDomainQuery<Post>
+    {
+        private string _slug;
+
+        public PostBySlug(string slug)
+        {
+            Slug = slug;
+        }
+
+        public string Slug
+        {
+            get { return _slug; }
+            set
+            {
+                _slug = value;
+                Expression = u => u.Slug.Equals(_slug, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+
+        public Expression<Func<Post, bool>> Expression { get; private set; }
     }
 }

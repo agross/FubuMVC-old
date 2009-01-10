@@ -24,8 +24,8 @@ namespace AltOxite.IntegrationTests.Domain_Persistence
                 .CheckProperty(p => p.BodyShort, "body short, anything here")
                 .CheckProperty(p => p.Body, "body, anything here")
                 .CheckProperty(p => p.Slug, "slug, anything here")
-                //.CheckList(p=>p.Comments, new [] { new Comment() })
-                //.CheckList(p => p.Tags, new[] { new Tag() })
+                //.CheckList(p=>p.GetComments(), new [] { new Comment() })
+                //.CheckList(p => p.GetTags, new[] { new Tag() })
                 .VerifyTheMappings();
         }
     }

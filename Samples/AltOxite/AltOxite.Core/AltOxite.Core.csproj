@@ -87,6 +87,7 @@
     <Compile Include="Domain\Alias.cs" />
     <Compile Include="Domain\Comment.cs" />
     <Compile Include="Domain\DomainEntity.cs" />
+    <Compile Include="Domain\IDomainQuery.cs" />
     <Compile Include="Domain\Persistence\AltOxitePersistenceModel.cs" />
     <Compile Include="Domain\Persistence\CommentPersistenceMap.cs" />
     <Compile Include="Domain\Persistence\PostPersistenceMap.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Web\Html\LoginStatusExpression.cs" />
     <Compile Include="Config\SQLiteSessionSourceConfiguration.cs" />
     <Compile Include="Web\UrlToExtensions.cs" />
+    <Compile Include="Web\ValidationExtensions.cs" />
     <Compile Include="Web\ViewModel.cs" />
     <Compile Include="Web\WebForms\AltOxiteMasterPage.cs">
       <SubType>ASPXCodeBehind</SubType>

@@ -1,8 +1,7 @@
 ﻿<%@ Import Namespace="AltOxite.Core.Web.DisplayModels"%>
 <%@ Import Namespace="FubuMVC.Core"%>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="LoggedOutCommentForm" %>
-<form>
-<%= this.FormFor("{0}".ToFormat(this.UrlTo().PublishedPost(Model.Post))).Class("user") %><%-- TODO: Link to comments section --%>
+<%= this.FormFor("{0}".ToFormat(this.UrlTo().CommentToPublishedPost(Model.Post))).Class("user")%><%-- TODO: Link to comments section --%>
     <fieldset class="info">
         <legend><%= "Your Information" %></legend>
         <div id="comment_grav"><%= this.GetGravatarImage(Model.User) %></div>

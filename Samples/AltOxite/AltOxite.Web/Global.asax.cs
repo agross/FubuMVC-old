@@ -9,6 +9,7 @@ using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Container.StructureMap.Config;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Html.Expressions;
 
 namespace AltOxite.Web
@@ -25,7 +26,7 @@ namespace AltOxite.Web
                     conventions.PartialForEachOfBeforeEachItem = AltOxiteDefaultPartialBeforeEachItem;
                 });
 
-                // Default Behaviors for all actions
+                // Default Behaviors for all actions -- ordered as they're executed
                 /////////////////////////////////////////////////
                 x.ByDefault.EveryControllerAction(d => d
                     .Will<access_the_database_through_a_unit_of_work>()
@@ -40,16 +41,6 @@ namespace AltOxite.Web
                     .Will<set_the_current_site_details_on_the_output_viewmodel>()
                     );
                 
-                //x.ByDefault.EveryControllerAction(d => d
-                //    .Will<set_the_current_site_details_on_the_output_viewmodel>()
-                //    .Will<set_the_current_logged_in_user_on_the_output_viewmodel>()
-                //    .Will<set_empty_default_user_on_the_output_viewmodel_to_make_sure_one_exists>()
-                //    .Will<load_the_current_principal>()
-                //    .Will<set_user_from_http_cookie_if_current_user_is_not_authenticated>()
-                //    .Will<set_up_default_data_the_first_time_this_app_is_run>()
-                //    .Will<execute_the_result>()
-                //    .Will<access_the_database_through_a_unit_of_work>());
-
                 // Automatic controller registration
                 /////////////////////////////////////////////////
                 x.AddControllersFromAssembly.ContainingType<ViewModel>(c =>
@@ -79,6 +70,14 @@ namespace AltOxite.Web
                     //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
                     config.PrimaryUrl = "blog{0}".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
                 });
+
+                x.OverrideConfigFor(BlogPostCommentAction, config =>
+                {
+                    //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
+                    //TODO: Not sure about the placement of "/comment" here
+                    config.PrimaryUrl = "blog{0}/comment".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
+                });
+
 
                 x.OverrideConfigFor(TagIndexAction, config=>
                 {
@@ -119,6 +118,7 @@ namespace AltOxite.Web
 
         private readonly Expression<Func<LoginController, object>> LogoutAction = c => c.Logout(null);
         private readonly Expression<Func<BlogPostController, object>> BlogPostIndexAction = c => c.Index(null);
+        private readonly Expression<Func<BlogPostController, object>> BlogPostCommentAction = c => c.Comment(null);
         private readonly Expression<Func<TagController, object>> TagIndexAction = c => c.Index(null);
     }
 }

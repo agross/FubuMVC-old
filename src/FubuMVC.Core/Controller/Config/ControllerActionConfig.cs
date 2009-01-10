@@ -10,8 +10,6 @@ namespace FubuMVC.Core.Controller.Config
 {
     public class ControllerActionConfig
     {
-        public Expression _actionFunc;
-
         protected ControllerActionConfig()
         {
             Behaviors = new List<Type>();
@@ -30,7 +28,7 @@ namespace FubuMVC.Core.Controller.Config
                     UniqueID = Guid.NewGuid().ToString(),
                     ControllerType = typeof (CONTROLLER),
                     ActionMethod = method,
-                    _actionFunc = expression,
+                    ActionFunc = expression,
                     ActionName = GetActionName(method),
                     InputType = typeof (INPUT),
                     OutputType = typeof (OUTPUT)
@@ -41,6 +39,7 @@ namespace FubuMVC.Core.Controller.Config
         protected HashSet<string> OtherUrls { get; set; }
 
         public virtual Type ControllerType { get; protected set;}
+        public virtual Expression ActionFunc { get; protected set; }
         public virtual MethodInfo ActionMethod { get; protected set; }
         public virtual string ActionName { get; protected set; }
         public virtual Type InputType { get; protected set; }
@@ -56,7 +55,7 @@ namespace FubuMVC.Core.Controller.Config
             where INPUT : class, new()
             where OUTPUT : class
         {
-            return ((Expression<Func<CONTROLLER, INPUT, OUTPUT>>)_actionFunc).Compile();
+            return ((Expression<Func<CONTROLLER, INPUT, OUTPUT>>)ActionFunc).Compile();
         }
 
         public virtual IEnumerable<string> GetOtherUrls() { return OtherUrls.AsEnumerable(); }
