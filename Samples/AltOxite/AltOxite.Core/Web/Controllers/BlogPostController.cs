@@ -88,7 +88,7 @@ namespace AltOxite.Core.Web.Controllers
             if( ! user.IsAuthenticated )
             {
                 user.DisplayName = inModel.UserDisplayName;
-                user.Url = inModel.UserUrl;
+                user.Url = (inModel.UserUrl.StartsWith("http://") || inModel.UserUrl.StartsWith("https://")) ? inModel.UserUrl : "http://{0}".ToFormat(inModel.UserUrl);
             }
 
             _repository.Save(user);

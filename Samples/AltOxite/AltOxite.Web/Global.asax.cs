@@ -9,7 +9,6 @@ using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Container.StructureMap.Config;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
-using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Html.Expressions;
 
 namespace AltOxite.Web
