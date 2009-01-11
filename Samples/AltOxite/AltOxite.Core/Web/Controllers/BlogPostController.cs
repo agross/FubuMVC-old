@@ -28,13 +28,17 @@ namespace AltOxite.Core.Web.Controllers
 
         public BlogPostViewModel Index(BlogPostViewModel inModel)
         {
-            if (inModel.Slug.IsEmpty()) return new BlogPostViewModel();
+            var badRedirectResult = new BlogPostViewModel { ResultOverride = new RedirectResult(_resolver.PageNotFound()) };
+
+            if (inModel.Slug.IsEmpty()) return badRedirectResult;
 
             var post = _repository.Query(new PostBySlug(inModel.Slug)).SingleOrDefault();
 
+            if (post == null) return badRedirectResult;
+
             User user = inModel.CurrentUser;
             
-            var postDisplay = (post == null) ? null : new PostDisplay(post);
+            var postDisplay = new PostDisplay(post);
             return new BlogPostViewModel
             {
                 Post = postDisplay,
@@ -44,7 +48,7 @@ namespace AltOxite.Core.Web.Controllers
 
         public BlogPostViewModel Comment(BlogPostCommentViewModel inModel)
         {
-            var badRedirectResult = new BlogPostViewModel{ResultOverride = new RedirectResult(_resolver.Home())};
+            var badRedirectResult = new BlogPostViewModel{ResultOverride = new RedirectResult(_resolver.PageNotFound())};
 
             //TODO: What if the referenced post doesn't exist?
             if (inModel.Slug.IsEmpty()) return badRedirectResult;
@@ -60,7 +64,6 @@ namespace AltOxite.Core.Web.Controllers
             if( result.InvalidFields.Count > 0 ) return result;
 
             //TODO: What if the referenced post doesn't exist?
-            
 
             var user = _repository.Query(new UserByEmail(inModel.UserEmail)).SingleOrDefault();
             

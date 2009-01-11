@@ -65,7 +65,7 @@ namespace AltOxite.Web
                     config.AddBehavior<execute_the_result>();
                 });
 
-                x.OverrideConfigFor(BlogPostIndexAction, config=>
+                x.OverrideConfigFor(BlogPostIndexAction, config =>
                 {
                     //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
                     config.PrimaryUrl = "blog{0}".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
@@ -78,10 +78,14 @@ namespace AltOxite.Web
                     config.PrimaryUrl = "blog{0}/comment".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
                 });
 
-
-                x.OverrideConfigFor(TagIndexAction, config=>
+                x.OverrideConfigFor(TagIndexAction, config =>
                 {
                     config.PrimaryUrl = "tag/{Tag}";
+                });
+
+                x.OverrideConfigFor(PageNotFoundIndexAction, config =>
+                {
+                    config.PrimaryUrl = "404";
                 });
             };
 
@@ -120,5 +124,6 @@ namespace AltOxite.Web
         private readonly Expression<Func<BlogPostController, object>> BlogPostIndexAction = c => c.Index(null);
         private readonly Expression<Func<BlogPostController, object>> BlogPostCommentAction = c => c.Comment(null);
         private readonly Expression<Func<TagController, object>> TagIndexAction = c => c.Index(null);
+        private readonly Expression<Func<PageNotFoundController, object>> PageNotFoundIndexAction = c => c.Index(null);
     }
 }

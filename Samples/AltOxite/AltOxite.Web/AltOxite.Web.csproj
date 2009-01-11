@@ -194,6 +194,7 @@
     </Content>
     <Content Include="content\scripts\jquery-1.2.6.js" />
     <Content Include="content\scripts\site.js" />
+    <Content Include="Views\PageNotFound\Index.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

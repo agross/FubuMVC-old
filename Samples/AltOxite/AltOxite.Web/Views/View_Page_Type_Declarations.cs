@@ -9,6 +9,7 @@ public class SiteMasterView : AltOxiteMasterPage{}
 
 // Pages
 public class HomeIndexView : AltOxitePage<IndexViewModel> { }
+public class PageNotFoundIndexView : AltOxitePage<PageNotFoundViewModel> { }
 public class LoginIndexView : AltOxitePage<LoginViewModel> { }
 public class DebugIndexView : AltOxitePage<ViewModel> { }
 public class BlogPostIndexView : AltOxitePage<BlogPostViewModel> { }

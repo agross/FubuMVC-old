@@ -120,6 +120,7 @@
     <Compile Include="Web\Controllers\BlogPostController.cs" />
     <Compile Include="Web\Controllers\HomeController.cs" />
     <Compile Include="Web\Controllers\LoginController.cs" />
+    <Compile Include="Web\Controllers\PageNotFoundController.cs" />
     <Compile Include="Web\Controllers\TagController.cs" />
     <Compile Include="Web\DisplayModels\CommentFormDisplay.cs" />
     <Compile Include="Web\DisplayModels\CommentDisplay.cs" />
