@@ -61,7 +61,11 @@ namespace AltOxite.Core.Web.Controllers
 
             valid_comment_submission(inModel, result);
 
-            if( result.InvalidFields.Count > 0 ) return result;
+            if( result.InvalidFields.Count > 0 )
+            {
+                result.ResultOverride = new RedirectResult(_resolver.PublishedPost(new PostDisplay(post)));
+                return result;
+            }
 
             //TODO: What if the referenced post doesn't exist?
 

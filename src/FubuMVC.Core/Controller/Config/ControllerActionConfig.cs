@@ -46,7 +46,14 @@ namespace FubuMVC.Core.Controller.Config
         public virtual Type OutputType { get; protected set; }
         public string PrimaryUrl { get; set; }
 
-        public string UniqueID{ get; private set; }
+        public string UniqueID { get; private set; }
+
+        public void UseViewFrom<CONTROLLER, OUTPUT>(Expression<Func<CONTROLLER, OUTPUT>> expression)
+            where CONTROLLER : class
+            where OUTPUT : class
+        {
+            ActionName = GetActionName(ReflectionHelper.GetMethod(expression));
+        }
 
         //TODO: This is smelly, but how else do I get generic-typed stuff out of non-generic class like this?
         // I need to somehow carry along the generic type payload, without actually being generic

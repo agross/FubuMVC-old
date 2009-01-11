@@ -76,6 +76,7 @@ namespace AltOxite.Web
                     //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
                     //TODO: Not sure about the placement of "/comment" here
                     config.PrimaryUrl = "blog{0}/comment".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
+                    config.UseViewFrom(BlogPostIndexAction);
                 });
 
                 x.OverrideConfigFor(TagIndexAction, config =>

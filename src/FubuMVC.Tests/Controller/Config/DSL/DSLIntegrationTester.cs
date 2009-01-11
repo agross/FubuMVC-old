@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
 using NUnit.Framework;
@@ -81,6 +82,28 @@ namespace FubuMVC.Tests.Controller.Config.DSL
                 config=>config.PrimaryUrl = expectedUrl);
 
             actionConfig.PrimaryUrl.ShouldEqual(expectedUrl);
+        }
+
+        [Test]
+        public void should_override_correct_actionname_from_an_other_action()
+        {
+            _dsl.AddControllersFromAssembly
+                .ContainingType<TestController>(x =>
+                {
+                    x.Where(t => t.Name == "TestController");
+                    x.MapActionsWhere((m, i, o) => m.Name.EndsWith("Action"));
+                }); 
+
+            var actionConfig = _config.GetControllerActionConfigs().Where(c => c.PrimaryUrl == "test/someaction").FirstOrDefault();
+
+            var expectedActionName = "anotheraction";
+
+            Expression<Func<TestController, object>> AnotherAction = c => c.AnotherAction(null);
+
+            _dsl.OverrideConfigFor<TestController>(c => c.SomeAction(null),
+                config => config.UseViewFrom(AnotherAction));
+
+            actionConfig.ActionName.ShouldEqual(expectedActionName);
         }
     }
 }
