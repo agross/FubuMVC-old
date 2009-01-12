@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web.Security;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
+using AltOxite.Core.Services;
 using AltOxite.Core.Web.DisplayModels;
 using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
@@ -19,11 +19,15 @@ namespace AltOxite.Core.Web.Controllers
     {
         private readonly IRepository _repository;
         private readonly IUrlResolver _resolver;
+        private readonly IBlogPostCommentService _blogPostCommentService;
+        private readonly IUserService _userService;
 
-        public BlogPostController(IRepository repository, IUrlResolver resolver)
+        public BlogPostController(IRepository repository, IUrlResolver resolver, IBlogPostCommentService blogPostCommentService, IUserService userService)
         {
             _repository = repository;
             _resolver = resolver;
+            _blogPostCommentService = blogPostCommentService;
+            _userService = userService;
         }
 
         public BlogPostViewModel Index(BlogPostViewModel inModel)
@@ -50,7 +54,6 @@ namespace AltOxite.Core.Web.Controllers
         {
             var badRedirectResult = new BlogPostViewModel{ResultOverride = new RedirectResult(_resolver.PageNotFound())};
 
-            //TODO: What if the referenced post doesn't exist?
             if (inModel.Slug.IsEmpty()) return badRedirectResult;
 
             var post = _repository.Query(new PostBySlug(inModel.Slug)).SingleOrDefault();
@@ -67,46 +70,9 @@ namespace AltOxite.Core.Web.Controllers
                 return result;
             }
 
-            //TODO: What if the referenced post doesn't exist?
-
-            var user = _repository.Query(new UserByEmail(inModel.UserEmail)).SingleOrDefault();
-            
-            //TODO: There's just way too much going on here, need to move this out of here 
-            // Domain service perhaps?
-            if( user == null )
-            {
-                user = new User
-                           {
-                               Username = inModel.UserDisplayName,
-                               IsAuthenticated = false,
-                               UserRole = UserRoles.NotAuthenticated,
-                               Email = inModel.UserEmail,
-                               HashedEmail = GenerateGravatarHash(inModel.UserEmail)
-                           };
-            }
-
-            if( ! user.IsAuthenticated )
-            {
-                user.DisplayName = inModel.UserDisplayName;
-                user.Url = (inModel.UserUrl.StartsWith("http://") || inModel.UserUrl.StartsWith("https://")) ? inModel.UserUrl : "http://{0}".ToFormat(inModel.UserUrl);
-            }
-
-            _repository.Save(user);
-
+            var user = _userService.AddOrUpdateUser(inModel.UserEmail, inModel.UserDisplayName, inModel.UserUrl);
              
-            var comment = new Comment
-            {
-                Body = inModel.Body,
-                User = user,
-                Post = post,
-                UserSubscribed = inModel.UserSubscribed
-            };
-
-            //TODO: Need to implement publishing/pending stuff
-            comment.Published = DateTime.UtcNow;
-
-            post.AddComment(comment);
-            _repository.Save(post);
+            _blogPostCommentService.AddCommentToBlogPost(inModel.Body, inModel.UserSubscribed, user, post);
 
             var postDisplay = new PostDisplay(post);
 
@@ -121,12 +87,6 @@ namespace AltOxite.Core.Web.Controllers
             if (inModel.UserDisplayName.IsEmpty()) result.AddInvalidField<BlogPostCommentViewModel>(x => x.UserDisplayName);
             if (inModel.UserEmail.IsEmpty()) result.AddInvalidField<BlogPostCommentViewModel>(x => x.UserEmail);
             if (inModel.Body.IsEmpty()) result.AddInvalidField<BlogPostCommentViewModel>(x => x.Body);
-        }
-
-        private static string GenerateGravatarHash(string emailAddress)
-        {
-            var hash = FormsAuthentication.HashPasswordForStoringInConfigFile(emailAddress.Trim().ToLower(), "MD5");
-            return (hash != null) ? hash.Trim().ToLower() : "";
         }
     }
 

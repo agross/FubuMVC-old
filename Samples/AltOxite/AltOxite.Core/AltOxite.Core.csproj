@@ -109,8 +109,12 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\AltOxitePrincipalFactory.cs" />
+    <Compile Include="Services\BlogPostCommentService.cs" />
+    <Compile Include="Services\IBlogPostCommentService.cs" />
     <Compile Include="Services\ISecurityDataService.cs" />
+    <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\SecurityDataService.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="Web\Behaviors\access_the_database_through_a_unit_of_work.cs" />
     <Compile Include="Web\Behaviors\set_user_from_http_cookie_if_current_user_is_not_authenticated.cs" />
     <Compile Include="Web\Behaviors\set_empty_default_user_on_the_output_viewmodel_to_make_sure_one_exists.cs" />

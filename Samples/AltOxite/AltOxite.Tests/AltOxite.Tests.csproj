@@ -93,6 +93,7 @@
     <Compile Include="Persistence\NHibernateUnitOfWorkTester.cs" />
     <Compile Include="Persistence\NHibernateRepositoryTester.cs" />
     <Compile Include="Security\AltOxitePrincipalFactoryTester.cs" />
+    <Compile Include="Services\BlogPostCommentServiceTester.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Web\Behaviors\SetUpCurrentSiteDetailsTester.cs" />
     <Compile Include="Web\Behaviors\SetUpCurrentUserTester.cs" />

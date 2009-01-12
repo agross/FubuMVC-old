@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AltOxite.Core.Domain;
 using AltOxite.Core.Persistence;
+using AltOxite.Core.Services;
 using AltOxite.Core.Web.Controllers;
 using FubuMVC.Core.Controller.Config;
 using NUnit.Framework;
@@ -16,8 +16,9 @@ namespace AltOxite.Tests.Web.Controllers
     {
         private IRepository _repository;
         private BlogPostController _controller;
+        private IBlogPostCommentService _blogPostCommentService;
+        private IUserService _userService;
         private IList<Post> _posts;
-        private IList<User> _users;
         private IUrlResolver _resolver;
         private Post _post;
         private string _testSlug;
@@ -26,10 +27,11 @@ namespace AltOxite.Tests.Web.Controllers
         public void SetUp()
         {
             _posts = new List<Post>();
-            _users = new List<User>();
             _repository = MockRepository.GenerateStub<IRepository>();
             _resolver = MockRepository.GenerateStub<IUrlResolver>();
-            _controller = new BlogPostController(_repository, _resolver);
+            _blogPostCommentService = MockRepository.GenerateStub<IBlogPostCommentService>();
+            _userService = MockRepository.GenerateStub<IUserService>();
+            _controller = new BlogPostController(_repository, _resolver, _blogPostCommentService, _userService);
 
             _testSlug = "TESTSLUG";
 
@@ -62,6 +64,8 @@ namespace AltOxite.Tests.Web.Controllers
     {
         private IRepository _repository;
         private BlogPostController _controller;
+        private IBlogPostCommentService _blogPostCommentService;
+        private IUserService _userService;
         private string _testSlug;
         private BlogPostCommentViewModel _validInput;
         private BlogPostCommentViewModel _invalidInput;
@@ -77,7 +81,9 @@ namespace AltOxite.Tests.Web.Controllers
             _users = new List<User>();
             _repository = MockRepository.GenerateStub<IRepository>();
             _resolver = MockRepository.GenerateStub<IUrlResolver>();
-            _controller = new BlogPostController(_repository, _resolver);
+            _blogPostCommentService = MockRepository.GenerateStub<IBlogPostCommentService>();
+            _userService = MockRepository.GenerateStub<IUserService>();
+            _controller = new BlogPostController(_repository, _resolver, _blogPostCommentService, _userService);
             
             _post = new Post { Slug = _testSlug };
             _posts.Add(_post);
@@ -131,82 +137,37 @@ namespace AltOxite.Tests.Web.Controllers
                 r=>r.Query<Post>(null),
                 o => o.Constraints(Property.Value("Slug", _testSlug)));
         }
-
-        [Test]
-        public void should_attempt_load_user_by_email()
-        {
-            _controller.Comment(_validInput);
-
-            _repository.AssertWasCalled(
-                r => r.Query<User>(null),
-                o => o.Constraints(Property.Value("Email", _validInput.UserEmail)));
-        }
-
-        [Test]
-        public void should_add_comment_to_post()
-        {
-            _controller.Comment(_validInput);
-
-            _post.GetComments().ShouldHaveCount(1);
-        }
-
-        [Test]
-        public void should_add_comment_to_post_using_the_correct_body_and_user_subscribed_flag()
-        {
-            _controller.Comment(_validInput);
-
-            var comment = _post.GetComments().First();
-
-            comment.Body.ShouldEqual(_validInput.Body);
-            comment.UserSubscribed.ShouldBeTrue();
-        }
     }
 
     [TestFixture]
-    public class BlogPostController_when_creating_a_new_anonymous_user_for_new_comment
+    public class UserService_when_creating_a_new_anonymous_user
     {
         private IRepository _repository;
-        private BlogPostController _controller;
-        private string _testSlug;
-        private BlogPostViewModel _curResult;
         private User _curUser;
-        private IList<Post> _posts;
         private IList<User> _users;
-        private IUrlResolver _resolver;
-        private Post _post;
+        private IUserService _userService;
+        private string GivenUserDisplayName;
+        private string GivenUserEmail;
+        private string GivenUserUrl;
 
         [SetUp]
         public void SetUp()
         {
-            _posts = new List<Post>();
             _users = new List<User>();
 
             _repository = MockRepository.GenerateStub<IRepository>();
-            _resolver = MockRepository.GenerateStub<IUrlResolver>();
-
+            _userService = new UserService(_repository);
 
             _curUser = null;
-            _curResult = null;
 
-            _controller = new BlogPostController(_repository, _resolver);
-            _repository.Stub(r => r.Query<Post>(null)).IgnoreArguments().Return(_posts.AsQueryable());
             _repository.Stub(r => r.Query<User>(null)).IgnoreArguments().Return(_users.AsQueryable());
 
-            _testSlug = "TESTSLUG";
+            GivenUserDisplayName = "username";
+            GivenUserEmail = "email";
+            GivenUserUrl = "www";
 
-            Given = new BlogPostCommentViewModel
-            {
-                UserDisplayName = "username",
-                UserEmail = "email",
-                Body = "body",
-                Slug = _testSlug
-            };
-
-            _post = new Post { Slug = _testSlug };
-            _posts.Add(_post);
+            _curUser = _userService.AddOrUpdateUser(GivenUserEmail, GivenUserDisplayName, GivenUserUrl);
         }
-
-        public BlogPostCommentViewModel Given { get; set; }
 
         public User CreatedUser
         {
@@ -214,9 +175,7 @@ namespace AltOxite.Tests.Web.Controllers
             {
                 if( _curUser == null )
                 {
-                    var catcher = _repository.CaptureArgumentsFor(r => r.Save<User>(null));
-                    _curResult = _controller.Comment(Given);
-                    _curUser = catcher.First<User>();
+                    _curUser = _userService.AddOrUpdateUser(GivenUserEmail, GivenUserDisplayName, GivenUserUrl);
                 }
                 return _curUser;
             }
@@ -238,7 +197,14 @@ namespace AltOxite.Tests.Web.Controllers
         public void should_have_a_hashed_gravatar_email()
         {
             CreatedUser.HashedEmail.ShouldNotBeNull();
-            CreatedUser.HashedEmail.ShouldNotEqual(CreatedUser.Email);
+            CreatedUser.HashedEmail.ShouldNotEqual(GivenUserEmail);
+        }
+
+        [Test]
+        public void should_have_a_url()
+        {
+            CreatedUser.Url.ShouldNotBeNull();
+            CreatedUser.Url.ShouldContain(GivenUserUrl);
         }
     }
 
@@ -246,43 +212,35 @@ namespace AltOxite.Tests.Web.Controllers
     public class BlogPostController_when_updating_an_anonymous_user_for_new_comment
     {
         private IRepository _repository;
-        private BlogPostController _controller;
-        private string _testSlug;
-        private IList<Post> _posts;
         private IList<User> _users;
-        private IUrlResolver _resolver;
-        private Post _post;
+        private IUserService _userService;
+        private string GivenUserDisplayName;
+        private string GivenUserEmail;
+        private string GivenUserUrl;
+        private User _user;
 
         [SetUp]
         public void SetUp()
         {
-            _posts = new List<Post>();
-            _users = new List<User>();
-
-            _repository = MockRepository.GenerateStub<IRepository>();
-            _resolver = MockRepository.GenerateStub<IUrlResolver>();
-
-            _controller = new BlogPostController(_repository, _resolver);
-            _repository.Stub(r => r.Query<Post>(null)).IgnoreArguments().Return(_posts.AsQueryable());
-            _repository.Stub(r => r.Query<User>(null)).IgnoreArguments().Return(_users.AsQueryable());
-
-            _testSlug = "TESTSLUG";
-
-            Given = new BlogPostCommentViewModel
-            {
-                UserDisplayName = "username",
-                UserEmail = "email",
-                Body = "body",
-                UserUrl = "url",
-                Slug = _testSlug
+            _users = new List<User>
+            { 
+                new User
+                {
+                    DisplayName = "prev_username",
+                    Url = "prev_url"
+                }
             };
 
+            _repository = MockRepository.GenerateStub<IRepository>();
+            _userService = new UserService(_repository);
 
-            _post = new Post { Slug = _testSlug };
-            _posts.Add(_post);
+            _repository.Stub(r => r.Query<User>(null)).IgnoreArguments().Return(_users.AsQueryable());
 
-            _controller.Comment(Given);
+            GivenUserDisplayName = "username";
+            GivenUserEmail = "email";
+            GivenUserUrl = "url";
 
+            _user = _userService.AddOrUpdateUser(GivenUserEmail, GivenUserDisplayName, GivenUserUrl);
         }
 
         public BlogPostCommentViewModel Given { get; set; }
@@ -290,15 +248,13 @@ namespace AltOxite.Tests.Web.Controllers
         [Test]
         public void the_display_name_should_have_been_updated()
         {
-            var user = _post.GetComments().First().User;
-            user.DisplayName.ShouldEqual(Given.UserDisplayName);
+            _user.DisplayName.ShouldEqual(GivenUserDisplayName);
         }
 
         [Test]
         public void the_url_should_have_been_updated()
         {
-            var user = _post.GetComments().First().User;
-            user.Url.ShouldEqual(Given.UserUrl);
+            _user.Url.ShouldContain(GivenUserUrl);
         }
     }
 }
