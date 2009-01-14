@@ -52,6 +52,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NHibernate\NHibernate.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="StructureMap, Version=2.5.0.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -122,12 +126,15 @@
     <Compile Include="Web\Behaviors\set_the_current_site_details_on_the_output_viewmodel.cs" />
     <Compile Include="Web\Behaviors\set_up_default_data_the_first_time_this_app_is_run.cs" />
     <Compile Include="Web\Controllers\BlogPostController.cs" />
+    <Compile Include="Web\Controllers\DebugController.cs" />
     <Compile Include="Web\Controllers\HomeController.cs" />
     <Compile Include="Web\Controllers\LoginController.cs" />
     <Compile Include="Web\Controllers\PageNotFoundController.cs" />
     <Compile Include="Web\Controllers\TagController.cs" />
+    <Compile Include="Web\DisplayModels\DebugSingleLineDisplay.cs" />
     <Compile Include="Web\DisplayModels\CommentFormDisplay.cs" />
     <Compile Include="Web\DisplayModels\CommentDisplay.cs" />
+    <Compile Include="Web\DisplayModels\ControllerActionDisplay.cs" />
     <Compile Include="Web\DisplayModels\LoginStatusDisplay.cs" />
     <Compile Include="Web\DisplayModels\PostDisplay.cs" />
     <Compile Include="Web\DisplayModels\TagDisplay.cs" />

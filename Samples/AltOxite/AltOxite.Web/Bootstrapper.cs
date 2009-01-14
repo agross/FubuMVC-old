@@ -1,6 +1,4 @@
 using System.Web.Routing;
-using AltOxite.Core.Config;
-using AltOxite.Core.Persistence;
 using FubuMVC.Core.Controller.Config;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Container.StructureMap.Config;

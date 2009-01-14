@@ -194,7 +194,10 @@
     </Content>
     <Content Include="content\scripts\jquery-1.2.6.js" />
     <Content Include="content\scripts\site.js" />
+    <Content Include="Views\Debug\Index.aspx" />
     <Content Include="Views\PageNotFound\Index.aspx" />
+    <Content Include="Views\Shared\ControllerAction.ascx" />
+    <Content Include="Views\Shared\DebugSingleLine.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

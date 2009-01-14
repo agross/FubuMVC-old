@@ -22,6 +22,7 @@ namespace AltOxite.Web
                 x.UsingConventions( conventions =>
                 {
                     conventions.PartialForEachOfHeader = AltOxiteDefaultPartialHeader;
+                    conventions.PartialForEachOfFooter = AltOxiteDefaultPartialFooter;
                     conventions.PartialForEachOfBeforeEachItem = AltOxiteDefaultPartialBeforeEachItem;
                 });
 
@@ -87,6 +88,11 @@ namespace AltOxite.Web
                 {
                     config.PrimaryUrl = "404";
                 });
+
+                x.OverrideConfigFor(DebugIndexAction, config =>
+                {
+                    config.PrimaryUrl = "__debug_controller_actions";
+                });
             };
 
             Bootstrapper.Bootstrap();
@@ -95,11 +101,28 @@ namespace AltOxite.Web
         private static HtmlExpressionBase AltOxiteDefaultPartialHeader(object itemList, int totalCount)
         {
             var expr = new GenericOpenTagExpression("ul");
-            
+
+            if (itemList is IEnumerable<PostDisplay>) expr.Class("posts");
             if (itemList is IEnumerable<TagDisplay>) expr.Class("tags");
             if (itemList is IEnumerable<CommentDisplay>) expr.Class("commented");
 
+            // For Debug View
+            if (itemList is IEnumerable<ControllerActionDisplay>) expr.Class("controlleraction");
+            if (itemList is IEnumerable<DebugSingleLineDisplay>)
+            {
+                expr = new GenericOpenTagExpression("ol");
+                expr.Class("behavior");
+            }
+
             return expr;
+        }
+
+        private static string AltOxiteDefaultPartialFooter(object itemList, int totalCount)
+        {
+            // For Debug View
+            if (itemList is IEnumerable<DebugSingleLineDisplay>) return "</ol>";
+
+            return "</ul>";
         }
 
         private static HtmlExpressionBase AltOxiteDefaultPartialBeforeEachItem(object item, int index, int total)
@@ -125,5 +148,6 @@ namespace AltOxite.Web
         private readonly Expression<Func<BlogPostController, object>> BlogPostCommentAction = c => c.Comment(null);
         private readonly Expression<Func<TagController, object>> TagIndexAction = c => c.Index(null);
         private readonly Expression<Func<PageNotFoundController, object>> PageNotFoundIndexAction = c => c.Index(null);
+        private readonly Expression<Func<DebugController, object>> DebugIndexAction = c => c.Index(null);
     }
 }

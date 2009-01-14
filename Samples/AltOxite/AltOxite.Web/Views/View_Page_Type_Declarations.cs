@@ -1,4 +1,3 @@
-using AltOxite.Core.Domain;
 using AltOxite.Core.Web;
 using AltOxite.Core.Web.Controllers;
 using AltOxite.Core.Web.DisplayModels;
@@ -11,7 +10,6 @@ public class SiteMasterView : AltOxiteMasterPage{}
 public class HomeIndexView : AltOxitePage<IndexViewModel> { }
 public class PageNotFoundIndexView : AltOxitePage<PageNotFoundViewModel> { }
 public class LoginIndexView : AltOxitePage<LoginViewModel> { }
-public class DebugIndexView : AltOxitePage<ViewModel> { }
 public class BlogPostIndexView : AltOxitePage<BlogPostViewModel> { }
 public class TagIndexView : AltOxitePage<TagViewModel> { }
 
@@ -25,3 +23,8 @@ public class LoggedInCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
 public class LoggedOutCommentForm : AltOxiteUserControl<CommentFormDisplay> { }
 
 public class TagLink : AltOxiteUserControl<TagDisplay> { }
+
+// For Debug View
+public class DebugIndexView : AltOxitePage<DebugViewModel> { }
+public class ControllerAction : AltOxiteUserControl<ControllerActionDisplay> { }
+public class DebugSingleLine : AltOxiteUserControl<DebugSingleLineDisplay> { }

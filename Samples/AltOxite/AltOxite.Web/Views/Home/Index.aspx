@@ -2,9 +2,7 @@
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
 <div class="sections">
     <div class="primary">
-        <ul class="posts">
-            <%= this.RenderPartial().Using<BlogPost>().ForEachOf(Model.Posts) %>
-        </ul>
+         <%= this.RenderPartial().Using<BlogPost>().ForEachOf(Model.Posts) %>
     </div>
 </div>
 

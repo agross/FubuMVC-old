@@ -1066,3 +1066,53 @@ form.login input:hover.button,
 .validation-summary-errors {
     color:#ff0000;
 }
+
+/* For Debug View */
+ul.controlleraction  
+{
+    margin:0;    
+}
+ul.controlleraction li 
+{
+    margin:0;    
+    list-style-type:none;
+}
+.controlleraction .posted
+{
+    font-size:88%;
+}
+.controlleraction .posted 
+{
+    margin:.3em 3px 0 0;
+    border-bottom:3px solid;
+    text-align:right;
+    margin-top:-2em;
+}
+.controlleraction .more 
+{
+    margin:1em 0 0 5px;
+    white-space:nowrap;
+}
+.controlleraction .content 
+{
+    clear:both;
+    padding:1.1em 0 0 5px;
+    margin-top:0;
+}
+.controlleraction .posted
+{
+    border-color:#f0f0f0;
+}
+
+ol.behavior  
+{
+    margin: 0;
+    margin-left: 20;
+    padding: 0px;
+    padding-left: 25px;
+}
+ol.behavior li 
+{
+    margin: 0;
+    list-style-type: decimal;
+}
