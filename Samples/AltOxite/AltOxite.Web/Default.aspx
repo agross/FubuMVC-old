@@ -8,6 +8,6 @@
 </head>
 <body>
     <h1>Configuration Error</h1>      
-    <p>There appears to be some sort of problem with this application's configuration settings.</p>
+    <p>There appears to be some sort of problem with this application's configuration settings. Please visit <a href="http://fubumvc.pbwiki.com/Running-the-example-AltOxite-website">Running the example AltOxite website</a></p>
 </body>
 </html>
