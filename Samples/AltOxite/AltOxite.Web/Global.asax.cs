@@ -32,12 +32,13 @@ namespace AltOxite.Web
                     .Will<access_the_database_through_a_unit_of_work>()
                     .Will<set_up_default_data_the_first_time_this_app_is_run>()
 
-                    .Will<set_the_current_logged_in_user_on_the_output_viewmodel>()
                     .Will<set_empty_default_user_on_the_output_viewmodel_to_make_sure_one_exists>()
                     .Will<load_the_current_principal>()
+                    .Will<set_the_current_logged_in_user_on_the_output_viewmodel>()
                     .Will<set_user_from_http_cookie_if_current_user_is_not_authenticated>()
 
                     .Will<execute_the_result>()
+                    .Will<copy_viewmodel_from_input_to_output<ViewModel>>()
                     .Will<set_the_current_site_details_on_the_output_viewmodel>()
                     );
                 

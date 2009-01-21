@@ -58,6 +58,7 @@
     </Compile>
     <Compile Include="BasicExtensions.cs" />
     <Compile Include="Behaviors\behavior_base_for_convenience.cs" />
+    <Compile Include="Behaviors\copy_viewmodel_from_input_to_output.cs" />
     <Compile Include="Behaviors\DefaultBehavior.cs" />
     <Compile Include="Behaviors\execute_the_result.cs" />
     <Compile Include="Behaviors\IControllerActionBehavior.cs" />
