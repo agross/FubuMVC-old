@@ -145,21 +145,21 @@ namespace FubuMVC.Core.Html.Expressions
                 {
                     var builder = new StringBuilder();
 
-                    if (_renderItemWrapper) builder.Append(Conventions.PartialForEachOfHeader(_partialModel, render_multiple_item_count));
+                    if (_renderListWrapper) builder.Append(Conventions.PartialForEachOfHeader(_partialModel, render_multiple_item_count));
 
                     var current = 0;
 
                     foreach (var item in (IEnumerable) _partialModel)
                     {
-                        var before = _renderListWrapper ? Conventions.PartialForEachOfBeforeEachItem(item, current, render_multiple_item_count).ToString() : "";
+                        var before = _renderItemWrapper ? Conventions.PartialForEachOfBeforeEachItem(item, current, render_multiple_item_count).ToString() : "";
                         var renderedItem = RenderItem(item);
-                        var after = _renderListWrapper ? Conventions.PartialForEachOfAfterEachItem(item, current, render_multiple_item_count) : "";
+                        var after = _renderItemWrapper ? Conventions.PartialForEachOfAfterEachItem(item, current, render_multiple_item_count) : "";
                         builder.AppendFormat("{0}{1}{2}", before, renderedItem, after);
 
                         current++;
                     }
 
-                    if (_renderItemWrapper) builder.Append(Conventions.PartialForEachOfFooter(_partialModel, render_multiple_item_count));
+                    if (_renderListWrapper) builder.Append(Conventions.PartialForEachOfFooter(_partialModel, render_multiple_item_count));
 
                     return builder.ToString();
                 }

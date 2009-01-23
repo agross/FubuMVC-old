@@ -131,50 +131,73 @@ namespace FubuMVC.Tests.Html.Expressions
         }
 
         [Test]
-        public void should_skip_conventions_to_render_ForEachOf_header()
+        public void should_skip_conventions_to_render_header_and_footer_item()
         {
-            var skippedBeginning = "BEGINNING";
+            var before = "START";
+            var after = "END";
+            var item = "ITEM";
+            var beginning = "BEGINNING";
+            var ending = "ENDING";
 
-            _conventions.PartialForEachOfHeader = (model, total) => new GenericOpenTagExpression(skippedBeginning);
+            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).IgnoreArguments().Return(item);
+
+            _conventions.PartialForEachOfHeader = (model, total) => new GenericOpenTagExpression(beginning);
+            _conventions.PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression(before);
+            _conventions.PartialForEachOfAfterEachItem = (model, index, total) => after;
+            _conventions.PartialForEachOfFooter = (model, total) => ending;
 
             new RenderPartialExpression(_view, _renderer, _conventions)
                 .Using<TestUserControl>()
                 .WithoutListWrapper()
-                .For(new[] { _partialModel })
-                .ShouldNotContain(skippedBeginning);
-        }
-
-        [Test]
-        public void should_skip_conventions_to_render_ForEachOf_Footer()
-        {
-            var skippedEnding = "ENDING";
-
-            _conventions.PartialForEachOfFooter = (model, total) => skippedEnding;
-
-            new RenderPartialExpression(_view, _renderer, _conventions)
-                .Using<TestUserControl>()
-                .WithoutListWrapper()
-                .For(new[] { _partialModel })
-                .ShouldNotContain(skippedEnding);
+                .ForEachOf(new[] { _partialModel })
+                .ShouldEqual("<{0}>{1}{2}".ToFormat(before, item, after));
         }
 
         [Test]
         public void should_skip_conventions_to_render_pre_and_post_item()
         {
-            var skippedBefore = "START";
-            var skippedAfter = "END";
-            var expectedItem = "ITEM";
+            var before = "START";
+            var after = "END";
+            var item = "ITEM";
+            var beginning = "BEGINNING";
+            var ending = "ENDING";
 
-            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).IgnoreArguments().Return(expectedItem);
+            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).IgnoreArguments().Return(item);
 
-            _conventions.PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression(skippedBefore);
-            _conventions.PartialForEachOfAfterEachItem = (model, index, total) => skippedAfter;
+            _conventions.PartialForEachOfHeader = (model, total) => new GenericOpenTagExpression(beginning);
+            _conventions.PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression(before);
+            _conventions.PartialForEachOfAfterEachItem = (model, index, total) => after;
+            _conventions.PartialForEachOfFooter = (model, total) => ending;
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                .Using<TestUserControl>()
+                .WithoutItemWrapper()
+                .ForEachOf(new[] { _partialModel })
+                .ShouldEqual("<{0}>{1}{2}".ToFormat(beginning, item, ending));
+        }
+
+        [Test]
+        public void should_skip_all_conventions_for_item()
+        {
+            var before = "START";
+            var after = "END";
+            var item = "ITEM";
+            var beginning = "BEGINNING";
+            var ending = "ENDING";
+
+            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).IgnoreArguments().Return(item);
+
+            _conventions.PartialForEachOfHeader = (model, total) => new GenericOpenTagExpression(beginning);
+            _conventions.PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression(before);
+            _conventions.PartialForEachOfAfterEachItem = (model, index, total) => after;
+            _conventions.PartialForEachOfFooter = (model, total) => ending;
 
             new RenderPartialExpression(_view, _renderer, _conventions)
                 .Using<TestUserControl>()
                 .WithoutListWrapper()
-                .For(new[] { _partialModel })
-                .ShouldEqual(expectedItem);
+                .WithoutItemWrapper()
+                .ForEachOf(new[] { _partialModel })
+                .ShouldEqual("{0}".ToFormat(item));
         }
 
         public class TestModel
