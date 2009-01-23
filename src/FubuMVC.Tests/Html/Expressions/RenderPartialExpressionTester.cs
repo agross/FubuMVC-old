@@ -130,6 +130,53 @@ namespace FubuMVC.Tests.Html.Expressions
             _forExpression.ForEachOf(new[] { _partialModel }).ShouldContain("<{0}>{1}{2}".ToFormat(expectedBefore, expectedItem, expectedAfter));
         }
 
+        [Test]
+        public void should_skip_conventions_to_render_ForEachOf_header()
+        {
+            var skippedBeginning = "BEGINNING";
+
+            _conventions.PartialForEachOfHeader = (model, total) => new GenericOpenTagExpression(skippedBeginning);
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                .Using<TestUserControl>()
+                .WithoutListWrapper()
+                .For(new[] { _partialModel })
+                .ShouldNotContain(skippedBeginning);
+        }
+
+        [Test]
+        public void should_skip_conventions_to_render_ForEachOf_Footer()
+        {
+            var skippedEnding = "ENDING";
+
+            _conventions.PartialForEachOfFooter = (model, total) => skippedEnding;
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                .Using<TestUserControl>()
+                .WithoutListWrapper()
+                .For(new[] { _partialModel })
+                .ShouldNotContain(skippedEnding);
+        }
+
+        [Test]
+        public void should_skip_conventions_to_render_pre_and_post_item()
+        {
+            var skippedBefore = "START";
+            var skippedAfter = "END";
+            var expectedItem = "ITEM";
+
+            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).IgnoreArguments().Return(expectedItem);
+
+            _conventions.PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression(skippedBefore);
+            _conventions.PartialForEachOfAfterEachItem = (model, index, total) => skippedAfter;
+
+            new RenderPartialExpression(_view, _renderer, _conventions)
+                .Using<TestUserControl>()
+                .WithoutListWrapper()
+                .For(new[] { _partialModel })
+                .ShouldEqual(expectedItem);
+        }
+
         public class TestModel
         {
             public PartialTestModel PartialModel { get; set; }

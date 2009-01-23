@@ -30,6 +30,8 @@ namespace FubuMVC.Core.Html.Expressions
         where PARTIALVIEW : Control, IFubuViewWithModel
     {
         IRenderPartialForScope<PARTIALVIEW> WithDefault(string defaultString);
+        IRenderPartialForScope<PARTIALVIEW> WithoutListWrapper();
+        IRenderPartialForScope<PARTIALVIEW> WithoutItemWrapper();
     }
 
     public class RenderPartialExpression
@@ -76,11 +78,25 @@ namespace FubuMVC.Core.Html.Expressions
             private object _partialModel;
             private int render_multiple_item_count = 0;
             private bool _renderMultipleItems;
+            private bool _renderListWrapper = true;
+            private bool _renderItemWrapper = true;
             private string _defaultString = "";
 
             public IRenderPartialForScope<PARTIALVIEW> WithDefault(string defaultString)
             {
                 _defaultString = defaultString;
+                return this;
+            }
+
+            public IRenderPartialForScope<PARTIALVIEW> WithoutListWrapper()
+            {
+                _renderListWrapper = false;
+                return this;
+            }
+
+            public IRenderPartialForScope<PARTIALVIEW> WithoutItemWrapper()
+            {
+                _renderItemWrapper = false;
                 return this;
             }
 
@@ -129,21 +145,21 @@ namespace FubuMVC.Core.Html.Expressions
                 {
                     var builder = new StringBuilder();
 
-                    builder.Append(Conventions.PartialForEachOfHeader(_partialModel, render_multiple_item_count));
+                    if (_renderItemWrapper) builder.Append(Conventions.PartialForEachOfHeader(_partialModel, render_multiple_item_count));
 
                     var current = 0;
 
                     foreach (var item in (IEnumerable) _partialModel)
                     {
-                        var before = Conventions.PartialForEachOfBeforeEachItem(item, current, render_multiple_item_count);
+                        var before = _renderListWrapper ? Conventions.PartialForEachOfBeforeEachItem(item, current, render_multiple_item_count).ToString() : "";
                         var renderedItem = RenderItem(item);
-                        var after = Conventions.PartialForEachOfAfterEachItem(item, current, render_multiple_item_count);
+                        var after = _renderListWrapper ? Conventions.PartialForEachOfAfterEachItem(item, current, render_multiple_item_count) : "";
                         builder.AppendFormat("{0}{1}{2}", before, renderedItem, after);
 
                         current++;
                     }
 
-                    builder.Append(Conventions.PartialForEachOfFooter(_partialModel, render_multiple_item_count));
+                    if (_renderItemWrapper) builder.Append(Conventions.PartialForEachOfFooter(_partialModel, render_multiple_item_count));
 
                     return builder.ToString();
                 }
