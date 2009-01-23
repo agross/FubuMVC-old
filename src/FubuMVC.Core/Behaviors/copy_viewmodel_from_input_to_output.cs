@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace FubuMVC.Core.Behaviors
@@ -7,12 +9,12 @@ namespace FubuMVC.Core.Behaviors
         where VIEWMODEL : class
     {
         private VIEWMODEL _inputViewModel;
-        private readonly PropertyInfo[] viewModelProperties;
+        private readonly IEnumerable<PropertyInfo> viewModelProperties;
 
         public copy_viewmodel_from_input_to_output()
         {
             Type viewModelType = typeof(VIEWMODEL);
-            viewModelProperties = viewModelType.GetProperties();
+            viewModelProperties = viewModelType.GetProperties().Where(p => p.GetGetMethod() != null && p.GetSetMethod() != null);
         }
 
         public override void PrepareInput<INPUT>(INPUT input)

@@ -38,8 +38,8 @@ namespace AltOxite.Web
                     .Will<set_user_from_http_cookie_if_current_user_is_not_authenticated>()
 
                     .Will<execute_the_result>()
-                    .Will<copy_viewmodel_from_input_to_output<ViewModel>>()
                     .Will<set_the_current_site_details_on_the_output_viewmodel>()
+                    .Will<copy_viewmodel_from_input_to_output<ViewModel>>()
                     );
                 
                 // Automatic controller registration
