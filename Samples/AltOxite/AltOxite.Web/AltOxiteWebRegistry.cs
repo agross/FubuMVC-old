@@ -4,7 +4,10 @@ using AltOxite.Core.Domain.Persistence;
 using AltOxite.Core.Persistence;
 using AltOxite.Core.Security;
 using AltOxite.Core.Services;
+using AltOxite.Core.Web.Controllers;
+using AltOxite.Core.Web.FeedConvertors;
 using FluentNHibernate.Framework;
+using FubuMVC.Core.Controller;
 using FubuMVC.Core.Security;
 using StructureMap.Attributes;
 using StructureMap.Configuration.DSL;
@@ -51,6 +54,9 @@ namespace AltOxite.Web
                 .TheDefault.Is.ConstructedBy(() =>
                     new SiteConfiguration()
                     .FromAppSetting("AltOxite.SiteConfiguration"));
+
+            ForRequestedType<IFeedConverterFor<IndexViewModel>>()
+                .TheDefault.Is.OfConcreteType<IndexViewModelFeedConvertor>();
         }
     }
 }

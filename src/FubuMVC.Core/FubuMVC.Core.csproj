@@ -65,6 +65,7 @@
     <Compile Include="Behaviors\ISupportResultOverride.cs" />
     <Compile Include="Behaviors\load_the_current_principal.cs" />
     <Compile Include="Behaviors\OutputAsJson.cs" />
+    <Compile Include="Behaviors\OutputAsRss.cs" />
     <Compile Include="Controller\Config\DSL\MethodInfoActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\AutoControllerConfiguration.cs" />
     <Compile Include="Controller\Config\DSL\ActionConfigExpression.cs" />
@@ -82,10 +83,12 @@
     <Compile Include="Controller\Config\IUrlResolver.cs" />
     <Compile Include="Controller\Config\FubuConventions.cs" />
     <Compile Include="Controller\Config\RequiredAttribute.cs" />
+    <Compile Include="Controller\IFeedConverterFor.cs" />
     <Compile Include="Controller\IInvocationResult.cs" />
     <Compile Include="Controller\Results\RedirectResult.cs" />
     <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResult.cs" />
     <Compile Include="Controller\Results\RenderJsonResult.cs" />
+    <Compile Include="Controller\Results\RenderRssResult.cs" />
     <Compile Include="Controller\Results\RenderViewResult.cs" />
     <Compile Include="Html\Expressions\ActionLinkExpression.cs" />
     <Compile Include="Html\Expressions\BoundExpression.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="LocalizationManager.cs" />
     <Compile Include="Routing\IOutputWriter.cs" />
     <Compile Include="Security\IPrincipalFactory.cs" />
+    <Compile Include="Util\RssUtil.cs" />
     <Compile Include="View\IFubuView.cs" />
     <Compile Include="View\IViewRenderer.cs" />
     <Compile Include="View\WebForms\IWebFormsControlBuilder.cs" />

@@ -138,6 +138,7 @@
     <Compile Include="Web\DisplayModels\LoginStatusDisplay.cs" />
     <Compile Include="Web\DisplayModels\PostDisplay.cs" />
     <Compile Include="Web\DisplayModels\TagDisplay.cs" />
+    <Compile Include="Web\FeedConvertors\IndexViewModelFeedConvertor.cs" />
     <Compile Include="Web\Html\BlogPostHtmlExtension.cs" />
     <Compile Include="Web\Html\HtmlExtensions.cs" />
     <Compile Include="Web\Html\LoginStatusExpression.cs" />

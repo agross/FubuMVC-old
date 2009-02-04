@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Web;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
@@ -54,6 +53,12 @@ namespace FubuMVC.Core.Html
             where CONTROLLER : class
         {
             return ActionUrl(viewPage, actionExpression) + ".json";
+        }
+
+        public static string RssUrl<CONTROLLER>(this IFubuView viewPage, Expression<Func<CONTROLLER, object>> actionExpression)
+            where CONTROLLER : class
+        {
+            return ActionUrl(viewPage, actionExpression) + ".rss";
         }
 
         public static string ActionUrl<CONTROLLER>(this IFubuView viewPage, Expression<Func<CONTROLLER, object>> actionExpression)

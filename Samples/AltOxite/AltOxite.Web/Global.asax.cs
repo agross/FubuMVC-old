@@ -58,6 +58,9 @@ namespace AltOxite.Web
                 // Manual overrides
                 /////////////////////////////////////////////////
 
+                // Enable this line to get the RSS to be triggered on the Home page 
+                //x.OverrideConfigFor(HomeAction, config => config.AddBehavior<OutputAsRss>());
+
                 //-- Make the primary URL for logout be "/logout" instead of "login/logout"
                 x.OverrideConfigFor(LogoutAction, config =>
                 {
@@ -144,6 +147,7 @@ namespace AltOxite.Web
             return expr;
         }
 
+        private readonly Expression<Func<HomeController, object>> HomeAction = c => c.Index(null);
         private readonly Expression<Func<LoginController, object>> LogoutAction = c => c.Logout(null);
         private readonly Expression<Func<BlogPostController, object>> BlogPostIndexAction = c => c.Index(null);
         private readonly Expression<Func<BlogPostController, object>> BlogPostCommentAction = c => c.Comment(null);
