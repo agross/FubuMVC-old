@@ -17,7 +17,7 @@ namespace AltOxite.Web
 {
     public class AltOxiteWebRegistry : Registry
     {
-        protected override void configure()
+        public AltOxiteWebRegistry()
         {
             ForRequestedType<ISessionSourceConfiguration>().AsSingletons()
                 .TheDefault.Is.OfConcreteType<SQLiteSessionSourceConfiguration>()

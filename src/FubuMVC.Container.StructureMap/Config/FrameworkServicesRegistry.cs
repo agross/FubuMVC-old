@@ -32,7 +32,7 @@ namespace FubuMVC.Container.StructureMap.Config
         //  - IWebFormsControlBuilder (for Web Forms/ASPX rendering)
         //  - IOutputWriter
 
-        protected override void configure()
+        public FrameworkServicesRegistry()
         {
             //routeConfigurer = new RouteConfigurer();
             //ForRequestedType<IRouteConfigurer>().TheDefault.IsThis(routeConfigurer);

@@ -16,7 +16,7 @@ namespace FubuMVC.Container.StructureMap.Config
                 application.");
         };
 
-        protected override void configure()
+        public ControllerConfig()
         {
             var conventions = new FubuConventions();
             var configuration = new FubuConfiguration(conventions);
