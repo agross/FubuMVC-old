@@ -47,6 +47,7 @@ namespace FubuMVC.Container.StructureMap.Config
             
             
             ForRequestedType<IOutputWriter>().TheDefault.Is.OfConcreteType<HttpResponseOutputWriter>();
+            ForRequestedType<ICurrentRequest>().TheDefault.Is.OfConcreteType<CurrentRequest>();
 
             ForRequestedType<ISecurityContext>().TheDefault.Is.OfConcreteType<WebSecurityContext>();
             ForRequestedType<IAuthenticationContext>().TheDefault.Is.OfConcreteType<WebAuthenticationContext>();

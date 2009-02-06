@@ -16,6 +16,9 @@ namespace FubuMVC.Core.Controller.Config
         public string ViewFileBasePath { get; set; }
         public string LayoutViewFileBasePath { get; set; }
         public string SharedViewFileBasePath { get; set; }
+        public string DefaultRssExtension { get; set; }
+        public string DefaultAtomExtension { get; set; }
+        public string DefaultJsonExtension { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
         public Func<ControllerActionConfig, string> UrlRouteParametersForAction { get; set; }
         public Func<Type, string> DefaultPathToPartialView { get; set; }
@@ -48,6 +51,10 @@ namespace FubuMVC.Core.Controller.Config
             ViewFileBasePath = "~/Views";
             LayoutViewFileBasePath = "~/Views/Layouts";
             SharedViewFileBasePath = "~/Views/Shared";
+
+            DefaultRssExtension = ".rss";
+            DefaultAtomExtension = ".atom";
+            DefaultAtomExtension = ".json";
 
             DefaultPathToViewForAction = config =>
             {

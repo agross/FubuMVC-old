@@ -13,7 +13,7 @@ namespace FubuMVC.Tests.Controller.Config
         {
             _config =
                 ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i));
+                    (c, i) => c.SomeAction(i), null);
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace FubuMVC.Tests.Controller.Config
         {
             _config.UniqueID.ShouldNotEqual(
                 ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i)).UniqueID);
+                    (c, i) => c.SomeAction(i), null).UniqueID);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void IsTheSameActionAs_should_compare_other_config_and_return_true_if_they_represent_the_same_action()
         {
-            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));
+            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i), null);
 
             _config.IsTheSameActionAs(otherConfig).ShouldBeTrue(); ;
         }
@@ -68,7 +68,7 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void IsTheSameActionAs_should_compare_other_config_and_return_false_if_they_do_not_represent_the_same_action()
         {
-            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.AnotherAction(i));
+            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.AnotherAction(i), null);
 
             _config.IsTheSameActionAs(otherConfig).ShouldBeFalse(); ;
         }

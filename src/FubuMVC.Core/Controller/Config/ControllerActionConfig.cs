@@ -10,20 +10,23 @@ namespace FubuMVC.Core.Controller.Config
 {
     public class ControllerActionConfig
     {
-        protected ControllerActionConfig()
+        private readonly FubuConventions _fubuConventions;
+
+        protected ControllerActionConfig(FubuConventions fubuConventions)
         {
+            _fubuConventions = fubuConventions;
             Behaviors = new List<Type>();
             OtherUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public static ControllerActionConfig ForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> expression)
+        public static ControllerActionConfig ForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> expression, FubuConventions conventions)
             where CONTROLLER : class
             where INPUT : class, new()
             where OUTPUT : class
         {
             var method = ReflectionHelper.GetMethod(expression);
 
-            return new ControllerActionConfig
+            return new ControllerActionConfig(conventions)
                 {
                     UniqueID = Guid.NewGuid().ToString(),
                     ControllerType = typeof (CONTROLLER),
@@ -141,6 +144,11 @@ namespace FubuMVC.Core.Controller.Config
         public virtual void AddOtherUrl(string url)
         {
             OtherUrls.Add(url);
+        }
+
+        public virtual void AddOtherUrl(Func<ControllerActionConfig, FubuConventions, string> function)
+        {
+            OtherUrls.Add(function(this, _fubuConventions));
         }
 
         public virtual void RemoveOtherUrl(string url)

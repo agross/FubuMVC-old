@@ -13,7 +13,7 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [SetUp]
         public void SetUp()
         {
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c,i)=>c.SomeAction(i));
+            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i), null);
             _expression = new ActionConfigExpression(_config);
         }
 

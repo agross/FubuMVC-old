@@ -23,7 +23,7 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [Test]
         public void Action_should_use_existing_config_if_present()
         {
-            var oldConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));
+            var oldConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i), null);
             _config.AddControllerActionConfig(oldConfig);
 
             _expression.Action<TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));

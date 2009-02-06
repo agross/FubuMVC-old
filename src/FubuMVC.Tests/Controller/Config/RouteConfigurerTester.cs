@@ -18,10 +18,10 @@ namespace FubuMVC.Tests.Controller.Config
         public void SetUp()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+                (c, i) => c.SomeAction(i), null);
 
             _otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.AnotherAction(i));
+                (c, i) => c.AnotherAction(i), null);
 
             _config.PrimaryUrl = "test/someaction";
             _otherConfig.PrimaryUrl = "test/anotheraction";
@@ -67,7 +67,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void should_override_app_default_if_specified()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+                (c, i) => c.SomeAction(i), null);
 
             _conventions.IsAppDefaultUrl = config => true;
 
@@ -83,7 +83,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void the_first_action_should_be_the_system_default()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+                (c, i) => c.SomeAction(i), null);
 
             _fubuConfig = new FubuConfiguration(_conventions);
             _fubuConfig.AddControllerActionConfig(_config);

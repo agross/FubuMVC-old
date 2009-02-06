@@ -2,7 +2,6 @@ using NUnit.Framework;
 using FubuMVC.Core;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Html;
-using Rhino.Mocks;
 
 namespace FubuMVC.Tests.Controller.Config
 {
@@ -25,7 +24,7 @@ namespace FubuMVC.Tests.Controller.Config
             _config = new FubuConfiguration(new FubuConventions());
 
             var actionConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+                (c, i) => c.SomeAction(i), null);
 
             actionConfig.PrimaryUrl = _actionUrl;
 

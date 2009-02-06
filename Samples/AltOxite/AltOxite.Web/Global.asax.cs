@@ -38,6 +38,7 @@ namespace AltOxite.Web
                     .Will<set_user_from_http_cookie_if_current_user_is_not_authenticated>()
 
                     .Will<execute_the_result>()
+                    .Will<OutputAsRss>()
                     .Will<set_the_current_site_details_on_the_output_viewmodel>()
                     .Will<copy_viewmodel_from_input_to_output<ViewModel>>()
                     );
@@ -59,7 +60,9 @@ namespace AltOxite.Web
                 /////////////////////////////////////////////////
 
                 // Enable this line to get the RSS to be triggered on the Home page 
-                //x.OverrideConfigFor(HomeAction, config => config.AddBehavior<OutputAsRss>());
+                x.OverrideConfigFor(HomeAction, config =>
+                    config.AddOtherUrl((controllerActionConfig, fubuConventions) =>
+                        controllerActionConfig.PrimaryUrl + fubuConventions.DefaultRssExtension));
 
                 //-- Make the primary URL for logout be "/logout" instead of "login/logout"
                 x.OverrideConfigFor(LogoutAction, config =>

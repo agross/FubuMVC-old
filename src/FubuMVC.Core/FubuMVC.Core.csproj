@@ -108,6 +108,7 @@
     <Compile Include="Html\Expressions\TextBoxExpression.cs" />
     <Compile Include="Html\UrlContext.cs" />
     <Compile Include="LocalizationManager.cs" />
+    <Compile Include="Routing\ICurrentRequest.cs" />
     <Compile Include="Routing\IOutputWriter.cs" />
     <Compile Include="Security\IPrincipalFactory.cs" />
     <Compile Include="Util\RssUtil.cs" />

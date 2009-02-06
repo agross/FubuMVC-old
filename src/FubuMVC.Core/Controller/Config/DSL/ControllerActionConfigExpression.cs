@@ -59,7 +59,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
             where INPUT : class, new()
             where OUTPUT : class
         {
-            var config = ControllerActionConfig.ForAction(actionExpression);
+            var config = ControllerActionConfig.ForAction(actionExpression, conventions);
 
             config.PrimaryUrl = conventions.PrimaryUrlConvention(config);
 
