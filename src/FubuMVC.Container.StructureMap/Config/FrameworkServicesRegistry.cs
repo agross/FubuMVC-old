@@ -1,3 +1,5 @@
+using System;
+using FubuMVC.Core.Controller;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Routing;
@@ -45,9 +47,13 @@ namespace FubuMVC.Container.StructureMap.Config
                 .CacheBy(InstanceScope.Hybrid)
                 .TheDefault.Is.OfConcreteType<DefaultControllerConfigContext>();
             
-            
             ForRequestedType<IOutputWriter>().TheDefault.Is.OfConcreteType<HttpResponseOutputWriter>();
             ForRequestedType<ICurrentRequest>().TheDefault.Is.OfConcreteType<CurrentRequest>();
+
+            // TODO: Get this to work so that when there is no feedconvertor registered it will return the default
+            // when no proper match is found
+            ForRequestedType(typeof(IFeedConverterFor<>)).TheDefaultIsConcreteType(typeof(DefaultFeedConverterFor));
+            //ForRequestedType<IFeedConverterFor<Object>>().TheDefault.Is.OfConcreteType<DefaultFeedConverterFor>();
 
             ForRequestedType<ISecurityContext>().TheDefault.Is.OfConcreteType<WebSecurityContext>();
             ForRequestedType<IAuthenticationContext>().TheDefault.Is.OfConcreteType<WebAuthenticationContext>();

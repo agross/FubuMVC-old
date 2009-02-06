@@ -1,50 +1,19 @@
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using System.ServiceModel.Syndication;
 
 namespace FubuMVC.Core.Controller
 {
     public interface IFeedConverterFor<MODEL>
     {
-        Feed ConvertModel(MODEL model);
+        bool TryConvertModel(MODEL model, out SyndicationFeed syndicationFeed);
     }
 
-    public class Feed
+    public class DefaultFeedConverterFor : IFeedConverterFor<Object> 
     {
-        private readonly IList<FeedItem> _feedItems = new List<FeedItem>();
-
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Link { get; set; }
-        public string Language { get; set; }
-
-        public void AddFeedItem(FeedItem feedItem)
+        public bool TryConvertModel(Object model, out SyndicationFeed syndicationFeed)
         {
-            _feedItems.Add(feedItem);
-        }
-        public IEnumerable<FeedItem> GetFeedItems()
-        {
-            return _feedItems.ToList();
-        }
-    }
-
-    public class FeedItem
-    {
-        private readonly IList<string> _tags = new List<string>();
-
-        public string Creator { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Link { get; set; }
-        public string PremaLink { get; set; }
-        public string PublishDate { get; set; }
-
-        public void AddTag(string tag)
-        {
-            _tags.Add(tag);
-        }
-        public IEnumerable<string> GetTags()
-        {
-            return _tags.ToList();
+            syndicationFeed = new SyndicationFeed();
+            return false;
         }
     }
 }

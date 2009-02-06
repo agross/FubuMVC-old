@@ -54,7 +54,7 @@ namespace FubuMVC.Core.Controller.Config
 
             DefaultRssExtension = ".rss";
             DefaultAtomExtension = ".atom";
-            DefaultAtomExtension = ".json";
+            DefaultJsonExtension = ".json";
 
             DefaultPathToViewForAction = config =>
             {
