@@ -52,8 +52,8 @@ namespace FubuMVC.Container.StructureMap.Config
 
             // TODO: Get this to work so that when there is no feedconvertor registered it will return the default
             // when no proper match is found
-            ForRequestedType(typeof(IFeedConverterFor<>)).TheDefaultIsConcreteType(typeof(DefaultFeedConverterFor));
-            //ForRequestedType<IFeedConverterFor<Object>>().TheDefault.Is.OfConcreteType<DefaultFeedConverterFor>();
+            ForRequestedType(typeof(IFeedConverterFor<>)).TheDefaultIsConcreteType(typeof(DefaultFeedConverter));
+            //ForRequestedType<IFeedConverterFor<Object>>().TheDefault.Is.OfConcreteType<DefaultFeedConverter>();
 
             ForRequestedType<ISecurityContext>().TheDefault.Is.OfConcreteType<WebSecurityContext>();
             ForRequestedType<IAuthenticationContext>().TheDefault.Is.OfConcreteType<WebAuthenticationContext>();

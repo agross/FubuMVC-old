@@ -8,7 +8,7 @@ namespace FubuMVC.Core.Controller
         bool TryConvertModel(MODEL model, out SyndicationFeed syndicationFeed);
     }
 
-    public class DefaultFeedConverterFor : IFeedConverterFor<Object> 
+    public class DefaultFeedConverter : IFeedConverterFor<Object> 
     {
         public bool TryConvertModel(Object model, out SyndicationFeed syndicationFeed)
         {
