@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 
 namespace AltOxite.Core.Config
 {

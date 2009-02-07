@@ -4,7 +4,12 @@ namespace AltOxite.Core.Domain.Persistence
     {
         public UserPersistenceMap()
         {
-            NotLazyLoaded();
+            MapEntity();
+        }
+
+        private void MapEntity() 
+        {
+            Not.LazyLoad();
 
             Map(u => u.Username);
             Map(u => u.DisplayName);
@@ -16,8 +21,8 @@ namespace AltOxite.Core.Domain.Persistence
             Map(u => u.Status);
             Map(u => u.UserRole);
             Map(u => u.Remember);
-            // Map(u => u.IsAuthenticated); // Does not have to be persisted
-            HasMany<Post>(u => u._posts).AsBag().Cascade.SaveUpdate().IsInverse();
+            //Map(u => u.IsAuthenticated); // Does not have to be persisted
+            HasMany(u => u._posts).AsBag().Cascade.SaveUpdate().Inverse();
         }
     }
 }

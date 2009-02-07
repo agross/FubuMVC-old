@@ -7,6 +7,11 @@ namespace AltOxite.Core.Domain.Persistence
     {
         public DomainEntityMap()
         {
+            MapEntity();
+        }
+
+        private void MapEntity()
+        {
             Id(e => e.ID).GeneratedBy.GuidComb();
         }
     }

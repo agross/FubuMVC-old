@@ -1,6 +1,6 @@
 using AltOxite.Core.Domain;
 using AltOxite.Core.Domain.Persistence;
-using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using FluentNHibernate.Framework;
 using NUnit.Framework;
 
