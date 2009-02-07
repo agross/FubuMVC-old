@@ -35,8 +35,8 @@ namespace FubuMVC.Core.Behaviors
                 if (feedConvertor.TryConvertModel(output, out syndicationFeed))
                 {
                     Result = ResultOverride.IfAvailable(output) ?? (isRss
-                        ? new RenderRssOrAtomResult(syndicationFeed.SaveAsRss20)
-                        : new RenderRssOrAtomResult(syndicationFeed.SaveAsRss20));
+                        ? new RenderRssOrAtomResult(syndicationFeed.SaveAsRss20, RenderRssOrAtomResult.RSS_CONTENT_TYPE)
+                        : new RenderRssOrAtomResult(syndicationFeed.SaveAsAtom10, RenderRssOrAtomResult.ATOM_CONTENT_TYPE));
                     return output;
                 }
 

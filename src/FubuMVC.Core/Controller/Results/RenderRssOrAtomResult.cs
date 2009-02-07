@@ -9,11 +9,14 @@ namespace FubuMVC.Core.Controller.Results
     public class RenderRssOrAtomResult : IInvocationResult
     {
         private readonly Action<XmlWriter> _saveAs;
-        public static readonly string RSS_CONTENT_TYPE = "text/xml;charset=utf-8";
+        private readonly string _contentType;
+        public static readonly string RSS_CONTENT_TYPE = "application/rss+xml";
+        public static readonly string ATOM_CONTENT_TYPE = "application/atom+xml";
 
-        public RenderRssOrAtomResult(Action<XmlWriter> saveAs)
+        public RenderRssOrAtomResult(Action<XmlWriter> saveAs, string contentType)
         {
             _saveAs = saveAs;
+            _contentType = contentType;
         }
 
         public void Execute(IServiceLocator locator)
@@ -34,7 +37,7 @@ namespace FubuMVC.Core.Controller.Results
 
         protected virtual void writeRssToOutput(IOutputWriter writer, string rss)
         {
-            writer.Write(RSS_CONTENT_TYPE, rss);
+            writer.Write(_contentType, rss);
         }
     }
 }
