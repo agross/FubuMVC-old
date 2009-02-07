@@ -1,4 +1,3 @@
-using System;
 using FubuMVC.Core.Controller;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
@@ -52,7 +51,7 @@ namespace FubuMVC.Container.StructureMap.Config
 
             // TODO: Get this to work so that when there is no feedconvertor registered it will return the default
             // when no proper match is found
-            ForRequestedType(typeof(IFeedConverterFor<>)).TheDefaultIsConcreteType(typeof(DefaultFeedConverter));
+            ForRequestedType(typeof(IFeedConverterFor<>)).TheDefaultIsConcreteType(typeof(DefaultFeedConverter<>));
             //ForRequestedType<IFeedConverterFor<Object>>().TheDefault.Is.OfConcreteType<DefaultFeedConverter>();
 
             ForRequestedType<ISecurityContext>().TheDefault.Is.OfConcreteType<WebSecurityContext>();
@@ -78,7 +77,7 @@ namespace FubuMVC.Container.StructureMap.Config
                     //x.With<DefaultConventionScanner>();  
                 });
         }
-
+        // TODO: What is this for?
         public IRouteConfigurer routeConfigurer { get; private set; }
     }
 }

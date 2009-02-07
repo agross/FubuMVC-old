@@ -12,12 +12,14 @@ namespace FubuMVC.Core.Behaviors
         private readonly IServiceLocator _locator;
         private readonly ICurrentRequest _currentRequest;
         private readonly FubuConventions _conventions;
+        private readonly IUrlResolver _urlResolver;
 
-        public OutputAsRssOrAtomFeed(IServiceLocator locator, ICurrentRequest currentRequest, FubuConventions conventions)
+        public OutputAsRssOrAtomFeed(IServiceLocator locator, ICurrentRequest currentRequest, FubuConventions conventions, IUrlResolver urlResolver)
         {
             _locator = locator;
             _currentRequest = currentRequest;
             _conventions = conventions;
+            _urlResolver = urlResolver;
         }
 
         public override OUTPUT AfterInvocation<OUTPUT>(OUTPUT output, IInvocationResult insideResult)
@@ -38,7 +40,7 @@ namespace FubuMVC.Core.Behaviors
                     return output;
                 }
 
-                Result = ResultOverride.IfAvailable(output) ?? new RedirectResult("404");
+                Result = ResultOverride.IfAvailable(output) ?? new RedirectResult(_urlResolver.PageNotFoundUrl());
                 return output;
             }
 

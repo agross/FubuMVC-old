@@ -62,12 +62,8 @@ namespace AltOxite.Web
                 // Enable this line to get the RSS to be triggered on the Home page 
                 x.OverrideConfigFor(HomeAction, config =>
                 {
-                    config.AddOtherUrl(
-                        (controllerActionConfig, fubuConventions) =>
-                            controllerActionConfig.PrimaryUrl + fubuConventions.DefaultRssExtension);
-                    config.AddOtherUrl(
-                        (controllerActionConfig, fubuConventions) =>
-                            controllerActionConfig.PrimaryUrl + fubuConventions.DefaultAtomExtension);
+                    config.AddRssFeedUrl();
+                    config.AddAtomFeedUrl();
                 });
 
                 //-- Make the primary URL for logout be "/logout" instead of "login/logout"
@@ -82,6 +78,8 @@ namespace AltOxite.Web
                 {
                     //TODO: This stinks, there should be a way to do the "blog" part without having to deal with the URL parameters
                     config.PrimaryUrl = "blog{0}".ToFormat(x.Conventions.UrlRouteParametersForAction(config));
+                    config.AddRssFeedUrl();
+                    config.AddAtomFeedUrl();
                 });
 
                 x.OverrideConfigFor(BlogPostCommentAction, config =>
@@ -97,10 +95,7 @@ namespace AltOxite.Web
                     config.PrimaryUrl = "tag/{Tag}";
                 });
 
-                x.OverrideConfigFor(PageNotFoundIndexAction, config =>
-                {
-                    config.PrimaryUrl = "404";
-                });
+                x.OverrideConfigFor(PageNotFoundIndexAction, config => config.IsPageNotFoundAction());
 
                 x.OverrideConfigFor(DebugIndexAction, config =>
                 {

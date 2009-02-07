@@ -46,10 +46,5 @@ namespace AltOxite.Core.Web
         {
             return ("~/Tag/" + tagName).ToFullUrl(); // TODO: _resolver.UrlFor<TagController>() + "/" + tagName;
         }
-
-        public static string PageNotFound(this IUrlResolver resolver)
-        {
-            return ("~/404").ToFullUrl(); // TODO: _resolver.UrlFor<PageNotFoundController>();
-        }
     }
 }

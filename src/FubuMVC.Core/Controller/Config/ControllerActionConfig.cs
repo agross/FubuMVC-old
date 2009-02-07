@@ -151,9 +151,29 @@ namespace FubuMVC.Core.Controller.Config
             OtherUrls.Add(function(this, _fubuConventions));
         }
 
+        public virtual void AddRssFeedUrl()
+        {
+            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultRssExtension);
+        }
+
+        public virtual void AddAtomFeedUrl()
+        {
+            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultAtomExtension);
+        }
+
+        public virtual void AddJsonUrl()
+        {
+            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultJsonExtension);
+        }
+
         public virtual void RemoveOtherUrl(string url)
         {
             OtherUrls.Remove(url);
+        }
+
+        public void IsPageNotFoundAction()
+        {
+            PrimaryUrl = _fubuConventions.PageNotFoundUrl;
         }
     }
 }

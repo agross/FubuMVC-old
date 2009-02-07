@@ -19,6 +19,8 @@ namespace FubuMVC.Core.Controller.Config
         public string DefaultRssExtension { get; set; }
         public string DefaultAtomExtension { get; set; }
         public string DefaultJsonExtension { get; set; }
+        public string PrimaryApplicationUrl { get; set; }
+        public string PageNotFoundUrl { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
         public Func<ControllerActionConfig, string> UrlRouteParametersForAction { get; set; }
         public Func<Type, string> DefaultPathToPartialView { get; set; }
@@ -39,6 +41,9 @@ namespace FubuMVC.Core.Controller.Config
 
             UrlRouteParametersForAction = GetUrlRouteParameters;
 
+            PrimaryApplicationUrl = "home/index";
+            PageNotFoundUrl = "404";
+
             PrimaryUrlConvention = config => "{0}/{1}{2}".ToFormat(
                                                  CanonicalControllerName(config.ControllerType),
                                                  config.ActionName,
@@ -46,7 +51,7 @@ namespace FubuMVC.Core.Controller.Config
 
             DefaultUrlForController = CanonicalControllerName;
 
-            IsAppDefaultUrl = config => PrimaryUrlConvention(config) == "home/index";
+            IsAppDefaultUrl = config => PrimaryUrlConvention(config) == PrimaryApplicationUrl;
             
             ViewFileBasePath = "~/Views";
             LayoutViewFileBasePath = "~/Views/Layouts";

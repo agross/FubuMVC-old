@@ -32,7 +32,7 @@ namespace AltOxite.Core.Web.Controllers
 
         public BlogPostViewModel Index(BlogPostViewModel inModel)
         {
-            var badRedirectResult = new BlogPostViewModel { ResultOverride = new RedirectResult(_resolver.PageNotFound()) };
+            var badRedirectResult = new BlogPostViewModel { ResultOverride = new RedirectResult(_resolver.PageNotFoundUrl()) };
 
             if (inModel.Slug.IsEmpty()) return badRedirectResult;
 
@@ -52,7 +52,7 @@ namespace AltOxite.Core.Web.Controllers
 
         public BlogPostViewModel Comment(BlogPostCommentViewModel inModel)
         {
-            var badRedirectResult = new BlogPostViewModel{ResultOverride = new RedirectResult(_resolver.PageNotFound())};
+            var badRedirectResult = new BlogPostViewModel{ResultOverride = new RedirectResult(_resolver.PageNotFoundUrl())};
 
             if (inModel.Slug.IsEmpty()) return badRedirectResult;
 

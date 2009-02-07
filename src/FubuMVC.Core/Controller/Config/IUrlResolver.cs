@@ -10,30 +10,45 @@ namespace FubuMVC.Core.Controller.Config
 
         string UrlFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> actionExpression)
             where CONTROLLER : class;
+
+        string PrimaryApplicationUrl();
+        string PageNotFoundUrl();
     }
 
     public class UrlResolver : IUrlResolver
     {
         private readonly FubuConfiguration _config;
+        private readonly FubuConventions _conventions;
 
-        public UrlResolver(FubuConfiguration config)
+        public UrlResolver(FubuConfiguration config, FubuConventions conventions)
         {
             _config = config;
+            _conventions = conventions;
         }
 
         public string UrlFor<CONTROLLER>()
             where CONTROLLER : class
         {
-            return toFullyResolvedPath(_config.GetDefaultUrlFor<CONTROLLER>());
+            return ToFullyResolvedPath(_config.GetDefaultUrlFor<CONTROLLER>());
         }
 
         public string UrlFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> actionExpression)
             where CONTROLLER : class
         {
-            return toFullyResolvedPath(_config.GetDefaultUrlFor(actionExpression));
+            return ToFullyResolvedPath(_config.GetDefaultUrlFor(actionExpression));
         }
 
-        public static string toFullyResolvedPath(string actionUrl)
+        public string PrimaryApplicationUrl()
+        {
+            return ToFullyResolvedPath(_conventions.PrimaryApplicationUrl).ToFullUrl();
+        }
+
+        public string PageNotFoundUrl()
+        {
+            return ToFullyResolvedPath(_conventions.PageNotFoundUrl).ToFullUrl();
+        }
+
+        public static string ToFullyResolvedPath(string actionUrl)
         {
             return ("~/" + actionUrl).ToFullUrl();
         }

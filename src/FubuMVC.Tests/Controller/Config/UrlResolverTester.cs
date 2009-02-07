@@ -9,6 +9,7 @@ namespace FubuMVC.Tests.Controller.Config
     public class UrlResolverTester
     {
         private FubuConfiguration _config;
+        private FubuConventions _conventions;
         private string _root;
         private string _actionUrl;
         private string _controllerUrl;
@@ -21,7 +22,8 @@ namespace FubuMVC.Tests.Controller.Config
             _controllerUrl = "test";
             UrlContext.Stub(_root);
 
-            _config = new FubuConfiguration(new FubuConventions());
+            _conventions = new FubuConventions();
+            _config = new FubuConfiguration(_conventions);
 
             var actionConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
                 (c, i) => c.SomeAction(i), null);
@@ -40,14 +42,14 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void should_resolve_to_full_url()
         {
-            new UrlResolver(_config).UrlFor<TestController>(c => c.SomeAction(null))
+            new UrlResolver(_config, _conventions).UrlFor<TestController>(c => c.SomeAction(null))
                 .ShouldEqual("{0}/{1}".ToFormat(_root, _actionUrl));
         }
 
         [Test]
         public void should_resolve_controller_url_to_full_url()
         {
-            new UrlResolver(_config).UrlFor<TestController>()
+            new UrlResolver(_config, _conventions).UrlFor<TestController>()
                 .ShouldEqual("{0}/{1}".ToFormat(_root, _controllerUrl));
         }
     }

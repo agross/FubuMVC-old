@@ -1,4 +1,3 @@
-using System;
 using System.ServiceModel.Syndication;
 
 namespace FubuMVC.Core.Controller
@@ -8,9 +7,9 @@ namespace FubuMVC.Core.Controller
         bool TryConvertModel(MODEL model, out SyndicationFeed syndicationFeed);
     }
 
-    public class DefaultFeedConverter : IFeedConverterFor<Object> 
+    public class DefaultFeedConverter<T> : IFeedConverterFor<T> 
     {
-        public bool TryConvertModel(Object model, out SyndicationFeed syndicationFeed)
+        public bool TryConvertModel(T model, out SyndicationFeed syndicationFeed)
         {
             syndicationFeed = new SyndicationFeed();
             return false;
