@@ -19,11 +19,11 @@ versionNumber = ENV["BUILD_NUMBER"].nil? ? 0 : ENV["BUILD_NUMBER"]
 
 props = { :archive => "build" }
 
-desc "Compiles, unit tests, generates the database, and then runs integration tests"
+desc "Compiles, unit tests, generates the database"
 task :all => [:default]
 
 desc "**Default**, compiles and runs tests"
-task :default => [:compile, :unit_test, :integration_test]
+task :default => [:compile, :unit_test]
 
 desc "Displays a list of tasks"
 task :help do
@@ -58,7 +58,6 @@ end
 desc "Compiles the app"
 task :compile => [:clean, :version] do
   MSBuildRunner.compile :compilemode => COMPILE_TARGET, :solutionfile => 'src/FubuMVC.sln', :clrversion => CLR_VERSION
-  AspNetCompilerRunner.compile :webPhysDir => "Samples/AltOxite/AltOxite.Web"
     
   outDir = "src/FubuMVC.Core/bin/#{COMPILE_TARGET}"
     
@@ -74,13 +73,4 @@ desc "Runs unit tests"
 task :unit_test => :compile do
   runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'src', :platform => 'x86'
   runner.executeTests ['FubuMVC.Tests']  
-  
-  runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'samples/AltOxite', :platform => 'x86'
-  runner.executeTests ['AltOxite.Tests']  
-end
-
-desc "Runs unit tests"
-task :integration_test => :compile do
-  runner = NUnitRunner.new :compilemode => COMPILE_TARGET, :source => 'samples/AltOxite', :platform => 'x86'
-  runner.executeTests ['AltOxite.IntegrationTests']
 end
