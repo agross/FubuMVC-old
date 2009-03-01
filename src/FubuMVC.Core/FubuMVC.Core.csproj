@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E18FD922-0E7A-49CD-B89F-473826077B9D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -69,6 +69,7 @@
     <Compile Include="Behaviors\load_the_current_principal.cs" />
     <Compile Include="Behaviors\OutputAsJson.cs" />
     <Compile Include="Behaviors\OutputAsRssOrAtomFeed.cs" />
+    <Compile Include="Controller\Config\DSL\CustomConventionExpression.cs" />
     <Compile Include="Controller\Config\DSL\MethodInfoActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\AutoControllerConfiguration.cs" />
     <Compile Include="Controller\Config\DSL\ActionConfigExpression.cs" />
@@ -93,6 +94,11 @@
     <Compile Include="Controller\Results\RenderJsonResult.cs" />
     <Compile Include="Controller\Results\RenderRssOrAtomResult.cs" />
     <Compile Include="Controller\Results\RenderViewResult.cs" />
+    <Compile Include="Conventions\ControllerActions\wire_up_debug_handler_URL.cs" />
+    <Compile Include="Conventions\ControllerActions\wire_up_404_handler_URL.cs" />
+    <Compile Include="Conventions\ControllerActions\wire_up_RSS_and_ATOM_URLs_if_required.cs" />
+    <Compile Include="Conventions\IFubuConvention.cs" />
+    <Compile Include="Conventions\ControllerActions\wire_up_JSON_URL_if_required.cs" />
     <Compile Include="Html\Expressions\ActionLinkExpression.cs" />
     <Compile Include="Html\Expressions\BoundExpression.cs" />
     <Compile Include="Html\Expressions\CheckboxExpression.cs" />

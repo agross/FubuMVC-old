@@ -21,8 +21,6 @@ namespace FubuMVC.Core.Controller.Config
         {
             _config = configuration;
             _conventions = conventions;
-
-            _config.GetControllerActionConfigs().Each(ConfigureAction);
         }
         
         public Route AppDefaultRoute { get; private set; }
@@ -74,8 +72,15 @@ namespace FubuMVC.Core.Controller.Config
             return _registeredRoutes.AsEnumerable();
         }
 
+        public void Configure()
+        {
+            _config.GetControllerActionConfigs().Each(ConfigureAction);
+        }
+
         public void LoadRoutes(RouteCollection routeCollection)
         {
+            if( _registeredRoutes.Count == 0 ) Configure();
+
             _registeredRoutes.Each(r => routeCollection.Add(r));
         }
     }

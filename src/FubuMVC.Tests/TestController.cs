@@ -3,12 +3,24 @@ using System.Web.UI;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core.Conventions;
 using FubuMVC.Core.View;
 
 namespace FubuMVC.Tests
 {
     public class TestController
     {
+        public TestController()
+        {
+        }
+
+        public TestController(IFubuConvention<TestController>[] conventions)
+        {
+            Conventions = conventions;
+        }
+
+        public IFubuConvention<TestController>[] Conventions { get; private set; }
+
         public TestOutputModel RequiredParamsAction(TestInputRequiredModel value)
         {
             return new TestOutputModel();
@@ -115,6 +127,38 @@ namespace FubuMVC.Tests
         public OUTPUT Invoke<INPUT, OUTPUT>(INPUT input, Func<INPUT, OUTPUT> func)
             where INPUT : class
             where OUTPUT : class
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class TestControllerConvention : IFubuConvention<TestController>
+    {
+        public void Apply(TestController item)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class AnotherTestControllerConvention : IFubuConvention<TestController>
+    {
+        public void Apply(TestController item)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class TestBehaviorConvention : IFubuConvention<TestBehavior>
+    {
+        public void Apply(TestBehavior item)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class AnotherTestBehaviorConvention : IFubuConvention<TestBehavior>
+    {
+        public void Apply(TestBehavior item)
         {
             throw new System.NotImplementedException();
         }

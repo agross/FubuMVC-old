@@ -26,7 +26,7 @@ namespace FubuMVC.Tests.Controller.Config
             _config = new FubuConfiguration(_conventions);
 
             var actionConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             actionConfig.PrimaryUrl = _actionUrl;
 

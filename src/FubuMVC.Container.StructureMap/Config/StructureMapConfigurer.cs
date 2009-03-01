@@ -4,6 +4,7 @@ using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Util;
 using StructureMap.Configuration.DSL;
 using StructureMap.Pipeline;
@@ -28,6 +29,14 @@ namespace FubuMVC.Container.StructureMap.Config
             registry.ForRequestedType<FubuConventions>().TheDefault.IsThis(_conventions);
             registry.ForRequestedType<FubuConfiguration>().TheDefault.IsThis(_configuration);
 
+            _conventions.GetCustomConventionTargetTypes().Each(target =>
+            {
+                var interfaceType = typeof (IFubuConvention<>).MakeGenericType(target);
+                var conventions = _conventions.GetCustomConventionTypesFor(target);
+
+                conventions.Each(convType => registry.InstanceOf(interfaceType).Is(convType));
+            });
+            
             _configuration.GetControllerActionConfigs().Each(e =>
             {
                 registry.ForRequestedType(e.ControllerType).TheDefaultIsConcreteType(e.ControllerType);

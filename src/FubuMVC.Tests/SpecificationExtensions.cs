@@ -50,7 +50,7 @@ namespace FubuMVC.Tests
 
         public static object ShouldEqual(this string actual, object expected)
         {
-            Assert.AreEqual(expected.ToString(), actual);
+            Assert.AreEqual((expected != null) ? expected.ToString() : null, actual);
             return expected;
         }
 

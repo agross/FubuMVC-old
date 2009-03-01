@@ -4,6 +4,7 @@ using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
+using FubuMVC.Core.Conventions;
 using NUnit.Framework;
 using StructureMap.Configuration.DSL;
 
@@ -38,6 +39,11 @@ namespace FubuMVC.Tests.StructureMap
                 .Action<TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i), b => b.RemoveAllBehaviors())
                 .Action<TestInputModel, TestOutputModel2>((c, i) => c.AnotherAction(i))
                 .Action<TestInputModel, TestOutputModel3>((c, i) => c.ThirdAction(i), b => b.DoesNot<TestBehavior2>()));
+
+            dsl.Conventions.AddCustomConvention<TestControllerConvention, TestController>();
+            dsl.Conventions.AddCustomConvention<AnotherTestControllerConvention, TestController>();
+            dsl.Conventions.AddCustomConvention<TestBehaviorConvention, TestBehavior>();
+            dsl.Conventions.AddCustomConvention<AnotherTestBehaviorConvention, TestBehavior>();
 
             _configurer = new StructureMapConfigurer(_conventions, _config);
 
@@ -109,6 +115,26 @@ namespace FubuMVC.Tests.StructureMap
         {
             _thirdActionInvoker.Behavior.ShouldBeOfType<TestBehavior>()
                 .InsideBehavior.ShouldBeOfType<DefaultBehavior>();
+        }
+
+        [Test]
+        public void DSL_should_register_custom_conventions_in_the_container()
+        {
+            var convArray = _container.GetAllInstances<IFubuConvention<TestBehavior>>().ToArray();
+
+            convArray.ShouldHaveCount(2);
+            convArray[0].ShouldBeOfType<TestBehaviorConvention>();
+            convArray[1].ShouldBeOfType<AnotherTestBehaviorConvention>();
+        }
+
+        [Test]
+        public void DSL_should_register_custom_conventions_in_the_container_and_inject_them_when_requested()
+        {
+            var convArray = _controller.Conventions.ToArray();
+
+            convArray.ShouldHaveCount(2);
+            convArray[0].ShouldBeOfType<TestControllerConvention>();
+            convArray[1].ShouldBeOfType<AnotherTestControllerConvention>();
         }
     }
 }

@@ -177,12 +177,14 @@ namespace FubuMVC.Core.Util
             return null;
         }
 
+        public KEY[] GetAllKeys()
+        {
+            return _values.Keys.ToArray();
+        }
+
         public VALUE[] GetAll()
         {
-            VALUE[] returnValue = new VALUE[Count];
-            _values.Values.CopyTo(returnValue, 0);
-
-            return returnValue;
+            return _values.Values.ToArray();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

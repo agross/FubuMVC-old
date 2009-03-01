@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using FubuMVC.Core.Behaviors;
@@ -10,23 +9,20 @@ namespace FubuMVC.Core.Controller.Config
 {
     public class ControllerActionConfig
     {
-        private readonly FubuConventions _fubuConventions;
-
-        protected ControllerActionConfig(FubuConventions fubuConventions)
+        protected ControllerActionConfig()
         {
-            _fubuConventions = fubuConventions;
             Behaviors = new List<Type>();
             OtherUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public static ControllerActionConfig ForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> expression, FubuConventions conventions)
+        public static ControllerActionConfig ForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> expression)
             where CONTROLLER : class
             where INPUT : class, new()
             where OUTPUT : class
         {
             var method = ReflectionHelper.GetMethod(expression);
 
-            return new ControllerActionConfig(conventions)
+            return new ControllerActionConfig
                 {
                     UniqueID = Guid.NewGuid().ToString(),
                     ControllerType = typeof (CONTROLLER),
@@ -68,8 +64,8 @@ namespace FubuMVC.Core.Controller.Config
             return ((Expression<Func<CONTROLLER, INPUT, OUTPUT>>)ActionFunc).Compile();
         }
 
-        public virtual IEnumerable<string> GetOtherUrls() { return OtherUrls.AsEnumerable(); }
-        public virtual IEnumerable<Type> GetBehaviors() { return Behaviors.AsEnumerable(); }
+        public virtual IEnumerable<string> GetOtherUrls() { return OtherUrls; }
+        public virtual IEnumerable<Type> GetBehaviors() { return Behaviors; }
 
         public static string GetActionName(MethodInfo method)
         {
@@ -146,34 +142,9 @@ namespace FubuMVC.Core.Controller.Config
             OtherUrls.Add(url);
         }
 
-        public virtual void AddOtherUrl(Func<ControllerActionConfig, FubuConventions, string> function)
-        {
-            OtherUrls.Add(function(this, _fubuConventions));
-        }
-
-        public virtual void AddRssFeedUrl()
-        {
-            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultRssExtension);
-        }
-
-        public virtual void AddAtomFeedUrl()
-        {
-            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultAtomExtension);
-        }
-
-        public virtual void AddJsonUrl()
-        {
-            AddOtherUrl((controllerActionConfig, fubuConventions) => controllerActionConfig.PrimaryUrl + fubuConventions.DefaultJsonExtension);
-        }
-
         public virtual void RemoveOtherUrl(string url)
         {
             OtherUrls.Remove(url);
-        }
-
-        public void IsPageNotFoundAction()
-        {
-            PrimaryUrl = _fubuConventions.PageNotFoundUrl;
         }
     }
 }

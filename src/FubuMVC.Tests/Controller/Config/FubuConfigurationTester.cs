@@ -15,7 +15,7 @@ namespace FubuMVC.Tests.Controller.Config
         {
             _fubuConfig = new FubuConfiguration(new FubuConventions());
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             _fubuConfig.AddControllerActionConfig(_config);
         }
@@ -69,7 +69,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void AddControllerActionConfig_should_throw_if_config_has_same_controller_type_and_action_as_another_config()
         {
             var dupeConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             typeof (InvalidOperationException).ShouldBeThrownBy(
                 () => _fubuConfig.AddControllerActionConfig(dupeConfig));

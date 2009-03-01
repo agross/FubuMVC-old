@@ -1,13 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Html.Expressions;
+using FubuMVC.Core.Util;
 
 namespace FubuMVC.Core.Controller.Config
 {
+    //public class FubuConventionSet<T>
+    //    where T : class
+    //{
+    //    public Type ForType { get; private set; }
+    //    public Type[] ConventionTypes { get; private set; }
+    //}
+
     public class FubuConventions
     {
+        private readonly Cache<Type,IList<Type>> _customConventions = new Cache<Type, IList<Type>>(t=>new List<Type>());
+
         public FubuConventions()
         {
             SetBaseDefaults();
@@ -98,6 +110,23 @@ namespace FubuMVC.Core.Controller.Config
             requiredProps.Each(p => builder.AppendFormat("/{{{0}}}", p.Name));
 
             return builder.ToString();
+        }
+
+        public virtual void AddCustomConvention<CONVENTION,TARGET>()
+            where CONVENTION : IFubuConvention<TARGET>
+            where TARGET : class
+        {
+            _customConventions.Retrieve(typeof (TARGET)).Add(typeof (CONVENTION));
+        }
+
+        public IEnumerable<Type> GetCustomConventionTargetTypes()
+        {
+            return _customConventions.GetAllKeys();
+        }
+
+        public IEnumerable<Type> GetCustomConventionTypesFor(Type targetType)
+        {
+            return _customConventions.Retrieve(targetType);
         }
     }
 }

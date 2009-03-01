@@ -18,10 +18,10 @@ namespace FubuMVC.Tests.Controller.Config
         public void SetUp()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             _otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.AnotherAction(i), null);
+                (c, i) => c.AnotherAction(i));
 
             _config.PrimaryUrl = "test/someaction";
             _otherConfig.PrimaryUrl = "test/anotheraction";
@@ -31,6 +31,7 @@ namespace FubuMVC.Tests.Controller.Config
             _fubuConfig.AddControllerActionConfig(_config);
             _fubuConfig.AddControllerActionConfig(_otherConfig);
             _registry = new RouteConfigurer(_fubuConfig, _conventions);
+            _registry.Configure();
         }
 
         [Test]
@@ -67,7 +68,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void should_override_app_default_if_specified()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             _conventions.IsAppDefaultUrl = config => true;
 
@@ -75,6 +76,7 @@ namespace FubuMVC.Tests.Controller.Config
             _fubuConfig.AddControllerActionConfig(_config);
 
             _registry = new RouteConfigurer(_fubuConfig, _conventions);
+            _registry.Configure();
 
             ((ActionRouteHandler)_registry.AppDefaultRoute.RouteHandler).Config.ShouldBeTheSameAs(_config);
         }
@@ -83,12 +85,13 @@ namespace FubuMVC.Tests.Controller.Config
         public void the_first_action_should_be_the_system_default()
         {
             _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             _fubuConfig = new FubuConfiguration(_conventions);
             _fubuConfig.AddControllerActionConfig(_config);
 
             _registry = new RouteConfigurer(_fubuConfig, _conventions);
+            _registry.Configure();
 
             ((ActionRouteHandler)_registry.AppDefaultRoute.RouteHandler).Config.ShouldBeTheSameAs(_config);
         }
@@ -104,12 +107,12 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void should_have_all_expected_route_urls()
         {
-            var routes = _registry.GetRegisteredRoutes().ToArray();
-
-            routes[0].Url.ShouldEqual("");
-            routes[1].Url.ShouldEqual("test");
-            routes[2].Url.ShouldEqual("test/someaction");
-            routes[3].Url.ShouldEqual("test/anotheraction");
+            _registry.GetRegisteredRoutes().Select(r => r.Url)
+                .ShouldHaveTheSameElementsAs(
+                "",
+                "test",
+                "test/someaction",
+                "test/anotheraction");
         }
     }
 }

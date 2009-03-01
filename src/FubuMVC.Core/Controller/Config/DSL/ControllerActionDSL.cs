@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using FubuMVC.Core.Conventions;
 
 namespace FubuMVC.Core.Controller.Config.DSL
 {
@@ -42,6 +43,17 @@ namespace FubuMVC.Core.Controller.Config.DSL
         public void UsingConventions(Action<FubuConventions> conventionFunc)
         {
             conventionFunc(_conventions);
+        }
+
+        public void ActionConventions(Action<CustomConventionExpression<ControllerActionConfig>> conventionAction)
+        {
+            conventionAction(new CustomConventionExpression<ControllerActionConfig>(_conventions));
+        }
+
+        public void UsingCustomConventionsFor<TARGET>(Action<CustomConventionExpression<TARGET>> conventionAction)
+            where TARGET : class
+        {
+            conventionAction(new CustomConventionExpression<TARGET>(_conventions));
         }
 
         public ControllerActionDSL ForController<CONTROLLER>(

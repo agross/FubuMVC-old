@@ -1,4 +1,5 @@
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core.Conventions;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config
@@ -22,7 +23,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void UrlRouteParametersForAction_should_return_url_formated_route_parameters_for_UrlRequired_input_viewmodel_properties()
         {
             var config = ControllerActionConfig.ForAction<TestController, TestInputRequiredModel, TestOutputModel>(
-                (c, i) => c.RequiredParamsAction(i), null);
+                (c, i) => c.RequiredParamsAction(i));
 
             new FubuConventions().UrlRouteParametersForAction(config).ShouldStartWith("/{Prop1}");
         }
@@ -31,7 +32,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void UrlRouteParametersForAction_should_preserve_url_parameter_ordering_as_declared_on_the_input_type()
         {
             var config = ControllerActionConfig.ForAction<TestController, TestInputRequiredModel, TestOutputModel>(
-                (c, i) => c.RequiredParamsAction(i), null);
+                (c, i) => c.RequiredParamsAction(i));
 
             new FubuConventions().UrlRouteParametersForAction(config).ShouldEqual("/{Prop1}/{Prop3}/{Prop2}");
         }
@@ -40,7 +41,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void PrimaryUrlConvention_should_default_to_the_controller_canonical_name_and_action_name()
         {
             var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             new FubuConventions().PrimaryUrlConvention(config).ShouldEqual("test/someaction");
         }
@@ -85,7 +86,7 @@ namespace FubuMVC.Tests.Controller.Config
         public void DefaultPathToViewForAction_should_be_view_base_path_plus_controller_canon_name_plus_action_name()
         {
             var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), null);
+                (c, i) => c.SomeAction(i));
 
             var conv = new FubuConventions { ViewFileBasePath = "foo"};
             conv.DefaultPathToViewForAction(config).ShouldEqual("foo/test/someaction.aspx");
@@ -131,8 +132,42 @@ namespace FubuMVC.Tests.Controller.Config
             conv.PartialForEachOfFooter(null, 0).ShouldEqual("</ul>");
         }
 
-        private class TestPartialView
+        [Test]
+        public void should_not_return_any_conventions_when_none_have_been_registered()
+        {
+            var conv = new FubuConventions();
+            conv.AddCustomConvention<CustomConv, TestPartialView>();
 
+            conv.GetCustomConventionTypesFor(typeof(FubuConventionsTester)).ShouldHaveCount(0);
+        }
+
+        [Test]
+        public void should_return_only_the_conventions_for_the_type_requested()
+        {
+            var conv = new FubuConventions();
+            conv.AddCustomConvention<CustomConv, TestPartialView>();
+            conv.AddCustomConvention<TestConv, FubuConventionsTester>();
+
+            conv.GetCustomConventionTypesFor(typeof(FubuConventionsTester)).ShouldHaveTheSameElementsAs(typeof(TestConv));
+        }
+        
+        private class CustomConv : IFubuConvention<TestPartialView>
+        {
+            public void Apply(TestPartialView item)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        private class TestConv : IFubuConvention<FubuConventionsTester>
+        {
+            public void Apply(FubuConventionsTester item)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+        private class TestPartialView
         { }
     }
 }
