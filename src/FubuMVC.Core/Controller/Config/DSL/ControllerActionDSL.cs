@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FubuMVC.Core.Conventions;
 
@@ -23,22 +24,26 @@ namespace FubuMVC.Core.Controller.Config.DSL
     {
         private readonly FubuConventions _conventions;
         private readonly FubuConfiguration _config;
+        private readonly IEnumerable<IControllerActionConfigurer> _standardConfigurers;
 
         public ControllerActionDSL(FubuConfiguration config, FubuConventions conventions)
+            : this( config, conventions, new[]
+                {
+                    new ThunderdomeActionConfigurer()
+                })
+        {
+        }
+
+        public ControllerActionDSL(FubuConfiguration config, FubuConventions conventions, IEnumerable<IControllerActionConfigurer> standardConfigurers)
         {
             _conventions = conventions;
             _config = config;
+            _standardConfigurers = standardConfigurers;
         }
 
         public FubuConventions Conventions { get { return _conventions; } }
 
         public ByDefaultDSLChain ByDefault { get { return new ByDefaultDSLChain(_config); } }
-
-        [Obsolete("Use ByDefault.EveryControllerAction(...) instead", true)]
-        public void ByDefaultActions(Action<BehaviorExpression> behaviorExpression)
-        {
-            behaviorExpression(new BehaviorExpression(_config));
-        }
 
         public void UsingConventions(Action<FubuConventions> conventionFunc)
         {
@@ -56,22 +61,14 @@ namespace FubuMVC.Core.Controller.Config.DSL
             conventionAction(new CustomConventionExpression<TARGET>(_conventions));
         }
 
-        public ControllerActionDSL ForController<CONTROLLER>(
-            Action<IConfigureActionExpression<CONTROLLER>> configAction)
-            where CONTROLLER : class
+        public void AddControllerActions(Action<IAssemblyControllerScanningExpression> expressionAction)
         {
-            var controllerExpression = new ControllerActionConfigExpression<CONTROLLER>(_config, _conventions);
-            configAction(controllerExpression);
-            
-            return this;
-        }
+            var expression = new AssemblyControllerScanningExpression(_conventions, _standardConfigurers);
+            expressionAction(expression);
+            //NOTE: here'd be a great place to sniff the configs and possibly modify them
 
-        public AssemblyControllerScanningExpression AddControllersFromAssembly
-        {
-            get
-            {
-                return new AssemblyControllerScanningExpression(_config, _conventions);
-            }
+            expression.DiscoveredConfigs.Each(actionConfig => _config.AddControllerActionConfig(actionConfig));
+
         }
 
         public void OverrideConfigFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> expression, Action<ControllerActionConfig> configAction)

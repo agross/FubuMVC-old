@@ -1,4 +1,5 @@
 using System.Web.Routing;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 using FubuMVC.Core.Controller.Config;
 using System.Linq;
@@ -17,11 +18,11 @@ namespace FubuMVC.Tests.Controller.Config
         [SetUp]
         public void SetUp()
         {
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
 
-            _otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.AnotherAction(i));
+            method = ReflectionHelper.GetMethod<TestController>(c => c.AnotherAction(null));
+            _otherConfig = new ControllerActionConfig(method, null, null);
 
             _config.PrimaryUrl = "test/someaction";
             _otherConfig.PrimaryUrl = "test/anotheraction";
@@ -67,8 +68,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void should_override_app_default_if_specified()
         {
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
 
             _conventions.IsAppDefaultUrl = config => true;
 
@@ -84,8 +85,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void the_first_action_should_be_the_system_default()
         {
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
 
             _fubuConfig = new FubuConfiguration(_conventions);
             _fubuConfig.AddControllerActionConfig(_config);

@@ -45,7 +45,6 @@ namespace FubuMVC.Container.StructureMap.Config
 
                 var behaviorInstance = new ConfiguredInstance(typeof(DefaultBehavior));
 
-                // TODO: #123 Added Reverse() here to ge the order correct, need to verify that this is the appropriate location
                 e.GetBehaviors().Reverse().Each(t =>
                 {
                     behaviorInstance = new ConfiguredInstance(t)
@@ -62,10 +61,8 @@ namespace FubuMVC.Container.StructureMap.Config
             void Config(Registry registry, Instance behaviorInstance);
         }
 
-        public class InvokerInstanceConfigurer<CONTROLLER, INPUT, OUTPUT> : IInvokerInstanceConfigurer
-            where CONTROLLER : class
-            where INPUT : class, new()
-            where OUTPUT : class
+        public class InvokerInstanceConfigurer<INVOKER_TYPE> : IInvokerInstanceConfigurer
+            where INVOKER_TYPE : IControllerActionInvoker
         {
             private readonly ControllerActionConfig _config;
 
@@ -76,8 +73,8 @@ namespace FubuMVC.Container.StructureMap.Config
             
             public void Config(Registry registry, Instance behaviorInstance)
             {
-                registry.ForRequestedType<IControllerActionInvoker<CONTROLLER, INPUT, OUTPUT>>()
-                    .TheDefault.Is.OfConcreteType<ThunderdomeActionInvoker<CONTROLLER, INPUT, OUTPUT>>()
+                registry.ForRequestedType<IControllerActionInvoker>()
+                    .TheDefault.Is.OfConcreteType<INVOKER_TYPE>()
                     .WithName(_config.UniqueID)
                     .CtorDependency<IControllerActionBehavior>().Is(behaviorInstance);
             }
@@ -85,7 +82,7 @@ namespace FubuMVC.Container.StructureMap.Config
 
         public static IInvokerInstanceConfigurer GetConfigurer(ControllerActionConfig config)
         {
-            var configurerType = typeof(InvokerInstanceConfigurer<,,>).MakeGenericType(config.ControllerType, config.InputType, config.OutputType);
+            var configurerType = typeof(InvokerInstanceConfigurer<>).MakeGenericType(config.InvokerType);
 
             return (IInvokerInstanceConfigurer) Activator.CreateInstance(configurerType, config);
         }

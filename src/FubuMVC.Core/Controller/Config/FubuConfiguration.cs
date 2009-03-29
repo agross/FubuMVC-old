@@ -12,7 +12,6 @@ namespace FubuMVC.Core.Controller.Config
         private readonly HashSet<Type> _behaviors = new HashSet<Type>();
         private readonly IList<ControllerActionConfig> _actionConfigs = new List<ControllerActionConfig>();
 
-        private readonly Cache<Type, ControllerActionConfig> _configByController = new Cache<Type, ControllerActionConfig>();
         private readonly Cache<Type, string> _defaultUrlByController = new Cache<Type, string>();
         private readonly FubuConventions _conventions;
 
@@ -43,10 +42,6 @@ namespace FubuMVC.Core.Controller.Config
 
             config.ApplyDefaultBehaviors(GetDefaultBehaviors());
             _actionConfigs.Add(config);
-
-            if (_configByController.Has(config.ControllerType)) return;
-
-            _configByController.Store(config.ControllerType, config);
 
             var defaultPathToController = _conventions.DefaultUrlForController(config.ControllerType);
             _defaultUrlByController.Store(config.ControllerType, defaultPathToController);
@@ -82,14 +77,6 @@ namespace FubuMVC.Core.Controller.Config
 
         public ControllerActionConfig GetConfigForAction<CONTROLLER>(Expression<Func<CONTROLLER, object>> actionExpression)
             where CONTROLLER : class
-        {
-            return GetControllerActionConfigs().FirstOrDefault(c => c.IsTheSameActionAs(actionExpression));
-        }
-
-        public ControllerActionConfig GetConfigForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> actionExpression)
-            where CONTROLLER : class
-            where INPUT : class, new()
-            where OUTPUT : class
         {
             return GetControllerActionConfigs().FirstOrDefault(c => c.IsTheSameActionAs(actionExpression));
         }

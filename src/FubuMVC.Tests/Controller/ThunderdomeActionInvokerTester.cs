@@ -27,7 +27,7 @@ namespace FubuMVC.Tests.Controller
         [Test]
         public void should_throw_exception_if_there_was_a_problem_populating_the_input_model()
         {
-            typeof (InvalidOperationException).ShouldBeThrownBy(() => _invoker.Invoke((c, i) => null, new Dictionary<string, object>{{"PropInt", "BOGUS"}}));
+            typeof (InvalidOperationException).ShouldBeThrownBy(() => _invoker.Invoke(new Func<TestController, TestInputModel, TestOutputModel>((c, i) => null), new Dictionary<string, object>{{"PropInt", "BOGUS"}}));
         }
 
         [Test]
@@ -36,7 +36,7 @@ namespace FubuMVC.Tests.Controller
             var testName = "TEST";
             var requestData = new Dictionary<string, object> { { "Prop1", testName } };
 
-            _invoker.Invoke((c, i) => c.SomeAction(i), requestData);
+            _invoker.Invoke(new Func<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i)), requestData);
 
             _behavior.AssertWasCalled(b => b.Invoke<TestInputModel, TestOutputModel>(null, null), o => o.IgnoreArguments());
         }

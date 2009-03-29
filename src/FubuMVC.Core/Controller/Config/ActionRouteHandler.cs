@@ -14,17 +14,10 @@ namespace FubuMVC.Core.Controller.Config
 
     public class ActionRouteHandler : IActionRoute
     {
-        private readonly Type _handlerType;
-
         public ActionRouteHandler(ControllerActionConfig config)
         {
             GetRequestDataFromContext = context => new AggregateDictionary(context.HttpContext.Request, context.RouteData);
-
             Config = config;
-            _handlerType =  typeof (ActionHttpHandler<,,>).MakeGenericType(
-                Config.ControllerType,
-                Config.InputType,
-                Config.OutputType);
         }
 
         public ControllerActionConfig Config { get; private set; }
@@ -35,13 +28,13 @@ namespace FubuMVC.Core.Controller.Config
         {
             var requestData = GetRequestDataFromContext(requestContext);
 
-            return (IHttpHandler)Activator.CreateInstance(_handlerType, Config, requestData);
+            return new ActionHttpHandler(Config, requestData);
         }
     }
 
-    public class ActionHttpHandler<CONTROLLER, INPUT, OUTPUT> : IHttpHandler where CONTROLLER : class where INPUT : class, new() where OUTPUT : class
+    public class ActionHttpHandler : IHttpHandler
     {
-        private readonly Func<CONTROLLER, INPUT, OUTPUT> _actionFunc;
+        private readonly Delegate _actionDelegate;
         private readonly IDictionary<string, object> _requestData;
         private readonly ControllerActionConfig _config;
 
@@ -49,7 +42,7 @@ namespace FubuMVC.Core.Controller.Config
         {
             _config = config;
             _requestData = requestData;
-            _actionFunc = config.GetActionFunc<CONTROLLER, INPUT, OUTPUT>();
+            _actionDelegate = config.ActionDelegate;
         }
 
         public virtual void HandleRequest()
@@ -62,8 +55,8 @@ namespace FubuMVC.Core.Controller.Config
             var configContext = locator.GetInstance<IControllerConfigContext>();
             configContext.CurrentConfig = _config;
 
-            var invoker = locator.GetInstance<IControllerActionInvoker<CONTROLLER, INPUT, OUTPUT>>(_config.UniqueID);
-            invoker.Invoke(_actionFunc, _requestData);
+            var invoker = locator.GetInstance<IControllerActionInvoker>(_config.UniqueID);
+            invoker.Invoke(_actionDelegate, _requestData);
         }
 
         #region IHttpHandler stuff

@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
 using FubuMVC.Core.Behaviors;
-using Microsoft.Practices.ServiceLocation;
 
 namespace FubuMVC.Core.Controller
 {
-    public interface IControllerActionInvoker<CONTROLLER, INPUT, OUTPUT>
-        where CONTROLLER : class
-        where INPUT : class, new()
-        where OUTPUT : class
+    public interface IControllerActionInvoker
     {
-        void Invoke(Func<CONTROLLER, INPUT, OUTPUT> actionFunc, IDictionary<string, object> requestData);
+        void Invoke(Delegate actionDelegate, IDictionary<string, object> requestData);
     }
 
-    public class ThunderdomeActionInvoker<CONTROLLER, INPUT, OUTPUT> : IControllerActionInvoker<CONTROLLER, INPUT, OUTPUT>
+    public class ThunderdomeActionInvoker<CONTROLLER, INPUT, OUTPUT> : IControllerActionInvoker
         where CONTROLLER : class
         where INPUT : class, new()
         where OUTPUT : class
@@ -42,9 +38,10 @@ namespace FubuMVC.Core.Controller
             return input;
         }
 
-        public void Invoke(Func<CONTROLLER, INPUT, OUTPUT> actionFunc, IDictionary<string, object> requestData)
+        public void Invoke(Delegate actionDelegate, IDictionary<string, object> requestData)
         {
             var input = CreateActionInput(requestData);
+            var actionFunc = (Func<CONTROLLER, INPUT, OUTPUT>) actionDelegate;
 
             Behavior.Invoke(input, i => actionFunc(_controller, i));
         }

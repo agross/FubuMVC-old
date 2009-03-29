@@ -1,6 +1,7 @@
 using System;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Conventions.ControllerActions;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Conventions.ControllerActions
@@ -23,9 +24,8 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         [Test]
         public void should_not_apply_if_not_PageNotFound_controller_Index_action()
         {
-            var config =
-                ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             expectedPrimaryUrl = config.PrimaryUrl;
 
@@ -37,9 +37,8 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         [Test]
         public void should_only_apply_if_PageNotFound_controller_Index_action()
         {
-            var config =
-                ControllerActionConfig.ForAction<PageNotFoundController, object, object>(
-                    (c, i) => c.Index(i));
+            var method = ReflectionHelper.GetMethod<PageNotFoundController>(c => c.Index(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             convention.Apply(config);
 

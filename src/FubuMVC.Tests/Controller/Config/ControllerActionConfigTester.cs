@@ -1,3 +1,4 @@
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 using FubuMVC.Core.Controller.Config;
 
@@ -11,17 +12,17 @@ namespace FubuMVC.Tests.Controller.Config
         [SetUp]
         public void SetUp()
         {
-            _config =
-                ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
         }
 
         [Test]
         public void key_should_a_unique_guid()
         {
-            _config.UniqueID.ShouldNotEqual(
-                ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i)).UniqueID);
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var otherConfig = new ControllerActionConfig(method, null, null);
+
+            _config.UniqueID.ShouldNotEqual(otherConfig.UniqueID);
         }
 
         [Test]
@@ -60,7 +61,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void IsTheSameActionAs_should_compare_other_config_and_return_true_if_they_represent_the_same_action()
         {
-            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var otherConfig = new ControllerActionConfig(method, null, null);
 
             _config.IsTheSameActionAs(otherConfig).ShouldBeTrue(); ;
         }
@@ -68,7 +70,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void IsTheSameActionAs_should_compare_other_config_and_return_false_if_they_do_not_represent_the_same_action()
         {
-            var otherConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.AnotherAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.AnotherAction(null));
+            var otherConfig = new ControllerActionConfig(method, null, null);
 
             _config.IsTheSameActionAs(otherConfig).ShouldBeFalse(); ;
         }

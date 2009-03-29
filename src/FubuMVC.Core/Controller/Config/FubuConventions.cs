@@ -101,8 +101,12 @@ namespace FubuMVC.Core.Controller.Config
 
         public virtual string GetUrlRouteParameters(ControllerActionConfig config)
         {
+            var parameters = config.ActionMethod.GetParameters();
+
+            if (parameters.Length == 0) return "";
+
             var requiredProps =
-                config.InputType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
+                parameters[0].ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                 .Where(p => p.HasCustomAttribute<RequiredAttribute>());
 
             var builder = new StringBuilder();

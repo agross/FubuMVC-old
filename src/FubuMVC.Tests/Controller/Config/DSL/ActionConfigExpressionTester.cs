@@ -1,4 +1,5 @@
 using FubuMVC.Core.Controller.Config.DSL;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 using FubuMVC.Core.Controller.Config;
 
@@ -13,7 +14,8 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [SetUp]
         public void SetUp()
         {
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
             _expression = new ActionConfigExpression(_config);
         }
 

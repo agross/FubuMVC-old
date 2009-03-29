@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FubuMVC.Container.StructureMap.Config;
 using FubuMVC.Core.Behaviors;
@@ -35,10 +36,19 @@ namespace FubuMVC.Tests.StructureMap
                   .Will<TestBehavior>()
                   .Will<TestBehavior2>()));
 
-            dsl.ForController<TestController>(a => a
-                .Action<TestInputModel, TestOutputModel>((c, i) => c.SomeAction(i), b => b.RemoveAllBehaviors())
-                .Action<TestInputModel, TestOutputModel2>((c, i) => c.AnotherAction(i))
-                .Action<TestInputModel, TestOutputModel3>((c, i) => c.ThirdAction(i), b => b.DoesNot<TestBehavior2>()));
+            dsl.AddControllerActions(a =>
+                 a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                      from t in types
+                      where t.Name == "TestController"
+                      from m in t.GetMethods()
+                      where 
+                        (m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel))
+                        || m.Name == "AnotherAction"
+                        || m.Name == "ThirdAction"
+                      select m));
+
+            dsl.OverrideConfigFor<TestController>(c=>c.SomeAction(null), c=>c.RemoveAllBehaviors());
+            dsl.OverrideConfigFor<TestController>(c => c.ThirdAction(null), c => c.RemoveBehavior<TestBehavior2>());
 
             dsl.Conventions.AddCustomConvention<TestControllerConvention, TestController>();
             dsl.Conventions.AddCustomConvention<AnotherTestControllerConvention, TestController>();
@@ -64,17 +74,17 @@ namespace FubuMVC.Tests.StructureMap
             var thirdActionConfig = configs[2];
 
             _invoker =
-                _container.GetInstance<IControllerActionInvoker<TestController, TestInputModel, TestOutputModel>>(
+                _container.GetInstance<IControllerActionInvoker>(
                     firstActionConfig.UniqueID)
                     .ShouldBeOfType<ThunderdomeActionInvoker<TestController, TestInputModel, TestOutputModel>>();
 
             _anotherInvoker =
-                _container.GetInstance<IControllerActionInvoker<TestController, TestInputModel, TestOutputModel2>>(
+                _container.GetInstance<IControllerActionInvoker>(
                     secondActionConfig.UniqueID)
                     .ShouldBeOfType<ThunderdomeActionInvoker<TestController, TestInputModel, TestOutputModel2>>();
 
             _thirdActionInvoker =
-                _container.GetInstance<IControllerActionInvoker<TestController, TestInputModel, TestOutputModel3>>(
+                _container.GetInstance<IControllerActionInvoker>(
                     thirdActionConfig.UniqueID)
                     .ShouldBeOfType<ThunderdomeActionInvoker<TestController, TestInputModel, TestOutputModel3>>();
         }

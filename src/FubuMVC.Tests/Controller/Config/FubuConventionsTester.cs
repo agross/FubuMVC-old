@@ -1,5 +1,6 @@
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Conventions;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config
@@ -22,8 +23,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void UrlRouteParametersForAction_should_return_url_formated_route_parameters_for_UrlRequired_input_viewmodel_properties()
         {
-            var config = ControllerActionConfig.ForAction<TestController, TestInputRequiredModel, TestOutputModel>(
-                (c, i) => c.RequiredParamsAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.RequiredParamsAction(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             new FubuConventions().UrlRouteParametersForAction(config).ShouldStartWith("/{Prop1}");
         }
@@ -31,8 +32,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void UrlRouteParametersForAction_should_preserve_url_parameter_ordering_as_declared_on_the_input_type()
         {
-            var config = ControllerActionConfig.ForAction<TestController, TestInputRequiredModel, TestOutputModel>(
-                (c, i) => c.RequiredParamsAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.RequiredParamsAction(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             new FubuConventions().UrlRouteParametersForAction(config).ShouldEqual("/{Prop1}/{Prop3}/{Prop2}");
         }
@@ -40,8 +41,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void PrimaryUrlConvention_should_default_to_the_controller_canonical_name_and_action_name()
         {
-            var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             new FubuConventions().PrimaryUrlConvention(config).ShouldEqual("test/someaction");
         }
@@ -85,8 +86,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void DefaultPathToViewForAction_should_be_view_base_path_plus_controller_canon_name_plus_action_name()
         {
-            var config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var config = new ControllerActionConfig(method, null, null);
 
             var conv = new FubuConventions { ViewFileBasePath = "foo"};
             conv.DefaultPathToViewForAction(config).ShouldEqual("foo/test/someaction.aspx");

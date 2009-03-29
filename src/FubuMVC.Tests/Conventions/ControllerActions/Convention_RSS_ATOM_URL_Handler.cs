@@ -2,6 +2,7 @@ using System.Linq;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Conventions.ControllerActions;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Conventions.ControllerActions
@@ -22,10 +23,8 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
             expectedAtomExtension = "__EXPECTED_ATOM__";
             fubuConventions = new FubuConventions { DefaultRssExtension = expectedRssExtension, DefaultAtomExtension = expectedAtomExtension};
             convention = new wire_up_RSS_and_ATOM_URLs_if_required(fubuConventions);
-
-            config =
-                ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                    (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            config = new ControllerActionConfig(method, null, null);
         }
 
         [Test]

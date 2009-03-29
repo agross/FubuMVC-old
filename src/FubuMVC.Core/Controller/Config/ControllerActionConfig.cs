@@ -9,40 +9,30 @@ namespace FubuMVC.Core.Controller.Config
 {
     public class ControllerActionConfig
     {
-        protected ControllerActionConfig()
+        public ControllerActionConfig(MethodInfo actionMethod, Type invokerType, Delegate actionFunc)
+            : this()
         {
-            Behaviors = new List<Type>();
-            OtherUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            ActionMethod = actionMethod;
+            ActionName = GetActionName(actionMethod);
+            ControllerType = actionMethod.DeclaringType;
+            InvokerType = invokerType;
+            ActionDelegate = actionFunc;
         }
 
-        public static ControllerActionConfig ForAction<CONTROLLER, INPUT, OUTPUT>(Expression<Func<CONTROLLER, INPUT, OUTPUT>> expression)
-            where CONTROLLER : class
-            where INPUT : class, new()
-            where OUTPUT : class
+        protected ControllerActionConfig()
         {
-            var method = ReflectionHelper.GetMethod(expression);
-
-            return new ControllerActionConfig
-                {
-                    UniqueID = Guid.NewGuid().ToString(),
-                    ControllerType = typeof (CONTROLLER),
-                    ActionMethod = method,
-                    ActionFunc = expression,
-                    ActionName = GetActionName(method),
-                    InputType = typeof (INPUT),
-                    OutputType = typeof (OUTPUT)
-                };
+            UniqueID = Guid.NewGuid().ToString();
+            Behaviors = new List<Type>();
+            OtherUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);            
         }
 
         protected IList<Type> Behaviors { get; set; }
         protected HashSet<string> OtherUrls { get; set; }
-
-        public virtual Type ControllerType { get; protected set;}
-        public virtual Expression ActionFunc { get; protected set; }
-        public virtual MethodInfo ActionMethod { get; protected set; }
-        public virtual string ActionName { get; protected set; }
-        public virtual Type InputType { get; protected set; }
-        public virtual Type OutputType { get; protected set; }
+        public Type InvokerType { get; protected set; }
+        public Type ControllerType { get; protected set;}
+        public Delegate ActionDelegate { get; protected set; }
+        public MethodInfo ActionMethod { get; protected set; }
+        public string ActionName { get; protected set; }
         public string PrimaryUrl { get; set; }
 
         public string UniqueID { get; private set; }
@@ -61,7 +51,7 @@ namespace FubuMVC.Core.Controller.Config
             where INPUT : class, new()
             where OUTPUT : class
         {
-            return ((Expression<Func<CONTROLLER, INPUT, OUTPUT>>)ActionFunc).Compile();
+            return (Func<CONTROLLER, INPUT, OUTPUT>)ActionDelegate;
         }
 
         public virtual IEnumerable<string> GetOtherUrls() { return OtherUrls; }
@@ -72,47 +62,15 @@ namespace FubuMVC.Core.Controller.Config
             return method.Name.ToLowerInvariant();
         }
 
-        public bool IsTheSameActionAs<C, I, O>(Expression<Func<C, I, O>> otherFunc)
-            where C : class
-            where I : class
-            where O : class
-        {
-            return IsTheSameActionAs(typeof(C), ReflectionHelper.GetMethod(otherFunc));
-        }
-
         public bool IsTheSameActionAs<C>(Expression<Func<C, object>> otherFunc)
            where C : class
         {
-            return IsTheSameActionAs(typeof(C), ReflectionHelper.GetMethod(otherFunc));
-        }
-
-        protected virtual bool IsTheSameActionAs(Type otherControllerType, MethodInfo actionMethod)
-        {
-            var methodParams = actionMethod.GetParameters();
-
-            if (methodParams.Length != 1)
-            {
-                return false;
-            }
-
-            var otherActionName = GetActionName(actionMethod);
-            return IsTheSameActionAs(otherControllerType, otherActionName, methodParams[0].ParameterType, actionMethod.ReturnType);
+            return ActionMethod == ReflectionHelper.GetMethod(otherFunc);
         }
 
         public virtual bool IsTheSameActionAs(ControllerActionConfig otherConfig)
         {
-            var otherControllerType = otherConfig.ControllerType;
-            var otherActionName = otherConfig.ActionName;
-
-            return IsTheSameActionAs(otherControllerType, otherActionName, otherConfig.InputType, otherConfig.OutputType);
-        }
-
-        protected virtual bool IsTheSameActionAs(Type otherControllerType, string otherActionName, Type otherInputType, Type otherOutputType)
-        {
-            return ActionName.Equals(otherActionName, StringComparison.OrdinalIgnoreCase) 
-                    && otherControllerType == ControllerType
-                    && otherInputType == InputType
-                    && otherOutputType == OutputType;
+            return ActionMethod == otherConfig.ActionMethod;
         }
 
         public virtual void ApplyDefaultBehaviors(IEnumerable<Type> defaultBehaviors)

@@ -1,54 +1,92 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace FubuMVC.Core.Controller.Config.DSL
 {
-    public class AssemblyControllerScanningExpression
+    public interface IAssemblyControllerScanningExpression
     {
-        private readonly AutoControllerConfiguration _autoConfig;
-        private readonly FubuConfiguration _fubuConfig;
+        void UsingTypesInTheSameAssemblyAs<T>(Func<IEnumerable<Type>, IEnumerable<MethodInfo>> typeScanner);
+        void UsingTypesInTheSameAssemblyAs<T>(Action<ITypeScanningExpression> expressionAction);
+        void UsingConfigurer(IControllerActionConfigurer configurer);
+    }
+
+    public class AssemblyControllerScanningExpression : IAssemblyControllerScanningExpression
+    {
+        private readonly IEnumerable<IControllerActionConfigurer> _standardConfigurers;
+        private readonly IList<IControllerActionConfigurer> _customConfigurers = new List<IControllerActionConfigurer>();
+        private readonly IList<ControllerActionConfig> _actionConfigs = new List<ControllerActionConfig>();
         private readonly FubuConventions _conventions;
 
-        public AssemblyControllerScanningExpression(FubuConfiguration fubuConfig, FubuConventions conventions)
+        public AssemblyControllerScanningExpression(FubuConventions conventions, IEnumerable<IControllerActionConfigurer> standardConfigurers)
         {
-            _fubuConfig = fubuConfig;
             _conventions = conventions;
-            _autoConfig = new AutoControllerConfiguration();
+            _standardConfigurers = standardConfigurers;
         }
 
-        public void ContainingType<T>(Action<ControllerTypeScanningExpression> typeScannerAction)
+        public IEnumerable<IControllerActionConfigurer> CustomConfigurers { get { return _customConfigurers; } }
+
+        public IEnumerable<ControllerActionConfig> DiscoveredConfigs
         {
-            var assembly = typeof (T).Assembly;
-            var expression = new ControllerTypeScanningExpression(_autoConfig, assembly);
-            typeScannerAction(expression);
-
-            apply_autoconfig_to_fubuconfig();
+            get { return _actionConfigs.AsEnumerable(); }
         }
 
-        private void apply_autoconfig_to_fubuconfig()
+        public void UsingTypesInTheSameAssemblyAs<T>(Action<ITypeScanningExpression> expressionAction)
         {
-            _autoConfig.GetDiscoveredActions().Each(action => AddConfigFromDiscoveredAction(action));
+            var expression = new TypeControllerScanningExpression(this, GetPotentialControllerTypes<T>());
+
+            expressionAction(expression);
+
+            AddDiscoveredActions(expression.DiscoveredActions);
         }
 
-        public ControllerActionConfig AddConfigFromDiscoveredAction(DiscovererdAction action)
+        public void UsingTypesInTheSameAssemblyAs<T>(Func<IEnumerable<Type>, IEnumerable<MethodInfo>> typeScanner)
         {
-            var configurerType = typeof (MethodInfoActionConfigurer<,,>)
-                .MakeGenericType(action.ControllerType, action.InputType, action.OutputType);
+            var initialTypeList = GetPotentialControllerTypes<T>();
 
-            var configurer = (IControllerActionConfigurer) Activator.CreateInstance(configurerType);
+            var methods = typeScanner(initialTypeList);
 
-            return configurer.Configure(action.Action, _fubuConfig, _conventions);
+            AddDiscoveredActions(methods);
         }
 
-        //TODO: Future?
-        //public ControllerTypeScanningExpression Named(string assemblyName)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IEnumerable<Type> GetPotentialControllerTypes<T>()
+        {
+            var assembly = typeof(T).Assembly;
+            return assembly.GetExportedTypes().Where(
+                type =>
+                    !type.IsAbstract
+                    && !type.IsValueType);
+        }
 
-        //TODO: Future?
-        //public ControllerTypeScanningExpression CurrentlyExecuting()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void UsingConfigurer(IControllerActionConfigurer configurer)
+        {
+            _customConfigurers.Add(configurer);
+        }
+
+        public void AddDiscoveredActions(IEnumerable<MethodInfo> methods)
+        {
+            _actionConfigs.AddRange(methods.Select(method => AddConfigFromDiscoveredAction(method)));
+        }
+
+        public ControllerActionConfig AddConfigFromDiscoveredAction(MethodInfo method)
+        {
+            var configurer = _customConfigurers.FirstOrDefault(c => c.ShouldConfigure(method));
+
+            if (configurer == null) configurer = _standardConfigurers.FirstOrDefault(c => c.ShouldConfigure(method));
+
+            if( configurer == null )
+            {
+                throw new InvalidOperationException(
+                    "None of the controller action configurers indicated that they could configure the method '{0}' on controller '{1}'. Either filter these types of methods out of the list of potential action methods during configuration, or create a custom configurer that can configure them as actions."
+                        .ToFormat(method.Name, method.DeclaringType.Name));
+            }
+
+
+            var config = configurer.Configure(method);
+            config.PrimaryUrl = _conventions.PrimaryUrlConvention(config);
+
+            return config;
+        }
     }
 }

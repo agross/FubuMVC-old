@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FubuMVC.Core.Controller.Config;
@@ -27,11 +28,29 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         }
 
         [Test]
+        public void should_setup_actions_when_using_simple_action_selector()
+        {
+            _dsl.AddControllerActions(a =>
+                 a.UsingTypesInTheSameAssemblyAs<TestController>(x =>
+                     x.SelectTypes(t=> t == typeof(TestController))
+                      .SelectMethods(m=>
+                      m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel)
+                      )));
+
+            _config.GetControllerActionConfigs().Single()
+                .GetBehaviors().ShouldHaveTheSameElementsAs(typeof(TestBehavior), typeof(TestBehavior2));
+        }
+
+        [Test]
         public void should_setup_action_with_default_behaviors()
         {
-            _dsl.ForController<TestController>(x => x
-                .Action<TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i)));
+            _dsl.AddControllerActions(a =>
+                 a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                      from t in types
+                      where t.Name == "TestController"
+                      from m in t.GetMethods()
+                      where m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel)
+                      select m));
 
             _config.GetControllerActionConfigs().Single()
                 .GetBehaviors().ShouldHaveTheSameElementsAs(typeof(TestBehavior), typeof(TestBehavior2));
@@ -40,9 +59,15 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [Test]
         public void should_support_behavior_overrides()
         {
-            _dsl.ForController<TestController>(x => x
-                .Action<TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i), o=>o.DoesNot<TestBehavior>()));
+            _dsl.AddControllerActions(a =>
+                 a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                      from t in types
+                      where t.Name == "TestController"
+                      from m in t.GetMethods()
+                      where m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel)
+                      select m));
+
+            _dsl.OverrideConfigFor<TestController>(c=>c.SomeAction(null),config=>config.RemoveBehavior<TestBehavior>());
 
             _config.GetControllerActionConfigs().Single()
                 .GetBehaviors().ShouldHaveTheSameElementsAs(typeof(TestBehavior2));
@@ -51,13 +76,14 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [Test]
         public void should_auto_config_controllers_according_to_conventions()
         {
-            _dsl.AddControllersFromAssembly
-                .ContainingType<TestController>(x => 
-                    {
-                        x.Where(t => t.Name == "TestController");
-                        x.MapActionsWhere((m,i,o) => m.Name.Equals("SomeAction"));
-                    });
-
+            _dsl.AddControllerActions(a =>
+                  a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                       from t in types
+                       where t.Name == "TestController"
+                       from m in t.GetMethods()
+                       where m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel)
+                       select m));
+            
             var actionConfig = _config.GetControllerActionConfigs().Single();
             
             actionConfig.ControllerType.ShouldEqual(typeof (TestController));
@@ -67,12 +93,13 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [Test]
         public void should_override_correct_action_config()
         {
-            _dsl.AddControllersFromAssembly
-                .ContainingType<TestController>(x =>
-                {
-                    x.Where(t => t.Name == "TestController");
-                    x.MapActionsWhere((m, i, o) => m.Name.Equals("SomeAction"));
-                });
+            _dsl.AddControllerActions(a =>
+                  a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                       from t in types
+                       where t.Name == "TestController"
+                       from m in t.GetMethods()
+                       where m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel)
+                       select m));
 
             var actionConfig = _config.GetControllerActionConfigs().Single();
 
@@ -87,12 +114,13 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         [Test]
         public void should_override_correct_actionname_from_an_other_action()
         {
-            _dsl.AddControllersFromAssembly
-                .ContainingType<TestController>(x =>
-                {
-                    x.Where(t => t.Name == "TestController");
-                    x.MapActionsWhere((m, i, o) => m.Name.EndsWith("Action"));
-                }); 
+            _dsl.AddControllerActions(a =>
+                  a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                       from t in types
+                       where t.Name == "TestController"
+                       from m in t.GetMethods()
+                       where m.Name.EndsWith("Action") &&  m.GetParameters()[0].ParameterType != typeof(Int32)
+                       select m)); 
 
             var actionConfig = _config.GetControllerActionConfigs().Where(c => c.PrimaryUrl == "test/someaction").FirstOrDefault();
 

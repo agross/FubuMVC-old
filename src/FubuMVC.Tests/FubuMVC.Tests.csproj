@@ -76,15 +76,12 @@
     <Compile Include="Behaviors\DefaultBehaviorTester.cs" />
     <Compile Include="Behaviors\LoadCurrentPrincipalTester.cs" />
     <Compile Include="Behaviors\OutputAsJsonTester.cs" />
-    <Compile Include="Controller\Config\DSL\AutoControllerConfigurationTester.cs" />
     <Compile Include="Controller\Config\DSL\ActionConfigExpressionTester.cs" />
     <Compile Include="Controller\Config\ControllerActionConfigTester.cs" />
     <Compile Include="Controller\Config\DSL\AssemblyControllerScanningExpressionTester.cs" />
-    <Compile Include="Controller\Config\DSL\ControllerTypeScanningExpressionTester.cs" />
-    <Compile Include="Controller\Config\DSL\MethodInfoActionConfigurerTester.cs" />
+    <Compile Include="Controller\Config\DSL\ThunderdomeActionConfigurerTester.cs" />
     <Compile Include="Controller\Config\LocalizationTester.cs" />
     <Compile Include="Controller\Config\RouteConfigurerTester.cs" />
-    <Compile Include="Controller\Config\DSL\ControllerActionConfigExpressionTester.cs" />
     <Compile Include="Behaviors\BehaviorTestContext.cs" />
     <Compile Include="Controller\Config\FubuConfigurationTester.cs" />
     <Compile Include="Controller\Config\FubuConventionsTester.cs" />

@@ -1,5 +1,6 @@
 using System;
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config
@@ -14,8 +15,8 @@ namespace FubuMVC.Tests.Controller.Config
         public void SetUp()
         {
             _fubuConfig = new FubuConfiguration(new FubuConventions());
-            _config = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            _config = new ControllerActionConfig(method, null, null);
 
             _fubuConfig.AddControllerActionConfig(_config);
         }
@@ -68,8 +69,8 @@ namespace FubuMVC.Tests.Controller.Config
         [Test]
         public void AddControllerActionConfig_should_throw_if_config_has_same_controller_type_and_action_as_another_config()
         {
-            var dupeConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var dupeConfig = new ControllerActionConfig(method, null, null);
 
             typeof (InvalidOperationException).ShouldBeThrownBy(
                 () => _fubuConfig.AddControllerActionConfig(dupeConfig));

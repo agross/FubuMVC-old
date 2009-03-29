@@ -1,3 +1,4 @@
+using FubuMVC.Core.Util;
 using NUnit.Framework;
 using FubuMVC.Core;
 using FubuMVC.Core.Controller.Config;
@@ -25,8 +26,8 @@ namespace FubuMVC.Tests.Controller.Config
             _conventions = new FubuConventions();
             _config = new FubuConfiguration(_conventions);
 
-            var actionConfig = ControllerActionConfig.ForAction<TestController, TestInputModel, TestOutputModel>(
-                (c, i) => c.SomeAction(i));
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var actionConfig = new ControllerActionConfig(method, null, null);
 
             actionConfig.PrimaryUrl = _actionUrl;
 
