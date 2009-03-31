@@ -170,7 +170,7 @@ namespace FubuMVC.Core.Html.Expressions
             private string RenderItem(object modelItem)
             {
                 return Renderer.RenderView(
-                    Conventions.DefaultPathToPartialView(_viewType), 
+                    Conventions.DefaultPathToPartialView(ParentPage, _viewType), 
                     modelItem,
                     SetupAction);
             }

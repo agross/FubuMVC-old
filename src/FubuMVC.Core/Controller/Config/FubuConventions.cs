@@ -6,6 +6,7 @@ using System.Text;
 using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.Util;
+using FubuMVC.Core.View;
 
 namespace FubuMVC.Core.Controller.Config
 {
@@ -35,7 +36,7 @@ namespace FubuMVC.Core.Controller.Config
         public string PageNotFoundUrl { get; set; }
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
         public Func<ControllerActionConfig, string> UrlRouteParametersForAction { get; set; }
-        public Func<Type, string> DefaultPathToPartialView { get; set; }
+        public Func<IFubuViewWithModel, Type, string> DefaultPathToPartialView { get; set; }
         public Func<Type, string> CanonicalControllerName { get; set; }
         public Func<ControllerActionConfig, string> PrimaryUrlConvention { get; set; }
         public Func<Type, string> DefaultUrlForController { get; set; }
@@ -80,7 +81,7 @@ namespace FubuMVC.Core.Controller.Config
                 return "{0}/{1}/{2}.aspx".ToFormat(ViewFileBasePath, controllerName, actionName);
             };
 
-            DefaultPathToPartialView = viewType => "{0}/{1}.ascx".ToFormat(SharedViewFileBasePath, viewType.Name);
+            DefaultPathToPartialView = (parentView, partialViewType) => "{0}/{1}.ascx".ToFormat(SharedViewFileBasePath, partialViewType.Name);
 
             PartialForEachOfHeader = (model, totalCount) => new GenericOpenTagExpression("ul");
             PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression("li");

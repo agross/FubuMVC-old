@@ -98,7 +98,7 @@ namespace FubuMVC.Tests.Controller.Config
         {
             var conv = new FubuConventions { SharedViewFileBasePath = "foo" };
 
-            conv.DefaultPathToPartialView(typeof(TestPartialView)).ShouldEqual("foo/TestPartialView.ascx");
+            conv.DefaultPathToPartialView(null, typeof(TestPartialView)).ShouldEqual("foo/TestPartialView.ascx");
         }
 
         [Test]

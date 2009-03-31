@@ -86,7 +86,7 @@ namespace FubuMVC.Tests.Html.Expressions
         public void should_use_conventions_to_locate_partial_view_file()
         {
             var expectedViewFile = "FOO";
-            _conventions.DefaultPathToPartialView = t => expectedViewFile;
+            _conventions.DefaultPathToPartialView = (v,t) => expectedViewFile;
 
             var catcher = _renderer.CaptureArgumentsFor(r => r.RenderView<TestUserControl>(null, null, null), o => o.Return(""));
 
@@ -94,6 +94,24 @@ namespace FubuMVC.Tests.Html.Expressions
 
             catcher.First<string>().ShouldEqual(expectedViewFile);
         }
+
+        [Test]
+        public void should_pass_the_containing_view_to_the_convention_to_locate_partial_view_file()
+        {
+            IFubuViewWithModel actualView = null;
+            _conventions.DefaultPathToPartialView = (v, t) => 
+            { 
+                actualView = v;
+                return ""; 
+            };
+
+            _renderer.Stub(r => r.RenderView<TestUserControl>(null, null, null)).Return("");
+
+            _forExpression.For<TestModel, PartialTestModel>(m => m.PartialModel);
+
+            actualView.ShouldBeTheSameAs(_view);
+        }
+
 
         [Test]
         public void should_use_conventions_to_render_ForEachOf_header()
