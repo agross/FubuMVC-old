@@ -9,6 +9,7 @@ namespace FubuMVC.Core.Behaviors
         public IInvocationResult Result { get; set; }
 
         public virtual void PrepareInput<INPUT>(INPUT input)
+            where INPUT : class
         {
         }
 
@@ -31,7 +32,9 @@ namespace FubuMVC.Core.Behaviors
             return output;
         }
 
-        public OUTPUT Invoke<INPUT, OUTPUT>(INPUT input, Func<INPUT, OUTPUT> func) where INPUT : class where OUTPUT : class
+        public OUTPUT Invoke<INPUT, OUTPUT>(INPUT input, Func<INPUT, OUTPUT> func) 
+            where INPUT : class 
+            where OUTPUT : class
         {
             PrepareInput(input);
             var output = PerformInvoke(input, func);
