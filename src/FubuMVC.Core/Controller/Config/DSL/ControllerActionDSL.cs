@@ -25,6 +25,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
         private readonly FubuConventions _conventions;
         private readonly FubuConfiguration _config;
         private readonly IEnumerable<IControllerActionConfigurer> _standardConfigurers;
+        private IEnumerable<IFubuConvention<ControllerActionConfig>> _actionConventions;
 
         public ControllerActionDSL(FubuConfiguration config, FubuConventions conventions)
             : this( config, conventions, new[]
@@ -50,9 +51,11 @@ namespace FubuMVC.Core.Controller.Config.DSL
             conventionFunc(_conventions);
         }
 
-        public void ActionConventions(Action<CustomConventionExpression<ControllerActionConfig>> conventionAction)
+        public void ActionConventions(Action<ActionConventionExpression> conventionAction)
         {
-            conventionAction(new CustomConventionExpression<ControllerActionConfig>(_conventions));
+            var convExpression = new ActionConventionExpression();
+            conventionAction(convExpression);
+            _actionConventions = convExpression.Conventions;
         }
 
         public void UsingCustomConventionsFor<TARGET>(Action<CustomConventionExpression<TARGET>> conventionAction)
@@ -65,10 +68,12 @@ namespace FubuMVC.Core.Controller.Config.DSL
         {
             var expression = new AssemblyControllerScanningExpression(_conventions, _standardConfigurers);
             expressionAction(expression);
-            //NOTE: here'd be a great place to sniff the configs and possibly modify them
-
-            expression.DiscoveredConfigs.Each(actionConfig => _config.AddControllerActionConfig(actionConfig));
-
+            
+            expression.DiscoveredConfigs.Each(actionConfig =>
+            {
+                _actionConventions.Each(c => c.Apply(actionConfig));
+                _config.AddControllerActionConfig(actionConfig);
+            });
         }
 
         public void OverrideConfigFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> expression, Action<ControllerActionConfig> configAction)

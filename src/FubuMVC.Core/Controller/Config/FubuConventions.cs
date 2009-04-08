@@ -26,21 +26,29 @@ namespace FubuMVC.Core.Controller.Config
             SetBaseDefaults();
         }
 
+        // Convenience
         public string ViewFileBasePath { get; set; }
         public string LayoutViewFileBasePath { get; set; }
         public string SharedViewFileBasePath { get; set; }
+
+        // URL
+        public string PrimaryApplicationUrl { get; set; }
+        public string PageNotFoundUrl { get; set; }
         public string DefaultRssExtension { get; set; }
         public string DefaultAtomExtension { get; set; }
         public string DefaultJsonExtension { get; set; }
-        public string PrimaryApplicationUrl { get; set; }
-        public string PageNotFoundUrl { get; set; }
+        public Func<ControllerActionConfig, string> PrimaryUrlConvention { get; set; }
+        public Func<Type, string> DefaultUrlForController { get; set; }
+
+        
+        // Query
         public Func<ControllerActionConfig, string> DefaultPathToViewForAction { get; set; }
         public Func<ControllerActionConfig, string> UrlRouteParametersForAction { get; set; }
         public Func<IFubuViewWithModel, Type, string> DefaultPathToPartialView { get; set; }
         public Func<Type, string> CanonicalControllerName { get; set; }
-        public Func<ControllerActionConfig, string> PrimaryUrlConvention { get; set; }
-        public Func<Type, string> DefaultUrlForController { get; set; }
         public Func<ControllerActionConfig, bool> IsAppDefaultUrl { get; set; }
+
+        // Formatting
         public Func<object, int, HtmlExpressionBase> PartialForEachOfHeader { get; set; }
         public Func<object, int, int, HtmlExpressionBase> PartialForEachOfBeforeEachItem { get; set; }
         public Func<object, int, int, string> PartialForEachOfAfterEachItem { get; set; }

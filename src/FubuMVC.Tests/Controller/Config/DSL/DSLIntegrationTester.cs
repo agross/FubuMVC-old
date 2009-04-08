@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
+using FubuMVC.Core.Conventions;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config.DSL
@@ -132,6 +133,33 @@ namespace FubuMVC.Tests.Controller.Config.DSL
                 config => config.UseViewFrom(AnotherAction));
 
             actionConfig.ActionName.ShouldEqual(expectedActionName);
+        }
+
+        [Test]
+        public void should_apply_config_convention_after_discovery()
+        {
+            _dsl.ActionConventions(c=>c.Add<UrlHappyConventionForTestPurposes>());
+
+            _dsl.AddControllerActions(a =>
+                  a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+                       from t in types
+                       where t.Name == "TestController"
+                       from m in t.GetMethods()
+                       where m.Name.EndsWith("Action") &&  m.GetParameters()[0].ParameterType != typeof(Int32)
+                       select m)); 
+
+            _config
+                .GetControllerActionConfigs()
+                .Any(c=>c.PrimaryUrl == "HAPPY")
+                .ShouldBeTrue();
+        }
+
+        public class UrlHappyConventionForTestPurposes : IFubuConvention<ControllerActionConfig>
+        {
+            public void Apply(ControllerActionConfig item)
+            {
+                item.PrimaryUrl = "HAPPY";
+            }
         }
     }
 }

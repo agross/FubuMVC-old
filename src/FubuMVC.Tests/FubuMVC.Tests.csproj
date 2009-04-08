@@ -78,6 +78,7 @@
     <Compile Include="Behaviors\OutputAsJsonTester.cs" />
     <Compile Include="Controller\Config\DSL\ActionConfigExpressionTester.cs" />
     <Compile Include="Controller\Config\ControllerActionConfigTester.cs" />
+    <Compile Include="Controller\Config\DSL\ActionConventionExpressionTester.cs" />
     <Compile Include="Controller\Config\DSL\AssemblyControllerScanningExpressionTester.cs" />
     <Compile Include="Controller\Config\DSL\ThunderdomeActionConfigurerTester.cs" />
     <Compile Include="Controller\Config\LocalizationTester.cs" />
