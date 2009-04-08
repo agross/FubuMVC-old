@@ -22,7 +22,7 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
             expectedRssExtension = "__EXPECTED_RSS__";
             expectedAtomExtension = "__EXPECTED_ATOM__";
             fubuConventions = new FubuConventions { DefaultRssExtension = expectedRssExtension, DefaultAtomExtension = expectedAtomExtension};
-            convention = new wire_up_RSS_and_ATOM_URLs_if_required(fubuConventions);
+            convention = new wire_up_RSS_and_ATOM_URLs_if_required {FubuConventions = fubuConventions};
             var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
             config = new ControllerActionConfig(method, null, null);
         }
