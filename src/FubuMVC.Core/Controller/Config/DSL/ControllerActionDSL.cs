@@ -40,6 +40,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
             _conventions = conventions;
             _config = config;
             _standardConfigurers = standardConfigurers;
+            _actionConventions = new List<IFubuConvention<ControllerActionConfig>>();
         }
 
         public FubuConventions Conventions { get { return _conventions; } }
