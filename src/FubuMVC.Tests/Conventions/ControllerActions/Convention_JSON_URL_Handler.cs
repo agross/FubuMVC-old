@@ -20,7 +20,7 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         {
             expectedJsonExtension = "__EXPECTED_JSON__";
             fubuConventions = new FubuConventions { DefaultJsonExtension = expectedJsonExtension };
-            convention = new wire_up_JSON_URL_if_required(fubuConventions);
+            convention = new wire_up_JSON_URL_if_required { FubuConventions = fubuConventions };
 
             var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
             config = new ControllerActionConfig(method, null, null);

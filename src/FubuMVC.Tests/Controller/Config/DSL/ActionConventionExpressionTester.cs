@@ -2,6 +2,7 @@ using System.Linq;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
 using FubuMVC.Core.Conventions;
+using FubuMVC.Core.Conventions.ControllerActions;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config.DSL
@@ -10,11 +11,13 @@ namespace FubuMVC.Tests.Controller.Config.DSL
     public class ActionConventionExpressionTester
     {
         private ActionConventionExpression _expression;
+        private FubuConventions _fubuConventions;
 
         [SetUp]
         public void SetUp()
         {
-            _expression = new ActionConventionExpression();
+            _fubuConventions = new FubuConventions();
+            _expression = new ActionConventionExpression(_fubuConventions);
         }
 
         [Test]
@@ -32,12 +35,31 @@ namespace FubuMVC.Tests.Controller.Config.DSL
             _expression.Conventions.First().ShouldBeTheSameAs(conv);
         }
 
+        [Test]
+        public void should_set_fubuconventions_property_if_IControllerActionConfigConvention()
+        {
+            _expression.Add<FancyActionConv>();
+            _expression.Conventions
+                .First().ShouldBeOfType<FancyActionConv>()
+                .FubuConventions.ShouldBeTheSameAs(_fubuConventions);
+        }
+
         public class PlainActionConv : IFubuConvention<ControllerActionConfig>
         {
             public void Apply(ControllerActionConfig item)
             {
                 throw new System.NotImplementedException();
             }
+        }
+
+        public class FancyActionConv : IControllerActionConfigConvention
+        {
+            public void Apply(ControllerActionConfig item)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public FubuConventions FubuConventions{ get; set; }
         }
     }
 }

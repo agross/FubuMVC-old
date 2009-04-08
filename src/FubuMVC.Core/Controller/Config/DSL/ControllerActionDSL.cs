@@ -53,7 +53,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
 
         public void ActionConventions(Action<ActionConventionExpression> conventionAction)
         {
-            var convExpression = new ActionConventionExpression();
+            var convExpression = new ActionConventionExpression(_conventions);
             conventionAction(convExpression);
             _actionConventions = convExpression.Conventions;
         }

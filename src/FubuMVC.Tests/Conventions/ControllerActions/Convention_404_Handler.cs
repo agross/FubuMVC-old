@@ -18,7 +18,7 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         {
             expectedPrimaryUrl = "__EXPECTED_404__";
             fubuConventions = new FubuConventions {PageNotFoundUrl = expectedPrimaryUrl};
-            convention = new wire_up_404_handler_URL(fubuConventions);
+            convention = new wire_up_404_handler_URL {FubuConventions = fubuConventions};
         }
 
         [Test]
