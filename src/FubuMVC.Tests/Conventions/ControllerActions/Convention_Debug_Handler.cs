@@ -1,4 +1,5 @@
-using System;
+using System.Linq;
+using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Conventions.ControllerActions;
 using FubuMVC.Core.Util;
@@ -18,35 +19,47 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         }
 
         [Test]
-        public void should_not_apply_if_not_Debug_controller_Index_action()
+        public void Should_add_the_debug_url_to_the_controller_that_is_equal_to_the_primary_application_url()
         {
+            FubuConventions fubuConventions = new FubuConventions {PrimaryApplicationUrl = "test/index"};
+
             var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
-            var config = new ControllerActionConfig(method, null, null);
+            var config = new ControllerActionConfig(method, null, null);// {PrimaryUrl = "test/index"};
+            config.AddBehavior<OutputDebugInformation>();
 
-            var expectedPrimaryUrl = config.PrimaryUrl;
-
+            convention.FubuConventions = fubuConventions;
             convention.Apply(config);
 
-            config.PrimaryUrl.ShouldEqual(expectedPrimaryUrl);
+            config.GetOtherUrls().Contains(wire_up_debug_handler_URL.DEBUG_URL).ShouldBeTrue();
         }
 
         [Test]
-        public void should_only_apply_if_Debug_controller_Index_action()
+        public void Should_not_add_the_debug_url_to_the_controller_that_is_not_equal_to_the_primary_application_url()
         {
-            var method = ReflectionHelper.GetMethod<DebugController>(c => c.Index(null));
-            var config = new ControllerActionConfig(method, null, null);
+            FubuConventions fubuConventions = new FubuConventions {PrimaryApplicationUrl = "test123/index"};
 
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var config = new ControllerActionConfig(method, null, null) {PrimaryUrl = "test/index"};
+            config.AddBehavior<OutputDebugInformation>();
+
+            convention.FubuConventions = fubuConventions;
             convention.Apply(config);
 
-            config.PrimaryUrl.ShouldEqual(wire_up_debug_handler_URL.DEBUG_URL);
+            config.GetOtherUrls().Contains(wire_up_debug_handler_URL.DEBUG_URL).ShouldBeFalse();
         }
 
-        private class DebugController
+        [Test]
+        public void Should_not_add_the_debug_url_if_the_debug_behavior_is_not_added_to_the_controller()
         {
-            public object Index(object input)
-            {
-                throw new NotImplementedException();
-            }
+            FubuConventions fubuConventions = new FubuConventions { PrimaryApplicationUrl = "test/index" };
+
+            var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
+            var config = new ControllerActionConfig(method, null, null) { PrimaryUrl = "test/index" };
+
+            convention.FubuConventions = fubuConventions;
+            convention.Apply(config);
+
+            config.GetOtherUrls().Contains(wire_up_debug_handler_URL.DEBUG_URL).ShouldBeFalse();
         }
     }
 }
