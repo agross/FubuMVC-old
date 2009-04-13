@@ -24,7 +24,7 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
             FubuConventions fubuConventions = new FubuConventions {PrimaryApplicationUrl = "test/index"};
 
             var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
-            var config = new ControllerActionConfig(method, null, null);// {PrimaryUrl = "test/index"};
+            var config = new ControllerActionConfig(method, null, null) {PrimaryUrl = "test/index"};
             config.AddBehavior<OutputDebugInformation>();
 
             convention.FubuConventions = fubuConventions;

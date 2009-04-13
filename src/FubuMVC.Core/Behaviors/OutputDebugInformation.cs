@@ -25,7 +25,7 @@ namespace FubuMVC.Core.Behaviors
 
             if (isDebug)
             {
-                Result = new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
+                Result = ResultOverride.IfAvailable(output) ?? new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
                 return output;
             }
 
