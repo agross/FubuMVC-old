@@ -12,19 +12,21 @@ namespace FubuMVC.Tests.Controller.Config.DSL
     {
         private ActionConventionExpression _expression;
         private FubuConventions _fubuConventions;
+        private FubuConfiguration _fubuConfiguration;
 
         [SetUp]
         public void SetUp()
         {
             _fubuConventions = new FubuConventions();
-            _expression = new ActionConventionExpression(_fubuConventions);
+            _fubuConfiguration = new FubuConfiguration(_fubuConventions);
+            _expression = new ActionConventionExpression(_fubuConventions, _fubuConfiguration);
         }
 
         [Test]
         public void should_new_up_and_add_convention_to_list()
         {
             _expression.Add<PlainActionConv>();
-            _expression.Conventions.ShouldHaveCount(1);
+            _fubuConfiguration.GetActionConventions().ShouldHaveCount(1);
         }
 
         [Test]
@@ -32,14 +34,14 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         {
             var conv = new PlainActionConv();
             _expression.Add(conv);
-            _expression.Conventions.First().ShouldBeTheSameAs(conv);
+            _fubuConfiguration.GetActionConventions().First().ShouldBeTheSameAs(conv);
         }
 
         [Test]
         public void should_set_fubuconventions_property_if_IControllerActionConfigConvention()
         {
             _expression.Add<FancyActionConv>();
-            _expression.Conventions
+            _fubuConfiguration.GetActionConventions()
                 .First().ShouldBeOfType<FancyActionConv>()
                 .FubuConventions.ShouldBeTheSameAs(_fubuConventions);
         }

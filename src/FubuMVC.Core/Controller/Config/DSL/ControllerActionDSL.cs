@@ -25,7 +25,6 @@ namespace FubuMVC.Core.Controller.Config.DSL
         private readonly FubuConventions _conventions;
         private readonly FubuConfiguration _config;
         private readonly IEnumerable<IControllerActionConfigurer> _standardConfigurers;
-        private IEnumerable<IFubuConvention<ControllerActionConfig>> _actionConventions;
 
         public ControllerActionDSL(FubuConfiguration config, FubuConventions conventions)
             : this( config, conventions, new[]
@@ -40,7 +39,6 @@ namespace FubuMVC.Core.Controller.Config.DSL
             _conventions = conventions;
             _config = config;
             _standardConfigurers = standardConfigurers;
-            _actionConventions = new List<IFubuConvention<ControllerActionConfig>>();
         }
 
         public FubuConventions Conventions { get { return _conventions; } }
@@ -54,9 +52,8 @@ namespace FubuMVC.Core.Controller.Config.DSL
 
         public void ActionConventions(Action<ActionConventionExpression> conventionAction)
         {
-            var convExpression = new ActionConventionExpression(_conventions);
+            var convExpression = new ActionConventionExpression(_conventions, _config);
             conventionAction(convExpression);
-            _actionConventions = convExpression.Conventions;
         }
 
         public void UsingCustomConventionsFor<TARGET>(Action<CustomConventionExpression<TARGET>> conventionAction)

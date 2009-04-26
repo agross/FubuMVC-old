@@ -133,5 +133,13 @@ namespace FubuMVC.Tests.Controller.Config.DSL
 
             actionConfig.ActionName.ShouldEqual(expectedActionName);
         }
+
+        [Test]
+        public void should_add_action_conventions_to_fubuconfiguration()
+        {
+            _dsl.ActionConventions(c => c.Add<UrlHappyConventionForTestPurposes>());
+
+            _config.GetActionConventions().First().ShouldBeOfType<UrlHappyConventionForTestPurposes>();
+        }
     }
 }

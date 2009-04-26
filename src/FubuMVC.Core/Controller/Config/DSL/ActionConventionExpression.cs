@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Conventions.ControllerActions;
 
@@ -6,15 +5,14 @@ namespace FubuMVC.Core.Controller.Config.DSL
 {
     public class ActionConventionExpression
     {
-        private readonly IList<IFubuConvention<ControllerActionConfig>> _conventions = new List<IFubuConvention<ControllerActionConfig>>();
         private readonly FubuConventions _fubuConventions;
+        private readonly FubuConfiguration _fubuConfiguration;
 
-        public ActionConventionExpression(FubuConventions fubuConventions)
+        public ActionConventionExpression(FubuConventions fubuConventions, FubuConfiguration configuration)
         {
             _fubuConventions = fubuConventions;
+            _fubuConfiguration = configuration;
         }
-
-        public IEnumerable<IFubuConvention<ControllerActionConfig>> Conventions { get { return _conventions; } }
 
         public ActionConventionExpression Add<CONVENTION>()
             where CONVENTION : IFubuConvention<ControllerActionConfig>, new()
@@ -27,13 +25,14 @@ namespace FubuMVC.Core.Controller.Config.DSL
                 cacConv.FubuConventions = _fubuConventions;
             }
 
-            _conventions.Add(conv);
+            _fubuConfiguration.AddConvention(conv);
+
             return this;
         }
 
         public ActionConventionExpression Add(IFubuConvention<ControllerActionConfig> convention)
         {
-            _conventions.Add(convention);
+            _fubuConfiguration.AddConvention(convention);
             return this;
         }
 
