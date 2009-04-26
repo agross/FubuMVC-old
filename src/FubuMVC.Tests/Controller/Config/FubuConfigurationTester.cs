@@ -1,6 +1,9 @@
 using System;
+using System.Linq;
 using FubuMVC.Core.Controller.Config;
+using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Util;
+using FubuMVC.Tests.Controller.Config.DSL;
 using NUnit.Framework;
 
 namespace FubuMVC.Tests.Controller.Config
@@ -39,6 +42,16 @@ namespace FubuMVC.Tests.Controller.Config
         }
 
         [Test]
+        public void AddConvention_should_add_the_behavior_to_the_list()
+        {
+            var convention = new UrlHappyConventionForTestPurposes();
+            _fubuConfig.AddConvention(convention);
+
+            _fubuConfig.GetActionConventions().ShouldHaveTheSameElementsAs(convention);
+        }
+
+
+        [Test]
         public void GetDefaultBehaviors_should_return_elements_in_same_order_as_added()
         {
             _fubuConfig.AddDefaultBehavior<TestBehavior2>();
@@ -64,6 +77,29 @@ namespace FubuMVC.Tests.Controller.Config
             _fubuConfig.AddControllerActionConfig(_config);
 
             _config.GetBehaviors().ShouldHaveTheSameElementsAs(typeof(TestBehavior2), typeof(TestBehavior));
+        }
+
+        [Test]
+        public void AddControllerActionConfig_should_apply_conventions_after_default_behaviors()
+        {
+            var convention = new TestBehaviorCheckingConvention();
+
+            _fubuConfig = new FubuConfiguration(new FubuConventions());
+            _fubuConfig.AddDefaultBehavior<TestBehavior>();
+            _fubuConfig.AddConvention(convention);
+            _fubuConfig.AddControllerActionConfig(_config);
+
+            convention.TestBehaviorFound.ShouldBeTrue();
+        }
+
+        private class TestBehaviorCheckingConvention :IFubuConvention<ControllerActionConfig>
+        {
+            public void Apply(ControllerActionConfig item)
+            {
+                TestBehaviorFound = item.GetBehaviors().Any(t => t == typeof (TestBehavior));
+            }
+
+            public bool TestBehaviorFound { get; set; }
         }
 
         [Test]

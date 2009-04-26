@@ -70,11 +70,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
             var expression = new AssemblyControllerScanningExpression(_conventions, _standardConfigurers);
             expressionAction(expression);
             
-            expression.DiscoveredConfigs.Each(actionConfig =>
-            {
-                _actionConventions.Each(c => c.Apply(actionConfig));
-                _config.AddControllerActionConfig(actionConfig);
-            });
+            expression.DiscoveredConfigs.Each(actionConfig => _config.AddControllerActionConfig(actionConfig));
         }
 
         public void OverrideConfigFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> expression, Action<ControllerActionConfig> configAction)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Util;
 
 namespace FubuMVC.Core.Controller.Config
@@ -14,6 +15,9 @@ namespace FubuMVC.Core.Controller.Config
 
         private readonly Cache<Type, string> _defaultUrlByController = new Cache<Type, string>();
         private readonly FubuConventions _conventions;
+
+        private readonly IList<IFubuConvention<ControllerActionConfig>> _actionConventions =
+            new List<IFubuConvention<ControllerActionConfig>>();
 
         public FubuConfiguration(FubuConventions conventions)
         {
@@ -31,6 +35,17 @@ namespace FubuMVC.Core.Controller.Config
             return _behaviors.AsEnumerable();
         }
 
+        public void AddConvention(IFubuConvention<ControllerActionConfig> convention)
+        {
+            _actionConventions.Add(convention);
+        }
+
+        public IEnumerable<IFubuConvention<ControllerActionConfig>> GetActionConventions()
+        {
+            return _actionConventions.AsEnumerable();
+        }
+
+
         public void AddControllerActionConfig(ControllerActionConfig config)
         {
             if( _actionConfigs.Exists(cfg=>cfg.IsTheSameActionAs(config)))
@@ -41,6 +56,7 @@ namespace FubuMVC.Core.Controller.Config
             }
 
             config.ApplyDefaultBehaviors(GetDefaultBehaviors());
+            _actionConventions.Each(c => c.Apply(config));
             _actionConfigs.Add(config);
 
             var defaultPathToController = _conventions.DefaultUrlForController(config.ControllerType);
