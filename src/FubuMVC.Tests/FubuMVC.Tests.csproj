@@ -81,6 +81,8 @@
     <Compile Include="Controller\Config\ControllerActionConfigTester.cs" />
     <Compile Include="Controller\Config\DSL\ActionConventionExpressionTester.cs" />
     <Compile Include="Controller\Config\DSL\AssemblyControllerScanningExpressionTester.cs" />
+    <Compile Include="Controller\Config\DSL\MethodDummy.cs" />
+    <Compile Include="Controller\Config\DSL\RedirectActionConfigurerTester.cs" />
     <Compile Include="Controller\Config\DSL\ThunderdomeActionConfigurerTester.cs" />
     <Compile Include="Controller\Config\DSL\UrlHappyConventionForTestPurposes.cs" />
     <Compile Include="Controller\Config\LocalizationTester.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Controller\Config\FubuConfigurationTester.cs" />
     <Compile Include="Controller\Config\FubuConventionsTester.cs" />
     <Compile Include="Controller\Config\UrlResolverTester.cs" />
+    <Compile Include="Controller\Invokers\RedirectActionInvokerTester.cs" />
     <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResultTester.cs" />
     <Compile Include="Controller\Results\RenderJsonResultTester.cs" />
     <Compile Include="Conventions\ControllerActions\Convention_404_Handler.cs" />
@@ -114,7 +117,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Routing\AggregateDictionaryTester.cs" />
-    <Compile Include="Controller\ThunderdomeActionInvokerTester.cs" />
+    <Compile Include="Controller\Invokers\ThunderdomeActionInvokerTester.cs" />
     <Compile Include="Controller\DictionaryConverterTester.cs" />
     <Compile Include="SpecificationExtensions.cs" />
     <Compile Include="Web\Security\WebAuthenticationContextTester.cs" />

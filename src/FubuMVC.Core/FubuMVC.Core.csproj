@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E18FD922-0E7A-49CD-B89F-473826077B9D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -71,6 +71,7 @@
     <Compile Include="Behaviors\OutputAsRssOrAtomFeed.cs" />
     <Compile Include="Behaviors\OutputDebugInformation.cs" />
     <Compile Include="Controller\Config\DSL\ActionConventionExpression.cs" />
+    <Compile Include="Controller\Config\DSL\RedirectActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\CustomConventionExpression.cs" />
     <Compile Include="Controller\Config\DSL\IControllerActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\ThunderdomeActionConfigurer.cs" />
@@ -90,12 +91,14 @@
     <Compile Include="Controller\Config\RequiredAttribute.cs" />
     <Compile Include="Controller\IFeedConverterFor.cs" />
     <Compile Include="Controller\IInvocationResult.cs" />
+    <Compile Include="Controller\Invokers\RedirectActionInvoker.cs" />
     <Compile Include="Controller\Results\RedirectResult.cs" />
     <Compile Include="Controller\Results\RenderDebugInformationResult.cs" />
     <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResult.cs" />
     <Compile Include="Controller\Results\RenderJsonResult.cs" />
     <Compile Include="Controller\Results\RenderRssOrAtomResult.cs" />
     <Compile Include="Controller\Results\RenderViewResult.cs" />
+    <Compile Include="Controller\Invokers\ThunderdomeActionInvoker.cs" />
     <Compile Include="Conventions\ControllerActions\IControllerActionConfigConvention.cs" />
     <Compile Include="Conventions\ControllerActions\wire_up_debug_handler_URL.cs" />
     <Compile Include="Conventions\ControllerActions\wire_up_404_handler_URL.cs" />
@@ -130,7 +133,7 @@
     <Compile Include="Routing\AggregateDictionary.cs" />
     <Compile Include="Controller\DictionaryConverter.cs" />
     <Compile Include="Controller\TypeDescriptorRegistry.cs" />
-    <Compile Include="Controller\IControllerActionInvoker.cs" />
+    <Compile Include="Controller\Invokers\IControllerActionInvoker.cs" />
     <Compile Include="Util\Accessor.cs" />
     <Compile Include="Util\PropertyChain.cs" />
     <Compile Include="Util\ReflectionHelper.cs" />

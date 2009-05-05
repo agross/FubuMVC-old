@@ -20,9 +20,9 @@ namespace FubuMVC.Core.Controller
             return itemType.IsClass && itemType.GetConstructor(Type.EmptyTypes) != null;
         }
 
-        public static ITEM CreateAndPopulate<ITEM>(IDictionary<string, object> values, out ICollection<ConvertProblem> problems) where ITEM : class, new()
+        public static TItem CreateAndPopulate<TItem>(IDictionary<string, object> values, out ICollection<ConvertProblem> problems) where TItem : class, new()
         {
-            return (ITEM) CreateAndPopulate(typeof (ITEM), values, out problems);
+            return (TItem) CreateAndPopulate(typeof (TItem), values, out problems);
         }
 
         public static object CreateAndPopulate(Type itemType, IDictionary<string, object> values, out ICollection<ConvertProblem> problems)
@@ -137,6 +137,20 @@ namespace FubuMVC.Core.Controller
             {
                 problems.Add(new ConvertProblem{Item = item, Property = prop, Value = value, Exception = ex});
             }
+        }
+
+        public static TItem SafeCreateAndPopulate<TItem>(IDictionary<string, object> requestData)
+            where TItem : class, new()
+        {
+            ICollection<ConvertProblem> problems;
+            var item = CreateAndPopulate<TItem>(requestData, out problems);
+            
+            if (problems.Count > 0)
+            {
+                throw new InvalidOperationException("Could not convert all input values into their expected types.");
+            }
+
+            return item;
         }
     }
 }

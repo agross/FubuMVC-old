@@ -45,6 +45,10 @@ namespace FubuMVC.Tests
         {
             return new TestOutputModel3 { Prop1 = value.Prop1 };
         }
+
+        public void RedirectAction(TestInputModel value)
+        {
+        }
     }
 
     public class TestInputModel

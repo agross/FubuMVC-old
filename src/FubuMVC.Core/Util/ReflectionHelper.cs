@@ -7,6 +7,39 @@ namespace FubuMVC.Core.Util
 {
     public static class ReflectionHelper
     {
+        public static bool MeetsSpecialGenericConstraints(Type genericArgType, Type proposedSpecificType)
+        {
+            var gpa = genericArgType.GenericParameterAttributes;
+            var constraints = gpa & GenericParameterAttributes.SpecialConstraintMask;
+
+            // No constraints, away we go!
+            if (constraints == GenericParameterAttributes.None)
+                return true;
+
+            // "class" constraint and this is a value type
+            if ((constraints & GenericParameterAttributes.ReferenceTypeConstraint) != 0
+                && proposedSpecificType.IsValueType )
+            {
+                return false;
+            }
+                   
+            // "struct" constraint and this is a value type
+            if ((constraints & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0
+                && ! proposedSpecificType.IsValueType)
+            {
+                return false;
+            }
+
+            // "new()" constraint and this type has no default constructor
+            if ((constraints & GenericParameterAttributes.DefaultConstructorConstraint) != 0
+                && proposedSpecificType.GetConstructor(Type.EmptyTypes) == null )
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public static PropertyInfo GetProperty<MODEL>(Expression<Func<MODEL, object>> expression)
         {
             MemberExpression memberExpression = getMemberExpression(expression);

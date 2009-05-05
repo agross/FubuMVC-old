@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using FubuMVC.Core.Controller.Invokers;
 using NUnit.Framework;
 using FubuMVC.Core.Behaviors;
-using FubuMVC.Core.Controller;
 using Rhino.Mocks;
 
-namespace FubuMVC.Tests.Controller
+namespace FubuMVC.Tests.Controller.Invokers
 {
     [TestFixture]
     public class ThunderdomeActionInvokerTester
@@ -27,7 +27,9 @@ namespace FubuMVC.Tests.Controller
         [Test]
         public void should_throw_exception_if_there_was_a_problem_populating_the_input_model()
         {
-            typeof (InvalidOperationException).ShouldBeThrownBy(() => _invoker.Invoke(new Func<TestController, TestInputModel, TestOutputModel>((c, i) => null), new Dictionary<string, object>{{"PropInt", "BOGUS"}}));
+            typeof (InvalidOperationException).ShouldBeThrownBy(
+                () => _invoker.Invoke(new Func<TestController, TestInputModel, TestOutputModel>(
+                    (c, i) => null), new Dictionary<string, object>{{"PropInt", "BOGUS"}}));
         }
 
         [Test]

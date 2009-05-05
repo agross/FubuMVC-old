@@ -114,6 +114,15 @@ namespace FubuMVC.Tests.Controller
         }
 
         [Test]
+        public void safe_create_and_populate_should_throw_exception_if_there_are_problems_converting()
+        {
+            var dict = new Dictionary<string, object> { { "Age", "abc" } };
+
+            typeof (InvalidOperationException).ShouldBeThrownBy(
+                () => DictionaryConverter.SafeCreateAndPopulate<Turkey>(dict));
+        }
+
+        [Test]
         public void create_and_populate_should_set_a_notification_when_one_a_value_was_found_but_could_not_be_set()
         {
             var dict = new Dictionary<string, object> { { "Age", "abc" } };

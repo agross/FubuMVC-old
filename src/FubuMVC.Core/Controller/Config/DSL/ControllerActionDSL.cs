@@ -27,9 +27,10 @@ namespace FubuMVC.Core.Controller.Config.DSL
         private readonly IEnumerable<IControllerActionConfigurer> _standardConfigurers;
 
         public ControllerActionDSL(FubuConfiguration config, FubuConventions conventions)
-            : this( config, conventions, new[]
+            : this(config, conventions, new IControllerActionConfigurer[]
                 {
-                    new ThunderdomeActionConfigurer()
+                    new ThunderdomeActionConfigurer(),
+                    new RedirectActionConfigurer()
                 })
         {
         }

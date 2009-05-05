@@ -10,7 +10,7 @@ namespace FubuMVC.Core.Controller.Results
             Url = url;
         }
 
-        private string Url { get; set; }
+        public string Url { get; set; }
 
         public void Execute(IServiceLocator locator)
         {

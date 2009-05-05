@@ -42,6 +42,17 @@ namespace FubuMVC.Tests.Controller.Config.DSL
         }
 
         [Test]
+        public void should_setup_redirect_actions_using_the_configurer()
+        {
+            _dsl.AddControllerActions(a =>
+                 a.UsingTypesInTheSameAssemblyAs<TestController>(x =>
+                     x.SelectTypes(t => t == typeof(TestController))
+                      .SelectMethods(m => m.Name == "RedirectAction")));
+
+            _config.GetControllerActionConfigs().Single();
+        }
+
+        [Test]
         public void should_setup_action_with_default_behaviors()
         {
             _dsl.AddControllerActions(a =>
