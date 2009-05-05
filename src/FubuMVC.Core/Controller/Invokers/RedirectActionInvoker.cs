@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Results;
 
 namespace FubuMVC.Core.Controller.Invokers
@@ -10,13 +11,13 @@ namespace FubuMVC.Core.Controller.Invokers
     {
         private readonly TController _controller;
         private readonly IControllerActionBehavior _behavior;
-        private string _redirectsToUrl;
+        private readonly FubuConventions _conventions;
 
-        public RedirectActionInvoker(TController controller, IControllerActionBehavior behavior, string redirectsToUrl)
+        public RedirectActionInvoker(TController controller, IControllerActionBehavior behavior, FubuConventions conventions)
         {
             _controller = controller;
             _behavior = behavior;
-            _redirectsToUrl = redirectsToUrl;
+            _conventions = conventions;
         }
 
         public void Invoke(Delegate actionDelegate, IDictionary<string, object> requestData)
@@ -25,7 +26,7 @@ namespace FubuMVC.Core.Controller.Invokers
 
             var actionFunc = (Action<TController, TInput>)actionDelegate;
 
-            _behavior.Result = new RedirectResult(_redirectsToUrl);
+            _behavior.Result = new RedirectResult(_conventions.PrimaryApplicationUrl);
 
             _behavior.Invoke<TInput, object>(input, i => 
             { 

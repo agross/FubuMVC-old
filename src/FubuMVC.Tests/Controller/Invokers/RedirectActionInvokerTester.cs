@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Invokers;
 using FubuMVC.Core.Controller.Results;
 using NUnit.Framework;
@@ -43,7 +44,7 @@ namespace FubuMVC.Tests.Controller.Invokers
         }
 
         [Test]
-        public void set_up_the_correct_redirect_Url()
+        public void redirect_to_the_default_application_url_by_default()
         {
             _result.Url.ShouldEqual(_expectedUrl);
         }
@@ -62,7 +63,8 @@ namespace FubuMVC.Tests.Controller.Invokers
             _controller = new TestController();
             _behavior = MockRepository.GenerateStub<IControllerActionBehavior>();
             _expectedUrl = "EXPECTED_URL";
-            _invoker = new RedirectActionInvoker<TestController, TestInputModel>(_controller, _behavior, _expectedUrl);
+            var conventions = new FubuConventions {PrimaryApplicationUrl = _expectedUrl};
+            _invoker = new RedirectActionInvoker<TestController, TestInputModel>(_controller, _behavior, conventions);
             BeforeEach();
         }
 
