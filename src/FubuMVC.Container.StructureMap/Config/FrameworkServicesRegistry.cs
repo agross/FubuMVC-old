@@ -1,4 +1,6 @@
+using System.Web;
 using FubuMVC.Core.Controller;
+using FubuMVC.Core.SessionState;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Routing;
@@ -59,6 +61,8 @@ namespace FubuMVC.Container.StructureMap.Config
 
             ForRequestedType<IViewRenderer>().TheDefault.Is.OfConcreteType<WebFormsViewRenderer>();
 
+            ForRequestedType<HttpContextBase>().TheDefault.Is.ConstructedBy(ctx => new HttpContextWrapper(HttpContext.Current));
+
             //***  Can be replaced by DefaultConventionScanner
             //***  Left in here for now to make documentation easier later
             ForRequestedType<IRouteConfigurer>().AsSingletons().TheDefault.Is.OfConcreteType<RouteConfigurer>();
@@ -66,6 +70,7 @@ namespace FubuMVC.Container.StructureMap.Config
             ForRequestedType<IWebFormsViewRenderer>().TheDefault.Is.OfConcreteType<WebFormsViewRenderer>();
             ForRequestedType<IUrlResolver>().TheDefault.Is.OfConcreteType<UrlResolver>();
             ForRequestedType<ILocalization>().CacheBy(InstanceScope.PerRequest).TheDefault.Is.OfConcreteType<Localization>();
+            ForRequestedType<IRequestDataProvider>().TheDefault.Is.OfConcreteType<RequestDataProvider>();
             //***  
 
             Scan(x =>

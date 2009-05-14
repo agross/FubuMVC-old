@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Routing;
+using System.Web.SessionState;
 using FubuMVC.Core.Controller.Invokers;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Routing;
@@ -33,7 +34,7 @@ namespace FubuMVC.Core.Controller.Config
         }
     }
 
-    public class ActionHttpHandler : IHttpHandler
+    public class ActionHttpHandler : IHttpHandler, IRequiresSessionState
     {
         private readonly Delegate _actionDelegate;
         private readonly IDictionary<string, object> _requestData;
