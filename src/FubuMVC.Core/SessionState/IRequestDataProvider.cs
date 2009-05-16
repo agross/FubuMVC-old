@@ -1,16 +1,19 @@
+using System.Collections.Generic;
+using System.Reflection;
 using System.Web;
 
 namespace FubuMVC.Core.SessionState
 {
     public interface IRequestDataProvider
     {
-        void SetRequestData(object data);
-        object GetRequestData();
+        void Store<TFlashModel>(TFlashModel flashModel) where TFlashModel : class;
+        TFlashModel Load<TFlashModel>() where TFlashModel : class, new();
+        void Clear();
     }
 
     public class RequestDataProvider : IRequestDataProvider
     {
-        public const string REQUESTDATA_KEY = "__fubuRequestData";
+        public const string REQUESTDATA_PREFIX_KEY = "fubuRequestData__";
         private readonly HttpContextBase _httpContext;
 
         public RequestDataProvider(HttpContextBase httpContext)
@@ -18,27 +21,59 @@ namespace FubuMVC.Core.SessionState
             _httpContext = httpContext;
         }
 
-        public void SetRequestData(object data)
+        public void Store<TFlashModel>(TFlashModel flashModel) where TFlashModel : class
         {
-            if(_httpContext.Session == null) return;
+            if (_httpContext.Session == null) return;
 
-            _httpContext.Session.Add(REQUESTDATA_KEY, data);
+            Clear();
+
+            typeof(TFlashModel)
+                .GetProperties()
+                .Each(property => StorePropertyValue(property, flashModel));
         }
 
-        public object GetRequestData()
+        private void StorePropertyValue(PropertyInfo propertyInfo, object flashModel)
         {
-            if(_httpContext.Session == null) return null;
+            var value = propertyInfo.GetValue(flashModel, new object[] {});
+            var key = REQUESTDATA_PREFIX_KEY + propertyInfo.Name;
+            _httpContext.Session.Add(key, value);
+        }
 
-            var requestData =  _httpContext.Session[REQUESTDATA_KEY];
+        public TFlashModel Load<TFlashModel>() where TFlashModel : class, new()
+        {
+            if (_httpContext.Session == null) return null;
 
-            if (requestData != null)
+            var flashModel = new TFlashModel();
+
+            typeof(TFlashModel).GetProperties()
+                .Each(property => LoadPropertyValue(property, flashModel));
+
+            return flashModel;
+        }
+
+        private void LoadPropertyValue<TFlashModel>(PropertyInfo propertyInfo, TFlashModel flashModel) where TFlashModel : class
+        {
+            var key = REQUESTDATA_PREFIX_KEY + propertyInfo.Name;
+            var value = _httpContext.Session[key];
+
+            if (value == null)
+                throw new KeyNotFoundException(string.Format("THere was no data found for property {0} in {1}", propertyInfo.Name, typeof(TFlashModel).FullName));
+
+            propertyInfo.SetValue(flashModel, value, new object[] {});
+        }
+
+        public void Clear()
+        {
+            if (_httpContext.Session == null || _httpContext.Session.Keys == null) return;
+
+            var keysToBeRemoved = new List<string>();
+            _httpContext.Session.Keys.Each(key =>
             {
-                // If we got it from Session, remove it so that no other request gets it
-                _httpContext.Session.Remove(REQUESTDATA_KEY);
-                return requestData;
-            }
-            
-            return null;
+                if (key.ToString().StartsWith(REQUESTDATA_PREFIX_KEY))
+                    keysToBeRemoved.Add(key.ToString());
+            });
+
+            keysToBeRemoved.ForEach(key => _httpContext.Session.Remove(key));
         }
     }
 }
