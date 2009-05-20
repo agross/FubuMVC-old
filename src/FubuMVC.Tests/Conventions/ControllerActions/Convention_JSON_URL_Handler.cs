@@ -12,7 +12,7 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
     {
         private string expectedJsonExtension;
         private FubuConventions fubuConventions;
-        private wire_up_JSON_URL_if_required convention;
+        private wire_up_JSON_URL convention;
         private ControllerActionConfig config;
 
         [SetUp]
@@ -20,25 +20,15 @@ namespace FubuMVC.Tests.Conventions.ControllerActions
         {
             expectedJsonExtension = "__EXPECTED_JSON__";
             fubuConventions = new FubuConventions { DefaultJsonExtension = expectedJsonExtension };
-            convention = new wire_up_JSON_URL_if_required { FubuConventions = fubuConventions };
+            convention = new wire_up_JSON_URL { FubuConventions = fubuConventions };
 
             var method = ReflectionHelper.GetMethod<TestController>(c => c.SomeAction(null));
             config = new ControllerActionConfig(method, null, null);
         }
 
         [Test]
-        public void should_not_apply_if_not_OutputAsJsonBehavior_not_defined()
+        public void should_apply_url()
         {
-            convention.Apply(config);
-
-            config.GetOtherUrls().ShouldHaveCount(0);
-        }
-
-        [Test]
-        public void should_only_apply_if_OutputAsJsonBehavior_defined()
-        {
-            config.AddBehavior<OutputAsJson>();
-
             convention.Apply(config);
 
             config.GetOtherUrls().Single().EndsWith(expectedJsonExtension);
