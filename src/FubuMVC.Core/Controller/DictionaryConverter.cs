@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace FubuMVC.Core.Controller
 {
@@ -11,6 +12,24 @@ namespace FubuMVC.Core.Controller
         public PropertyInfo Property { get; set; }
         public object Value { get; set; }
         public Exception Exception { get; set; }
+
+        public override string ToString()
+        {
+            return
+@"Item type:       {0}
+Property:        {1}
+Property Type:   {2}
+Attempted Value: {3}
+Exception:
+{4} 
+"
+                    .ToFormat(
+                    ((Item != null) ? Item.GetType().FullName : "(null)"),
+                    Property.Name,
+                    Property.PropertyType,
+                    Value,
+                    Exception);
+        }
     }
 
     public static class DictionaryConverter
@@ -147,7 +166,18 @@ namespace FubuMVC.Core.Controller
             
             if (problems.Count > 0)
             {
-                throw new InvalidOperationException("Could not convert all input values into their expected types.");
+                var counter = 0;
+                var builder = new StringBuilder();
+                builder.Append("Could not convert all input values into their expected types:");
+                builder.Append(Environment.NewLine);
+                foreach( var prob in problems )
+                {
+                    builder.AppendFormat("-----Problem[{0}]---------------------", counter++);
+                    builder.Append(Environment.NewLine);
+                    builder.Append(prob);
+                    builder.Append(Environment.NewLine);
+                }
+                throw new InvalidOperationException(builder.ToString());
             }
 
             return item;

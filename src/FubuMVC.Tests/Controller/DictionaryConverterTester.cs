@@ -123,6 +123,53 @@ namespace FubuMVC.Tests.Controller
         }
 
         [Test]
+        public void safe_create_and_populate_should_throw_meaningful_error_message_if_problems_occur()
+        {
+            try
+            {
+
+                var dict = new Dictionary<string, object> {{"Age", "abc"}};
+                DictionaryConverter.SafeCreateAndPopulate<Turkey>(dict);
+                Assert.Fail("Exception should've been thrown");
+            }
+            catch( InvalidOperationException iex )
+            {
+                var message = iex.ToString();
+
+                message.ShouldContain("Turkey");
+                message.ShouldContain("Age");
+                message.ShouldContain("abc");
+                message.ShouldContain("System.FormatException");
+            }
+            
+        }
+
+        [Test]
+        public void safe_create_and_populate_should_throw_meaningful_error_message_with_all_problems()
+        {
+            try
+            {
+
+                var dict = new Dictionary<string, object> { { "Age", "abc" }, {"Alive", "def"} };
+                DictionaryConverter.SafeCreateAndPopulate<Turkey>(dict);
+                Assert.Fail("Exception should've been thrown");
+            }
+            catch (InvalidOperationException iex)
+            {
+                var message = iex.ToString();
+
+                message.ShouldContain("Turkey");
+                message.ShouldContain("Age");
+                message.ShouldContain("abc");
+                message.ShouldContain("System.FormatException");
+                message.ShouldContain("Alive");
+                message.ShouldContain("def");
+                message.ShouldContain("String was not recognized as a valid Boolean");
+            }
+
+        }
+
+        [Test]
         public void create_and_populate_should_set_a_notification_when_one_a_value_was_found_but_could_not_be_set()
         {
             var dict = new Dictionary<string, object> { { "Age", "abc" } };
