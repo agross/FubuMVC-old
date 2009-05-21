@@ -72,6 +72,7 @@
     <Compile Include="Behaviors\OutputAsRssOrAtomFeed.cs" />
     <Compile Include="Behaviors\OutputDebugInformation.cs" />
     <Compile Include="Controller\Config\DSL\ActionConventionExpression.cs" />
+    <Compile Include="Controller\Config\DSL\DebugOutputActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\RedirectActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\CustomConventionExpression.cs" />
     <Compile Include="Controller\Config\DSL\IControllerActionConfigurer.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Controller\Config\RequiredAttribute.cs" />
     <Compile Include="Controller\IFeedConverterFor.cs" />
     <Compile Include="Controller\IInvocationResult.cs" />
+    <Compile Include="Controller\Invokers\PureBehaviorActionInvoker.cs" />
     <Compile Include="Controller\Invokers\RedirectActionInvoker.cs" />
     <Compile Include="Controller\Results\RedirectResult.cs" />
     <Compile Include="Controller\Results\RenderDebugInformationResult.cs" />
@@ -101,7 +103,6 @@
     <Compile Include="Controller\Results\RenderViewResult.cs" />
     <Compile Include="Controller\Invokers\ThunderdomeActionInvoker.cs" />
     <Compile Include="Conventions\ControllerActions\IControllerActionConfigConvention.cs" />
-    <Compile Include="Conventions\ControllerActions\wire_up_debug_handler_URL.cs" />
     <Compile Include="Conventions\ControllerActions\wire_up_404_handler_URL.cs" />
     <Compile Include="Conventions\ControllerActions\wire_up_RSS_and_ATOM_URLs_if_required.cs" />
     <Compile Include="Conventions\IFubuConvention.cs" />

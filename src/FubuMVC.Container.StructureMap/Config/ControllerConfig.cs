@@ -1,6 +1,9 @@
 using System;
+using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
+using FubuMVC.Core.Controller.Invokers;
+using FubuMVC.Core.Util;
 using StructureMap.Configuration.DSL;
 
 namespace FubuMVC.Container.StructureMap.Config
@@ -24,6 +27,9 @@ namespace FubuMVC.Container.StructureMap.Config
             var dsl = new ControllerActionDSL(configuration, conventions);
 
             Configure(dsl);
+
+            //TODO: one day, these things will be conventionall discovered
+            new DebugOutputActionConfigurer(conventions, configuration).Configure();
 
             var configurer = new StructureMapConfigurer(conventions, configuration);
             configurer.ConfigureRegistry(this);

@@ -36,7 +36,6 @@ namespace FubuMVC.Core.Controller.Config
 
     public class ActionHttpHandler : IHttpHandler, IRequiresSessionState
     {
-        private readonly Delegate _actionDelegate;
         private readonly IDictionary<string, object> _requestData;
         private readonly ControllerActionConfig _config;
 
@@ -44,13 +43,13 @@ namespace FubuMVC.Core.Controller.Config
         {
             _config = config;
             _requestData = requestData;
-            _actionDelegate = config.ActionDelegate;
         }
 
         public virtual void HandleRequest()
         {
             var locator = ServiceLocator.Current;
 
+            //TODO: This probably doesn't belong here. Need to rethink this part
             var localization = locator.GetInstance<ILocalization>();
             localization.Configure(_requestData);
             
@@ -58,7 +57,7 @@ namespace FubuMVC.Core.Controller.Config
             configContext.CurrentConfig = _config;
 
             var invoker = locator.GetInstance<IControllerActionInvoker>(_config.UniqueID);
-            invoker.Invoke(_actionDelegate, _requestData);
+            invoker.Invoke(_requestData);
         }
 
         #region IHttpHandler stuff

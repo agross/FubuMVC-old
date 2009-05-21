@@ -12,17 +12,20 @@ namespace FubuMVC.Core.Controller.Invokers
         private readonly TController _controller;
         private readonly IControllerActionBehavior _behavior;
         private readonly FubuConventions _conventions;
+        private readonly IControllerConfigContext _context;
 
-        public RedirectActionInvoker(TController controller, IControllerActionBehavior behavior, FubuConventions conventions)
+        public RedirectActionInvoker(TController controller, IControllerActionBehavior behavior, FubuConventions conventions, IControllerConfigContext context)
         {
             _controller = controller;
             _behavior = behavior;
             _conventions = conventions;
+            _context = context;
         }
 
-        public void Invoke(Delegate actionDelegate, IDictionary<string, object> requestData)
+        public void Invoke(IDictionary<string, object> requestData)
         {
             var input = DictionaryConverter.SafeCreateAndPopulate<TInput>(requestData);
+            var actionDelegate = _context.CurrentConfig.ActionDelegate;
 
             var actionFunc = (Action<TController, TInput>)actionDelegate;
 

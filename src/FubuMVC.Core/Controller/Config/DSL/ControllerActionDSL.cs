@@ -69,6 +69,8 @@ namespace FubuMVC.Core.Controller.Config.DSL
             expressionAction(expression);
             
             expression.DiscoveredConfigs.Each(actionConfig => _config.AddControllerActionConfig(actionConfig));
+
+
         }
 
         public void OverrideConfigFor<CONTROLLER>(Expression<Func<CONTROLLER, object>> expression, Action<ControllerActionConfig> configAction)

@@ -16,8 +16,7 @@ namespace FubuMVC.Tests.Controller.Invokers
         public void throw_exception_when_there_are_converter_errors()
         {
             typeof(InvalidOperationException).ShouldBeThrownBy(
-                () => _invoker.Invoke(new Action<TestController, TestInputModel>(
-                    (c, i) => c.RedirectAction(null)), new Dictionary<string, object>
+                () => _invoker.Invoke(new Dictionary<string, object>
                         {
                             { "PropInt", "BOGUS" }
                         }));
@@ -31,9 +30,7 @@ namespace FubuMVC.Tests.Controller.Invokers
 
         protected override void BeforeEach()
         {
-            _invoker.Invoke(new Action<TestController, TestInputModel>(
-                (c, i) => c.RedirectAction(i)),
-                new Dictionary<string, object>());
+            _invoker.Invoke(new Dictionary<string, object>());
             _result = _behavior.Result as RedirectResult;
         } 
 
@@ -56,15 +53,21 @@ namespace FubuMVC.Tests.Controller.Invokers
         protected IControllerActionBehavior _behavior;
         protected TestController _controller;
         protected string _expectedUrl;
-        
+        protected IControllerConfigContext _context;
+        protected ControllerActionConfig _curConfig;
+
         [SetUp]
         public void SetUp()
         {
             _controller = new TestController();
             _behavior = MockRepository.GenerateStub<IControllerActionBehavior>();
+            _context = MockRepository.GenerateStub<IControllerConfigContext>();
+            _curConfig = _context.CurrentConfig =
+                new ControllerActionConfig(typeof (RedirectActionInvoker<TestController, TestInputModel>));
+            _curConfig.ActionDelegate = new Action<TestController, TestInputModel>((c, i) => c.RedirectAction(i));
             _expectedUrl = "EXPECTED_URL";
             var conventions = new FubuConventions {PrimaryApplicationUrl = _expectedUrl};
-            _invoker = new RedirectActionInvoker<TestController, TestInputModel>(_controller, _behavior, conventions);
+            _invoker = new RedirectActionInvoker<TestController, TestInputModel>(_controller, _behavior, conventions, _context);
             BeforeEach();
         }
 

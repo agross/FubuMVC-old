@@ -1,35 +1,32 @@
+using System;
 using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Results;
-using FubuMVC.Core.Conventions.ControllerActions;
-using FubuMVC.Core.Routing;
 
 namespace FubuMVC.Core.Behaviors
 {
-    public class OutputDebugInformation : behavior_base_for_convenience
+    public class OutputDebugInformation : IControllerActionBehavior
     {
-        private readonly ICurrentRequest _currentRequest;
         private readonly FubuConventions _conventions;
         private readonly FubuConfiguration _configuration;
 
-        public OutputDebugInformation(ICurrentRequest currentRequest, FubuConventions conventions, FubuConfiguration configuration)
+        public OutputDebugInformation(FubuConventions conventions, FubuConfiguration configuration)
         {
-            _currentRequest = currentRequest;
             _conventions = conventions;
             _configuration = configuration;
         }
 
-        public override OUTPUT AfterInvocation<OUTPUT>(OUTPUT output, IInvocationResult insideResult)
+        public IControllerActionBehavior InsideBehavior { get; set; }
+
+        public IInvocationResult Result{ get; set;}
+
+        public TOutput Invoke<TInput, TOutput>(TInput input, Func<TInput, TOutput> func) where TInput : class where TOutput : class
         {
-            var isDebug = _currentRequest.GetUrl().ToString().Contains(wire_up_debug_handler_URL.DEBUG_URL);
+            var output = func(input);
+            Result = 
+                ResultOverride.IfAvailable(output) 
+                ?? new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
 
-            if (isDebug)
-            {
-                Result = ResultOverride.IfAvailable(output) ?? new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
-                return output;
-            }
-
-            Result = insideResult;
             return output;
         }
     }

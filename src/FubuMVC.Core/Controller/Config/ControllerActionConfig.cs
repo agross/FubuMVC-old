@@ -10,17 +10,17 @@ namespace FubuMVC.Core.Controller.Config
     public class ControllerActionConfig
     {
         public ControllerActionConfig(MethodInfo actionMethod, Type invokerType, Delegate actionFunc)
-            : this()
+            : this(invokerType)
         {
             ActionMethod = actionMethod;
             ActionName = GetActionName(actionMethod);
             ControllerType = actionMethod.DeclaringType;
-            InvokerType = invokerType;
             ActionDelegate = actionFunc;
         }
 
-        protected ControllerActionConfig()
+        public ControllerActionConfig(Type invokerType)
         {
+            InvokerType = invokerType;
             UniqueID = Guid.NewGuid().ToString();
             Behaviors = new List<Type>();
             OtherUrls = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);            
@@ -28,11 +28,11 @@ namespace FubuMVC.Core.Controller.Config
 
         protected IList<Type> Behaviors { get; set; }
         protected HashSet<string> OtherUrls { get; set; }
-        public Type InvokerType { get; protected set; }
-        public Type ControllerType { get; protected set;}
-        public Delegate ActionDelegate { get; protected set; }
-        public MethodInfo ActionMethod { get; protected set; }
-        public string ActionName { get; protected set; }
+        public Type InvokerType { get; set; }
+        public Type ControllerType { get; set;}
+        public Delegate ActionDelegate { get; set; }
+        public MethodInfo ActionMethod { get; set; }
+        public string ActionName { get; set; }
         public string PrimaryUrl { get; set; }
 
         public string UniqueID { get; private set; }

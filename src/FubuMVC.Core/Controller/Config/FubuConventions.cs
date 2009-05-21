@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using FubuMVC.Core.Conventions;
 using FubuMVC.Core.Html.Expressions;
 using FubuMVC.Core.Util;
@@ -53,7 +54,8 @@ namespace FubuMVC.Core.Controller.Config
         public Func<object, int, int, HtmlExpressionBase> PartialForEachOfBeforeEachItem { get; set; }
         public Func<object, int, int, string> PartialForEachOfAfterEachItem { get; set; }
         public Func<object, int, string> PartialForEachOfFooter { get; set; }
-        
+
+        public Func<bool> DebugMode { get; set; }
 
         protected void SetBaseDefaults()
         {
@@ -95,6 +97,18 @@ namespace FubuMVC.Core.Controller.Config
             PartialForEachOfBeforeEachItem = (model, index, total) => new GenericOpenTagExpression("li");
             PartialForEachOfAfterEachItem = (model, index, total) => "</li>";
             PartialForEachOfFooter = (model, totalCount) => "</ul>";
+
+            DebugMode = () =>
+            {
+                return (HttpContext.Current != null)
+                    ? HttpContext.Current.IsDebuggingEnabled
+                    :
+#if DEBUG
+                    true;
+#else
+                    false;
+#endif
+            };
 
         }
 
