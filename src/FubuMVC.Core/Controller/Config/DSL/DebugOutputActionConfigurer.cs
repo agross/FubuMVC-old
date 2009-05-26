@@ -33,6 +33,7 @@ namespace FubuMVC.Core.Controller.Config.DSL
                     ActionDelegate = new Action<object>(i => { })
                 };
             _config.AddControllerActionConfig(debugAction);
+            debugAction.RemoveAllOtherUrls();
             debugAction.RemoveAllBehaviors();
             debugAction.AddBehavior<execute_the_result>();
             debugAction.AddBehavior<OutputDebugInformation>();

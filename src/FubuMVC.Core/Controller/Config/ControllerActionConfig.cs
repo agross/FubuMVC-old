@@ -104,5 +104,10 @@ namespace FubuMVC.Core.Controller.Config
         {
             OtherUrls.Remove(url);
         }
+
+        public virtual void RemoveAllOtherUrls()
+        {
+            OtherUrls.Clear();
+        }
     }
 }

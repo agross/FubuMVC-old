@@ -71,7 +71,9 @@
     <Compile Include="Behaviors\OutputAsJson.cs" />
     <Compile Include="Behaviors\OutputAsRssOrAtomFeed.cs" />
     <Compile Include="Behaviors\OutputDebugInformation.cs" />
+    <Compile Include="Behaviors\RedirectToNotFoundUrl.cs" />
     <Compile Include="Controller\Config\DSL\ActionConventionExpression.cs" />
+    <Compile Include="Controller\Config\DSL\NotFoundActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\DebugOutputActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\RedirectActionConfigurer.cs" />
     <Compile Include="Controller\Config\DSL\CustomConventionExpression.cs" />

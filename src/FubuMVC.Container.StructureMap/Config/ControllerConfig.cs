@@ -28,8 +28,9 @@ namespace FubuMVC.Container.StructureMap.Config
 
             Configure(dsl);
 
-            //TODO: one day, these things will be conventionall discovered
+            //TODO: one day, these things will be conventionally discovered
             new DebugOutputActionConfigurer(conventions, configuration).Configure();
+            new NotFoundActionConfigurer(configuration).Configure();
 
             var configurer = new StructureMapConfigurer(conventions, configuration);
             configurer.ConfigureRegistry(this);
