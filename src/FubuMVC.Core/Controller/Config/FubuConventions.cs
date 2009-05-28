@@ -65,7 +65,7 @@ namespace FubuMVC.Core.Controller.Config
             UrlRouteParametersForAction = GetUrlRouteParameters;
 
             PrimaryApplicationUrl = "home/index";
-            PageNotFoundUrl = "404";
+            PageNotFoundUrl = "~/404";
 
             PrimaryUrlConvention = config => "{0}/{1}{2}".ToFormat(
                                                  CanonicalControllerName(config.ControllerType),
