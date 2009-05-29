@@ -130,6 +130,7 @@
     <Compile Include="Routing\ICurrentRequest.cs" />
     <Compile Include="Routing\IOutputWriter.cs" />
     <Compile Include="Security\IPrincipalFactory.cs" />
+    <Compile Include="SessionState\IFlash.cs" />
     <Compile Include="SessionState\IRequestDataProvider.cs" />
     <Compile Include="View\IFubuView.cs" />
     <Compile Include="View\IViewRenderer.cs" />

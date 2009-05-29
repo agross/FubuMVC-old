@@ -63,6 +63,8 @@ namespace FubuMVC.Container.StructureMap.Config
 
             ForRequestedType<HttpContextBase>().TheDefault.Is.ConstructedBy(ctx => new HttpContextWrapper(HttpContext.Current));
 
+            ForRequestedType<IFlash>().TheDefault.Is.OfConcreteType<FlashProvider>();
+
             //***  Can be replaced by DefaultConventionScanner
             //***  Left in here for now to make documentation easier later
             ForRequestedType<IRouteConfigurer>().AsSingletons().TheDefault.Is.OfConcreteType<RouteConfigurer>();

@@ -10,7 +10,7 @@ namespace FubuMVC.Core.Conventions.ControllerActions
             if( ! actionConfig.ControllerType.Name.StartsWith("PageNotFound") 
                 || ! actionConfig.ActionName.Equals("Index", StringComparison.OrdinalIgnoreCase)) return;
 
-            actionConfig.PrimaryUrl = FubuConventions.PageNotFoundUrl;
+            actionConfig.PrimaryUrl = FubuConventions.PageNotFoundUrl.TrimStart('~', '/');
         }
 
         public FubuConventions FubuConventions{ get; set;}
