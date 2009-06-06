@@ -34,18 +34,17 @@ namespace FubuMVC.Core.Behaviors
                 SyndicationFeed syndicationFeed;
                 if (feedConvertor.TryConvertModel(output, out syndicationFeed))
                 {
-                    Result = ResultOverride.IfAvailable(output) ?? (isRss
+                    Result = (isRss
                         ? new RenderRssOrAtomResult(syndicationFeed.SaveAsRss20, RenderRssOrAtomResult.RSS_CONTENT_TYPE)
                         : new RenderRssOrAtomResult(syndicationFeed.SaveAsAtom10, RenderRssOrAtomResult.ATOM_CONTENT_TYPE));
                     return output;
                 }
 
-                Result = ResultOverride.IfAvailable(output) ?? new RedirectResult(_urlResolver.PageNotFoundUrl());
+                Result = new RedirectResult(_urlResolver.PageNotFoundUrl());
                 return output;
             }
 
-            Result = insideResult;
-            return output;
+            return base.AfterInvocation(output, insideResult);
         }
     }
 }

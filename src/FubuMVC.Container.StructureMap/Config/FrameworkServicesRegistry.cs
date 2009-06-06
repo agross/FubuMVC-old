@@ -1,5 +1,6 @@
 using System.Web;
 using FubuMVC.Core.Controller;
+using FubuMVC.Core.Controller.Results;
 using FubuMVC.Core.SessionState;
 using Microsoft.Practices.ServiceLocation;
 using FubuMVC.Core.Controller.Config;
@@ -64,6 +65,8 @@ namespace FubuMVC.Container.StructureMap.Config
             ForRequestedType<HttpContextBase>().TheDefault.Is.ConstructedBy(ctx => new HttpContextWrapper(HttpContext.Current));
 
             ForRequestedType<IFlash>().TheDefault.Is.OfConcreteType<FlashProvider>();
+
+            ForRequestedType<IResultOverride>().CacheBy(InstanceScope.Hybrid).TheDefault.Is.OfConcreteType<CurrentRequestResultOverride>();
 
             //***  Can be replaced by DefaultConventionScanner
             //***  Left in here for now to make documentation easier later

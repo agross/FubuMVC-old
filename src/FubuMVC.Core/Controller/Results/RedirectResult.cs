@@ -14,7 +14,7 @@ namespace FubuMVC.Core.Controller.Results
 
         public void Execute(IServiceLocator locator)
         {
-            var writer = ServiceLocator.Current.GetInstance<IOutputWriter>();
+            var writer = locator.GetInstance<IOutputWriter>();
             writer.RedirectToUrl(Url);
         }
     }

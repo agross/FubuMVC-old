@@ -114,6 +114,7 @@
     <Compile Include="Controller\Config\DSL\BehaviorExpressionTester.cs" />
     <Compile Include="Html\HtmlExtensionsTester.cs" />
     <Compile Include="Controller\Config\DSL\DSLIntegrationTester.cs" />
+    <Compile Include="Results\CurrentRequestResultOverrideTester.cs" />
     <Compile Include="SessionState\FlashProviderTester.cs" />
     <Compile Include="SessionState\RequestDataProviderTester.cs" />
     <Compile Include="StructureMap\StructureMapConfigurerTester.cs" />

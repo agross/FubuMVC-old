@@ -24,15 +24,6 @@ namespace FubuMVC.Tests.Behaviors
         }
 
         [Test]
-        public void should_respect_result_override()
-        {
-            var result = MockRepository.GenerateStub<IInvocationResult>();
-
-            _behavior.Invoke(_input, i => new OverrideModel { ResultOverride = result });
-            _behavior.Result.ShouldBeTheSameAs(result);
-        }
-
-        [Test]
         public void should_set_the_result_to_return_html_friendly_json_if_the_request_was_not_an_ajax_call()
         {
             _input = new TestAjaxRequestInputModel();

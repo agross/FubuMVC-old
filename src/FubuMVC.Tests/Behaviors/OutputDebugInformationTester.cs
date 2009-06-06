@@ -26,15 +26,6 @@ namespace FubuMVC.Tests.Behaviors
         }
 
         [Test]
-        public void should_respect_result_override()
-        {
-            var result = MockRepository.GenerateStub<IInvocationResult>();
-
-            _behavior.Invoke(new TestInputModel(), i => new OverrideModel { ResultOverride = result });
-            _behavior.Result.ShouldBeTheSameAs(result);
-        }
-
-        [Test]
         public void should_render()
         {
             _behavior.Invoke(new TestInputModel(), i => _outputModel);

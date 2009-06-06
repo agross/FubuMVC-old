@@ -1,9 +1,7 @@
 using FubuMVC.Core.Behaviors;
-using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Results;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace FubuMVC.Tests.Behaviors
 {
@@ -13,6 +11,7 @@ namespace FubuMVC.Tests.Behaviors
         private RedirectToNotFoundUrl _behavior;
         private TestOutputModel _outputModel;
         private FubuConventions _conventions;
+        private CurrentRequestResultOverride _override;
 
         [SetUp]
         public void SetUp()
@@ -23,15 +22,6 @@ namespace FubuMVC.Tests.Behaviors
             {
                 InsideBehavior = new DefaultBehavior()
             };
-        }
-
-        [Test]
-        public void should_respect_result_override()
-        {
-            var result = MockRepository.GenerateStub<IInvocationResult>();
-
-            _behavior.Invoke(new TestInputModel(), i => new OverrideModel { ResultOverride = result });
-            _behavior.Result.ShouldBeTheSameAs(result);
         }
 
         [Test]

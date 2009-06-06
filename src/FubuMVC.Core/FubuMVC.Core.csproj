@@ -61,9 +61,9 @@
     </Compile>
     <Compile Include="BasicExtensions.cs" />
     <Compile Include="Behaviors\behavior_base_for_convenience.cs" />
+    <Compile Include="Behaviors\DefaultBehavior.cs" />
     <Compile Include="Behaviors\output_as_json_if_requested.cs" />
     <Compile Include="Behaviors\copy_viewmodel_from_input_to_output.cs" />
-    <Compile Include="Behaviors\DefaultBehavior.cs" />
     <Compile Include="Behaviors\execute_the_result.cs" />
     <Compile Include="Behaviors\IControllerActionBehavior.cs" />
     <Compile Include="Behaviors\ISupportResultOverride.cs" />
@@ -97,6 +97,7 @@
     <Compile Include="Controller\IInvocationResult.cs" />
     <Compile Include="Controller\Invokers\PureBehaviorActionInvoker.cs" />
     <Compile Include="Controller\Invokers\RedirectActionInvoker.cs" />
+    <Compile Include="Controller\Results\IResultOverride.cs" />
     <Compile Include="Controller\Results\RedirectResult.cs" />
     <Compile Include="Controller\Results\RenderDebugInformationResult.cs" />
     <Compile Include="Controller\Results\RenderHtmlFriendlyJsonResult.cs" />

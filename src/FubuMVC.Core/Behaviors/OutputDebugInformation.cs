@@ -23,9 +23,7 @@ namespace FubuMVC.Core.Behaviors
         public TOutput Invoke<TInput, TOutput>(TInput input, Func<TInput, TOutput> func) where TInput : class where TOutput : class
         {
             var output = func(input);
-            Result = 
-                ResultOverride.IfAvailable(output) 
-                ?? new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
+            Result = new RenderDebugInformationResult(_conventions, _configuration, RenderDebugInformationResult.CONTENT_TYPE);
 
             return output;
         }

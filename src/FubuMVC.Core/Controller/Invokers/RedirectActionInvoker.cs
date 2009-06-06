@@ -29,6 +29,7 @@ namespace FubuMVC.Core.Controller.Invokers
 
             var actionFunc = (Action<TController, TInput>)actionDelegate;
 
+            // TODO: This should be conventional probably, redirecting to home is pretty worthless.
             _behavior.Result = new RedirectResult(_conventions.PrimaryApplicationUrl);
 
             _behavior.Invoke<TInput, object>(input, i => 

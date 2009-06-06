@@ -20,8 +20,7 @@ namespace FubuMVC.Core.Behaviors
 
         public override OUTPUT AfterInvocation<OUTPUT>(OUTPUT output, IInvocationResult insideResult)
         {
-            Result = ResultOverride.IfAvailable(output) ?? 
-                (_nonAjaxRequestDetected 
+            Result = (_nonAjaxRequestDetected 
                 ? new RenderHtmlFriendlyJsonResult<OUTPUT>(output) 
                 : new RenderJsonResult<OUTPUT>(output));
             return output;

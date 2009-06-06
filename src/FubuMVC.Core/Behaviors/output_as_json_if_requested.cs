@@ -20,13 +20,11 @@ namespace FubuMVC.Core.Behaviors
         {
             if (_request.GetUrl().AbsolutePath.EndsWith(_conventions.DefaultJsonExtension))
             {
-                Result = ResultOverride.IfAvailable(output) ?? new RenderJsonResult<TOutput>(output);
+                Result = new RenderJsonResult<TOutput>(output);
+                return output;
             }
-            else
-            {
-                Result = insideResult;
-            }
-            return output;
+            
+            return base.AfterInvocation(output, insideResult);
         }
     }
 }

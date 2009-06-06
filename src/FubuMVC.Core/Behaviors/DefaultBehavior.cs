@@ -15,6 +15,7 @@ namespace FubuMVC.Core.Behaviors
         {
             var output = func(input);
 
+            //TODO: Remove the ResultOverride call after the [Obsolete] period has expired
             Result = ResultOverride.IfAvailable(output) ?? new RenderViewResult<OUTPUT>(output);
 
             return output;

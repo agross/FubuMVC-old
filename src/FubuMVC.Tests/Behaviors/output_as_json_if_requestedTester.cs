@@ -33,15 +33,6 @@ namespace FubuMVC.Tests.Behaviors
             _behavior.Invoke(_input, i => new TestOutputModel());
             _behavior.Result.ShouldBeOfType<RenderJsonResult<TestOutputModel>>();
         }
-
-        [Test]
-        public void should_respect_result_override()
-        {
-            var result = MockRepository.GenerateStub<IInvocationResult>();
-
-            _behavior.Invoke(_input, i => new OverrideModel { ResultOverride = result });
-            _behavior.Result.ShouldBeTheSameAs(result);
-        }
     }
 
     [TestFixture]

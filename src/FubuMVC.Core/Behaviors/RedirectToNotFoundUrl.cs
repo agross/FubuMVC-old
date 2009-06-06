@@ -21,9 +21,8 @@ namespace FubuMVC.Core.Behaviors
         public TOutput Invoke<TInput, TOutput>(TInput input, Func<TInput, TOutput> func) where TInput : class where TOutput : class
         {
             var output = func(input);
-            Result = 
-                ResultOverride.IfAvailable(output) 
-                ?? new RedirectResult(_conventions.PageNotFoundUrl);
+
+            Result = new RedirectResult(_conventions.PageNotFoundUrl);
 
             return output;
         }
