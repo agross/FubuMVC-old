@@ -56,8 +56,10 @@ namespace FubuMVC.Core.SessionState
             var key = REQUESTDATA_PREFIX_KEY + propertyInfo.Name;
             var value = _httpContext.Session[key];
 
-            if (value == null)
-                throw new KeyNotFoundException(string.Format("THere was no data found for property {0} in {1}", propertyInfo.Name, typeof(TFlashModel).FullName));
+            // Ryan: I am commenting this line, the Web app won't run if you have a behavior loading this data, it just stops on the exception.
+            // Better in my opinion to just return null and let the user of the service decide what to do on their end.
+            //if (value == null)
+            //    throw new KeyNotFoundException(string.Format("THere was no data found for property {0} in {1}", propertyInfo.Name, typeof(TFlashModel).FullName));
 
             propertyInfo.SetValue(flashModel, value, new object[] {});
         }
