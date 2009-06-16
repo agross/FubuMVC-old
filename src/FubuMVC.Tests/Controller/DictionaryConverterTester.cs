@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using FubuMVC.Core.Controller;
 
@@ -147,9 +149,10 @@ namespace FubuMVC.Tests.Controller
         [Test]
         public void safe_create_and_populate_should_throw_meaningful_error_message_with_all_problems()
         {
+            var prevCulture = Thread.CurrentThread.CurrentUICulture;
             try
             {
-
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
                 var dict = new Dictionary<string, object> { { "Age", "abc" }, {"Alive", "def"} };
                 DictionaryConverter.SafeCreateAndPopulate<Turkey>(dict);
                 Assert.Fail("Exception should've been thrown");
@@ -165,6 +168,10 @@ namespace FubuMVC.Tests.Controller
                 message.ShouldContain("Alive");
                 message.ShouldContain("def");
                 message.ShouldContain("String was not recognized as a valid Boolean");
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentUICulture = prevCulture;
             }
 
         }

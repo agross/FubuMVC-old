@@ -11,7 +11,6 @@ namespace FubuMVC.Tests.Behaviors
         private RedirectToNotFoundUrl _behavior;
         private TestOutputModel _outputModel;
         private FubuConventions _conventions;
-        private CurrentRequestResultOverride _override;
 
         [SetUp]
         public void SetUp()
