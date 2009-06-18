@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "__Build_Utilities", "__Buil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.Container.StructureMap", "FubuMVC.Container.StructureMap\FubuMVC.Container.StructureMap.csproj", "{ABFEA520-820C-4B77-9015-6A09E24252FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FubuMVC.Container.Castle", "FubuMVC.Container.Castle\FubuMVC.Container.Castle.csproj", "{97D80335-D833-4C88-AAC1-E55BE4606209}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABFEA520-820C-4B77-9015-6A09E24252FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D80335-D833-4C88-AAC1-E55BE4606209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D80335-D833-4C88-AAC1-E55BE4606209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D80335-D833-4C88-AAC1-E55BE4606209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D80335-D833-4C88-AAC1-E55BE4606209}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

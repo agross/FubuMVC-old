@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FEB91F9F-ECE2-480C-B39C-A44BBF1F7B01}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -31,6 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Common Service Locator\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -79,6 +91,12 @@
     <Compile Include="Behaviors\OutputAsJsonTester.cs" />
     <Compile Include="Behaviors\OutputDebugInformationTester.cs" />
     <Compile Include="Behaviors\output_as_json_if_requestedTester.cs" />
+    <Compile Include="Castle\WindsorConfigurerTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Castle\WindsorServiceLocatorTester.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controller\Config\DSL\ActionConfigExpressionTester.cs" />
     <Compile Include="Controller\Config\ControllerActionConfigTester.cs" />
     <Compile Include="Controller\Config\DSL\ActionConventionExpressionTester.cs" />
@@ -130,6 +148,10 @@
     <Compile Include="Web\Security\WebAuthenticationContextTester.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FubuMVC.Container.Castle\FubuMVC.Container.Castle.csproj">
+      <Project>{97D80335-D833-4C88-AAC1-E55BE4606209}</Project>
+      <Name>FubuMVC.Container.Castle</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FubuMVC.Container.StructureMap\FubuMVC.Container.StructureMap.csproj">
       <Project>{ABFEA520-820C-4B77-9015-6A09E24252FA}</Project>
       <Name>FubuMVC.Container.StructureMap</Name>
