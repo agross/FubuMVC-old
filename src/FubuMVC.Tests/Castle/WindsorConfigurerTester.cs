@@ -1,15 +1,33 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
+using Castle.Core;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Facilities;
 using Castle.Windsor;
 
 using FubuMVC.Container.Castle.Config;
+using FubuMVC.Core;
 using FubuMVC.Core.Behaviors;
+using FubuMVC.Core.Controller;
 using FubuMVC.Core.Controller.Config;
 using FubuMVC.Core.Controller.Config.DSL;
 using FubuMVC.Core.Controller.Invokers;
+using FubuMVC.Core.Controller.Results;
 using FubuMVC.Core.Conventions;
+using FubuMVC.Core.Routing;
+using FubuMVC.Core.Security;
+using FubuMVC.Core.SessionState;
+using FubuMVC.Core.View;
+using FubuMVC.Core.View.WebForms;
+
+using Microsoft.Practices.ServiceLocation;
 
 using NUnit.Framework;
+
+using Rhino.Mocks;
 
 namespace FubuMVC.Tests.Castle
 {
@@ -34,19 +52,21 @@ namespace FubuMVC.Tests.Castle
 			var dsl = new ControllerActionDSL(_config, _conventions);
 
 			dsl.ByDefault.EveryControllerAction((d => d
-			                                          	.Will<TestBehavior>()
-			                                          	.Will<TestBehavior2>()));
+														.Will<TestBehavior>()
+														.Will<TestBehavior2>()));
 
 			dsl.AddControllerActions(a =>
-			                         a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
-			                                                                         from t in types
-			                                                                         where t.Name == "TestController"
-			                                                                         from m in t.GetMethods()
-			                                                                         where
-			                                                                         	(m.Name == "SomeAction" && m.GetParameters()[0].ParameterType == typeof(TestInputModel))
-			                                                                         	|| m.Name == "AnotherAction"
-			                                                                         	|| m.Name == "ThirdAction"
-			                                                                         select m));
+									 a.UsingTypesInTheSameAssemblyAs<TestController>(types =>
+																					 from t in types
+																					 where t.Name == "TestController"
+																					 from m in t.GetMethods()
+																					 where
+																						(m.Name == "SomeAction" &&
+																						 m.GetParameters()[0].ParameterType ==
+																						 typeof(TestInputModel))
+																						|| m.Name == "AnotherAction"
+																						|| m.Name == "ThirdAction"
+																					 select m));
 
 			dsl.OverrideConfigFor<TestController>(c => c.SomeAction(null), c => c.RemoveAllBehaviors());
 			dsl.OverrideConfigFor<TestController>(c => c.ThirdAction(null), c => c.RemoveBehavior<TestBehavior2>());
@@ -143,6 +163,88 @@ namespace FubuMVC.Tests.Castle
 			convArray.ShouldHaveCount(2);
 			convArray[0].ShouldBeOfType<TestControllerConvention>();
 			convArray[1].ShouldBeOfType<AnotherTestControllerConvention>();
+		}
+
+		[Test]
+		public void DSL_should_register_singleton_framework_services()
+		{
+			HashSet<Type> singletons = new HashSet<Type> { typeof(IServiceLocator), typeof(IRouteConfigurer) };
+
+			singletons.Each(x => _container.Resolve(x).ShouldBeTheSameAs(_container.Resolve(x)));
+		}
+
+		[Test]
+		public void DSL_should_register_per_request_framework_services()
+		{
+			HashSet<Type> singletons = new HashSet<Type>
+			                           {
+			                           	typeof(IOutputWriter),
+			                           	typeof(ICurrentRequest),
+			                           	typeof(IFeedConverterFor<object>),
+			                           	typeof(ISecurityContext),
+			                           	typeof(IAuthenticationContext),
+			                           	typeof(IViewRenderer),
+			                           	typeof(IFlash),
+			                           	typeof(IWebFormsControlBuilder),
+			                           	typeof(IWebFormsViewRenderer),
+			                           	typeof(IUrlResolver),
+			                           	typeof(ILocalization),
+			                           	typeof(IRequestDataProvider),
+			                           	// TODO: Can the component activator somehow be omitted by the HttpContextStubFaciliy?
+										// typeof(HttpContextBase)
+			                           };
+
+			_container.AddFacility<HttpContextStubFacility>();
+
+			singletons.Each(x =>
+				{
+					Console.WriteLine(x);
+					_container.Resolve(x).ShouldNotBeTheSameAs(_container.Resolve(x));
+					Console.WriteLine(	"su");
+				});
+		}
+
+		[Test]
+		public void DSL_should_register_per_thread_or_per_web_request_framework_services()
+		{
+			HashSet<Type> perThread = new HashSet<Type>
+			                          {
+			                          	typeof(IControllerConfigContext),
+			                          	typeof(IResultOverride)
+			                          };
+
+			perThread.Each(x => _container.Resolve(x).ShouldBeTheSameAs(_container.Resolve(x)));
+		}
+
+		class HttpContextStubFacility : AbstractFacility
+		{
+			protected override void Init()
+			{
+				Kernel.Resolver.AddSubResolver(new HttpContextStubSubResolver());
+			}
+
+			#region Nested type: HttpContextStubSubResolver
+			class HttpContextStubSubResolver : ISubDependencyResolver
+			{
+				#region Implementation of ISubDependencyResolver
+				public object Resolve(CreationContext context,
+									  ISubDependencyResolver parentResolver,
+									  ComponentModel model,
+									  DependencyModel dependency)
+				{
+					return MockRepository.GenerateStub<HttpContextBase>();
+				}
+
+				public bool CanResolve(CreationContext context,
+									   ISubDependencyResolver parentResolver,
+									   ComponentModel model,
+									   DependencyModel dependency)
+				{
+					return typeof(HttpContextBase).IsAssignableFrom(dependency.TargetType);
+				}
+				#endregion
+			}
+			#endregion
 		}
 	}
 }

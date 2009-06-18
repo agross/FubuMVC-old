@@ -62,19 +62,35 @@ namespace FubuMVC.Container.Castle.Config
 				.LifeStyle.Custom<HybridLifestyleManager>()
 				.ImplementedBy<DefaultControllerConfigContext>();
 
-			yield return Component.For<IOutputWriter>().ImplementedBy<HttpResponseOutputWriter>();
-			Component.For<ICurrentRequest>().ImplementedBy<CurrentRequest>();
+			yield return Component.For<IOutputWriter>()
+				.LifeStyle.Transient
+				.ImplementedBy<HttpResponseOutputWriter>();
+			yield return Component.For<ICurrentRequest>()
+				.LifeStyle.Transient
+				.ImplementedBy<CurrentRequest>();
 
-			yield return Component.For(typeof(IFeedConverterFor<>)).ImplementedBy(typeof(DefaultFeedConverter<>));
+			yield return Component.For(typeof(IFeedConverterFor<>))
+				.LifeStyle.Transient
+				.ImplementedBy(typeof(DefaultFeedConverter<>));
 
-			yield return Component.For<ISecurityContext>().ImplementedBy<WebSecurityContext>();
-			yield return Component.For<IAuthenticationContext>().ImplementedBy<WebAuthenticationContext>();
+			yield return Component.For<ISecurityContext>()
+				.LifeStyle.Transient
+				.ImplementedBy<WebSecurityContext>();
+			yield return Component.For<IAuthenticationContext>()
+				.LifeStyle.Transient
+				.ImplementedBy<WebAuthenticationContext>();
 
-			yield return Component.For<IViewRenderer, IWebFormsViewRenderer>().ImplementedBy<WebFormsViewRenderer>();
+			yield return Component.For<IViewRenderer, IWebFormsViewRenderer>()
+				.LifeStyle.Transient
+				.ImplementedBy<WebFormsViewRenderer>();
 
-			yield return Component.For<HttpContextBase>().Activator<HttpContextActivator>();
+			yield return Component.For<HttpContextBase>()
+				.LifeStyle.Transient
+				.Activator<HttpContextActivator>();
 
-			yield return Component.For<IFlash>().ImplementedBy<FlashProvider>();
+			yield return Component.For<IFlash>()
+				.LifeStyle.Transient
+				.ImplementedBy<FlashProvider>();
 
 			yield return Component.For<IResultOverride>()
 				.LifeStyle.Custom<HybridLifestyleManager>()
@@ -82,14 +98,22 @@ namespace FubuMVC.Container.Castle.Config
 
 			//***  Can be replaced by DefaultConventionScanner
 			//***  Left in here for now to make documentation easier later
-			yield return Component.For<IRouteConfigurer>().LifeStyle.Singleton.ImplementedBy<RouteConfigurer>();
-			yield return Component.For<IWebFormsControlBuilder>().ImplementedBy<WebFormsControlBuilder>();
-			//yield return Component.For<IWebFormsViewRenderer>().ImplementedBy<WebFormsViewRenderer>();
-			yield return Component.For<IUrlResolver>().ImplementedBy<UrlResolver>();
+			yield return Component.For<IRouteConfigurer>()
+				.LifeStyle.Singleton
+				.ImplementedBy<RouteConfigurer>();
+			yield return Component.For<IWebFormsControlBuilder>()
+				.LifeStyle.Transient
+				.ImplementedBy<WebFormsControlBuilder>();
+			
+			yield return Component.For<IUrlResolver>()
+				.LifeStyle.Transient
+				.ImplementedBy<UrlResolver>();
 			yield return Component.For<ILocalization>()
 				.LifeStyle.Transient
 				.ImplementedBy<Localization>();
-			yield return Component.For<IRequestDataProvider>().ImplementedBy<RequestDataProvider>();
+			yield return Component.For<IRequestDataProvider>()
+				.LifeStyle.Transient
+				.ImplementedBy<RequestDataProvider>();
 			//***  
 
 			yield return AllTypes
